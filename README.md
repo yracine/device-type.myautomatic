@@ -81,11 +81,11 @@ b) Go to https://developer.automatic.com/my-apps
 
 c) Create a new app and called it "SmartThings"
 
-d) Copy and paste your client id to the MyAutomaticServiceMgr smartapp at the bottom where indicated "insert Automatic Public Key here!"
+d) Copy and paste your Automatic client id to the MyAutomaticServiceMgr smartapp at the bottom where indicated "insert Automatic Public Key here!"
 
-d) Copy and paste your secret id to the MyAutomaticServiceMgr smartapp at the bottom where indicated "insert Automatic private Key here!"
+d) Copy and paste your Automatic secret id to the MyAutomaticServiceMgr smartapp at the bottom where indicated "insert Automatic private Key here!"
 
-e) Save and Publish the MyAutomaticServiceMgr smartapp using the IDE with your credentials.
+e) Using the IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.
 
 
 /*******************************************************************************************************************/
