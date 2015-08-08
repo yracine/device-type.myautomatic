@@ -4,7 +4,7 @@ Author:             Yves Racine
 
 linkedIn profile:   ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
 
-Date:               2015-03-15
+Date:               2015-08-08
 
 Code: http://github.com/yracine/device-type.myautomatic
 
