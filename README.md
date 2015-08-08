@@ -67,6 +67,7 @@ f) <b>Make sure that enable OAuth in Smartapp settings is active</b>
 * Hit "Update" at the bottom
 
 g) Go back to the code window, and hit the "publish/for me" button at the top right corner 
+
 h) Keep the smartapp open in your IDE for the next step
 
 /*******************************************************************************************************************/
@@ -75,10 +76,15 @@ h) Keep the smartapp open in your IDE for the next step
 /*******************************************************************************************************************/
 
 a) Open a new browser tab, and go to http://developer.automatic.com and create your developer account if needed
+
 b) Go to https://developer.automatic.com/my-apps
+
 c) Create a new app and called it "SmartThings"
+
 d) Copy and paste your client id to the MyAutomaticServiceMgr smartapp at the bottom where indicated "insert Automatic Public Key here!"
+
 d) Copy and paste your secret id to the MyAutomaticServiceMgr smartapp at the bottom where indicated "insert Automatic private Key here!"
+
 e) Save and Publish the MyAutomaticServiceMgr smartapp using the IDE with your credentials.
 
 
