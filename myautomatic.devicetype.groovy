@@ -2,6 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
+ *  Version 0.9
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -26,8 +27,7 @@ preferences {
 	input("vehicleId", "number", title: "vehicle [default=first Automatic vehicle found", description:
 		"optional, the id of your Automatic connected vehicle (no spaces)")
 	input("homeAddress", "text", title: "minimum Home Address info for presence settings", 
-    	description:
-			"optional, ex. postal/zip code or street name, city")
+		description: "optional, ex. postal/zip code or street name, city")
 	input("trace", "text", title: "trace", description:
 		"Set it to true to enable tracing (no spaces) or leave it empty (no tracing)"
 	)
@@ -549,7 +549,7 @@ metadata {
 			"yestripsAvgAverageKmpl", "yestripsAvgDistanceM", "yestripsAvgDurationS","yestotalDistanceM",
 			"yestotalFuelVolumeL","yestotalNbTrips", "yestripsAvgScoreSpeeding", "yestripsAvgScoreEvents"
 
-/*	Removed weekly and monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
+/*			Removed weekly and monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
 
 			"weektripsAvgAverageKmpl", "weektripsAvgDistanceM", "weektripsAvgDurationS","weektotalDistanceM",
 			"weektotalFuelVolumeL","weektotalNbTrips","weektripsAvgScoreSpeeding", "weektripsAvgScoreEvents",
@@ -1177,7 +1177,7 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime,generateEvents='false',
 	while ((statusCode!= AUTOMATIC_SUCCESS) && (j++ <2)) { // retries once if api call fails
 		api('trips', bodyReq) {resp->
 			statusCode = resp.status        
-        	if (statusCode == AUTOMATIC_SUCCESS) {
+			if (statusCode == AUTOMATIC_SUCCESS) {
  				data?.trips=resp.data
 				if (settings.trace) {
 					log.debug "getTrips>metadata=${data.trips._metadata}" 
@@ -1205,32 +1205,32 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime,generateEvents='false',
 					def hardBrakes=it.hard_brakes
 					def scoreSpeeding=it.score_speeding
 					def scoreEvents=it.score_events
-                    
-                    if (averageKmpl) {
-						totalAverageKmpl =totalAverageKmpl +averageKmpl.toFloat()                         
-					}
-                    if (distanceM) {
+            
+					if (averageKmpl) {
+						totalAverageKmpl =totalAverageKmpl +averageKmpl.toFloat()                        
+					}	
+					if (distanceM) {
 						totalDistanceM =totalDistanceM +distanceM.toFloat()
 					}
-                    if (durationS) {
+					if (durationS) {
 						totalDurationS =totalDurationS +durationS.toFloat()
 					}
-                    if (fuelCostUsd) {
+					if (fuelCostUsd) {
 						totalCostUsd =totalCostUsd +fuelCostUsd.toFloat()
 					}
-                    if (fuelVolumeL) {
+					if (fuelVolumeL) {
 						totalFuelVolumeL =totalFuelVolumeL +fuelVolumeL.toFloat()
 					}
-                    if (hardAccels) {
+					if (hardAccels) {
 						totalHardAccels =totalHardAccels + hardAccels.toInteger()
 					}
-                    if (hardBrakes) {
+					if (hardBrakes) {
 						totalHardBrakes =totalHardBrakes + hardBrakes.toInteger()
 					}
-                    if (scoreSpeeding) {
+					if (scoreSpeeding) {
 						totalScoreSpeeding =totalScoreSpeeding + scoreSpeeding.toInteger()
 					}
-                    if (scoreEvents) {
+					if (scoreEvents) {
 						totalScoreEvents =totalScoreEvents + scoreEvents.toInteger()
 					}
 					                    
@@ -1394,36 +1394,33 @@ def processTripsNextPage(vehicleId,tripCounter,metadata) {
 					def scoreEvents=it.score_events
 
 					if (averageKmpl) {
-						totalAverageKmpl =totalAverageKmpl +averageKmpl.toFloat()                         
-					}
-                    if (distanceM) {
+						totalAverageKmpl =totalAverageKmpl +averageKmpl.toFloat()                        
+					}	
+					if (distanceM) {
 						totalDistanceM =totalDistanceM +distanceM.toFloat()
 					}
-                    if (durationS) {
+					if (durationS) {
 						totalDurationS =totalDurationS +durationS.toFloat()
 					}
-                    if (fuelCostUsd) {
+					if (fuelCostUsd) {
 						totalCostUsd =totalCostUsd +fuelCostUsd.toFloat()
 					}
-                    if (fuelVolumeL) {
+					if (fuelVolumeL) {
 						totalFuelVolumeL =totalFuelVolumeL +fuelVolumeL.toFloat()
 					}
-                    if (hardAccels) {
-						log.debug "processTripsNextPage>tripId=${id}, totalHardAccels=${totalHardAccels}" 
+					if (hardAccels) {
 						totalHardAccels =totalHardAccels + hardAccels.toInteger()
 					}
-                    if (hardBrakes) {
-						log.debug "processTripsNextPage>tripId=${id}, totalHardBrakes=${totalHardBrakes}" 
+					if (hardBrakes) {
 						totalHardBrakes =totalHardBrakes + hardBrakes.toInteger()
 					}
-                    if (scoreSpeeding) {
-						log.debug "processTripsNextPage>tripId=${id}, totalScoreSpeeding=${totalScoreSpeeding}" 
+					if (scoreSpeeding) {
 						totalScoreSpeeding =totalScoreSpeeding + scoreSpeeding.toInteger()
 					}
-                    if (scoreEvents) {
-						log.debug "processTripsNextPage>tripId=${id}, totalScoreEvents=${totalScoreEvents}" 
+					if (scoreEvents) {
 						totalScoreEvents =totalScoreEvents + scoreEvents.toInteger()
 					}
+					                    
 					tripsList = tripsList + id + ','                     
 					if (settings.trace) {
 						log.debug "processTripsNextPage>tripId=${id},startedAt=${startedAt},endedAt=${endedAt}," +
@@ -1602,7 +1599,7 @@ private def getEventName(type) {
 	} catch (any) {
 		event = 'unknown'
 	}          
-    return event
+	return event
 }
 
 // trip - trip record
@@ -1688,29 +1685,29 @@ def generateEventTripFinished(vehicleId,eventType,tripId,eventFields) {
 		'eventTripLocationAccuracyM': (eventType=='trip:finished')? eventFields.location.accuracy_m.toString():
 			(eventFields.start_location.accurancy_m)?eventFields.start_location.accurancy_m.toString():'',
 		'eventTripLocationLat': (eventType=='trip:finished')? 
-        	eventFields.location.lat.toString(): (eventFields.end_location.lat)?eventFields.end_location.lat.toString():'',
+			eventFields.location.lat.toString(): (eventFields.end_location.lat)?eventFields.end_location.lat.toString():'',
 		'eventTripLocationLon': (eventType=='trip:finished')? 
-        	eventFields.location.lon.toString(): (eventFields.end_location.lon)?eventFields.end_location.lon.toString():'',
+			eventFields.location.lon.toString(): (eventFields.end_location.lon)?eventFields.end_location.lon.toString():'',
 		'eventTripDistanceM': (eventType=='trip:finished')?
-        	eventFields.trip.distance_m:eventFields.distance_m, 
+			eventFields.trip.distance_m:eventFields.distance_m, 
 		'eventTripAvgFuelMPG': (eventType=='trip:finished')? 
-        	getConsumptionInKmpl(eventFields.trip.average_mpg): eventFields.average_kmpl,
-		'eventTripStartAddress': (eventType=='trip:finished')? 
-        	eventFields.trip.start_address.name:eventFields.start_address.name,
-		'eventTripEndAddress': (eventType=='trip:finished')? 
-        	eventFields.trip.end_address.name:eventFields.end_address.name,
+			getConsumptionInKmpl(eventFields.trip.average_mpg): eventFields.average_kmpl,
+		'eventTripStartAddress': (eventType=='trip:finished')?
+			eventFields.trip.start_address.name:eventFields.start_address.name,
+		'eventTripEndAddress': (eventType=='trip:finished')?
+			eventFields.trip.end_address.name:eventFields.end_address.name,
 		'eventTripCreatedAt': (eventType=='trip:finished')? 
-        	new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):'',
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):'',
 		'eventTripStartedAt':(eventType=='trip:finished')?
-        	formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z'):formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z'):formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z'),
 		'eventTripEndedAt':(eventType=='trip:finished')?
-        	formatDateInLocalTime(eventFields.trip.ended_at.substring(0,18) + 'Z'):formatDateInLocalTime(eventFields.ended_at.substring(0,18) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,18) + 'Z'):formatDateInLocalTime(eventFields.ended_at.substring(0,18) + 'Z'),
 	]
 	String endAddress =  device.currentValue("eventTripEndAddress")
     
 //	Check if endAddress affects presence settings    
 	if (endAddress) {
-    	if ((settings.homeAddress) && (endAddress.contains(settings.homeAddress.toLowerCase()))) {
+		if ((settings.homeAddress) && (endAddress.contains(settings.homeAddress.toLowerCase()))) {
 			vehicleEventData=vehicleEventData + ['presence': 'present']        
 		}            
 	} else if (settings.homeAddress) {
@@ -1732,18 +1729,18 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 		'eventType': type,    
 		'eventTripId': tripId,
 		'eventTripLocationLat': (eventType=='notification:speeding')? 
-        	eventFields.location.lat.toString(): '',
+			eventFields.location.lat.toString(): '',
 		'eventTripLocationLon': (eventType=='notification:speeding')? 
-        	eventFields.location.lon.toString(): '',
+			eventFields.location.lon.toString(): '',
 		'eventTripStartLocation':(eventType=='notification:speeding')?
-        	eventFields.trip.start_location.name : eventFields.start_distance_m.toString(),
+			eventFields.trip.start_location.name : eventFields.start_distance_m.toString(),
 		'eventTripEndLocation': (eventType=='notification:speeding')? 
-        	eventFields.trip.end_location.name :eventFields.end_distance_m.toString(),
-        'eventTripSpeedKPH': (eventType=='notification:speeding')? 
-        	milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
+			eventFields.trip.end_location.name :eventFields.end_distance_m.toString(),
+        	'eventTripSpeedKPH': (eventType=='notification:speeding')? 
+        		milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
-        	new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-        	formatDateInLocalTime(eventFields.started_at),
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
+			formatDateInLocalTime(eventFields.started_at),
 		'eventTripStartAddress': '',
 		'eventTripEndAddress': '',
 		'eventTripGForce': '',
@@ -1767,13 +1764,13 @@ def generateEventHardAccel(vehicleId,eventType,tripId,eventFields) {
 		'eventType': type,    
 		'eventTripId': tripId,
 		'eventTripLocationLat': (eventType=='notification:hard_accel')? 
-        	eventFields.location.lat.toString(): eventFields.lat.toString(),
+			eventFields.location.lat.toString(): eventFields.lat.toString(),
 		'eventTripLocationLon': (eventType=='notification:hard_accel')? 
-        	eventFields.location.lon.toString():eventFields.lon.toString(),
+			eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripGForce': eventFields.g_force.toString(),
 		'eventTripCreatedAt': (eventType=='notification:hard_accel')?     
-        	new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-        	formatDateInLocalTime(eventFields.created_at),
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
+			formatDateInLocalTime(eventFields.created_at),
 		'eventTripStartLocation': '',
 		'eventTripEndLocation': '',
 		'eventTripStartAddress': '',
@@ -1798,13 +1795,13 @@ def generateEventHardBrake(vehicleId,eventType,tripId,eventFields) {
 		'eventType': type,    
 		'eventTripId': tripId,
 		'eventTripLocationLat': (eventType=='notification:hard_brake')? 
-        	eventFields.location.lat.toString(): eventFields.lat.toString(),
+			eventFields.location.lat.toString(): eventFields.lat.toString(),
 		'eventTripLocationLon': (eventType=='notification:hard_brake')? 
-        	eventFields.location.lon.toString():eventFields.lon.toString(),
+			eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripGForce': eventFields.g_force.toString(),
 		'eventTripCreatedAt': (eventType=='notification:hard_brake')?  
-        	new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-        	formatDateInLocalTime(eventFields.created_at),
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
+			formatDateInLocalTime(eventFields.created_at),
 		'eventTripStartLocation': '',
 		'eventTripEndLocation': '',
 		'eventTripStartAddress': '',
@@ -1829,17 +1826,17 @@ def generateEventRegionChanged(vehicleId,eventType,tripId,eventFields) {
 		'eventType': type,    
 		'eventVehicleId': vehicleId,    
 		'eventTripCreatedAt': (eventType=='region:changed')?
-        	new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-        	formatDateInLocalTime(eventFields.created_at),
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
+			formatDateInLocalTime(eventFields.created_at),
 		'eventTripId': tripId,    
 		'eventTripLocationLat': (eventType=='region:changed')? 
-        	eventFields.location.lat.toString(): eventFields.lat.toString(),
+      			eventFields.location.lat.toString(): eventFields.lat.toString(),
 		'eventTripLocationLon': (eventType=='region:changed')? 
-        	eventFields.location.lon.toString():eventFields.lon.toString(),
+      			eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripRegionStatus': (eventType=='region:changed')?
-        	eventFields.region.status:eventFields.region.status,
+      			eventFields.region.status:eventFields.region.status,
 		'eventTripRegionName': (eventType=='region:changed')?
-        	eventFields.region.name:eventFields.region.name,
+      			eventFields.region.name:eventFields.region.name,
 		'eventTripRegionTag': (eventType=='region:changed')?
 			eventFields.region.tag: eventFields.region.tag,        
 		'eventTripStartLocation': '',
