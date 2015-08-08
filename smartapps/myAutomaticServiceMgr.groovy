@@ -403,8 +403,7 @@ def takeAction() {
 			state?.exceptionCount=state?.exceptionCount+1        
 			log.error "MyAutomaticServiceMgr>exception $e while trying to poll the device $d, exceptionCount= ${state?.exceptionCount}" 
 		}
-        
-	if ((state?.exceptionCount>=MAX_EXCEPTION_COUNT) || (exceptionCheck.contains("Unauthorized"))) {
+		if ((state?.exceptionCount>=MAX_EXCEPTION_COUNT) || (exceptionCheck.contains("Unauthorized"))) {
 			// need to re-authenticate again    
 			atomicState.authToken= null                    
 			state?.oauthTokenProvided = false
@@ -419,22 +418,22 @@ def takeAction() {
 
 def procEvent() {
 	def vehicleId
-    def eventType
+	def eventType
 	def eventFields
 
  	log.debug "procEvent>params =${params}"
-    log.debug "procEvent>request =${request}"
+ 	log.debug "procEvent>request =${request}"
 
 	try {
-	    eventFields = new JsonSlurper().parseText(request.params[0])   
+		eventFields = new JsonSlurper().parseText(request.params[0])   
 		log.debug "procEvent>eventFields = $eventFields"
 	} catch (e) {
 		log.error("procEvent>jsonEventData not formatted (exception $e) correctly or empty, exiting")
 		return
 	}
     
-    if (eventFields) {
-    	vehicleId=eventsFields.vehicle.id
+    	if (eventFields) {
+    		vehicleId=eventsFields.vehicle.id
 		def vehicleObject = getChildDevices().find { AutomaticDevices.contains(vehicleId) }
 		if (vehicleObject) {
         
