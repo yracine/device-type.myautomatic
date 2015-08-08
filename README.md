@@ -118,13 +118,17 @@ the following trace:
 
  buildRedirectUrl,....,https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
  
-e) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL and save!
+e) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
 
-f) Login to Automatic using your developer account credentials
+f) Save the URL redirect value at the Automatic Developer Portal!
 
-g) After the authentication and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
+g) Press back on your device to re-login by pressing again on MyAutomatic at the middle of the page 
 
-On the next page, you may then select the Automatic device(s) to be exposed to SmartThings.
+h) The Automatic login page should re-appear without error message, enter your credentials
+
+i) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
+
+j) You may then select the Automatic device(s) to be exposed to SmartThings.
 
 After pressing 'Done' on the last page, the smartapp will instantiate the MyAutomatic device object under 
 
