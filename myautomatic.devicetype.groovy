@@ -46,6 +46,7 @@ metadata {
 		command "getVehicles"
 		command "generateVehicleEvents"
 		command "generateTripStats"
+		command "generateVehicleRTEvents"        
 
         
 		attribute "verboseTrace","string"
@@ -180,7 +181,6 @@ metadata {
 		attribute "eventTripEndedAt", "string"
 		attribute "eventTripcreatedAt", "string"
 
-		command "generateVehicleRTEvents"        
 }
 
 	simulator {
