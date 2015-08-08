@@ -68,7 +68,7 @@ def about() {
  		section("About") {	
 			paragraph "MyAutomaticServiceMgr, the smartapp that connects your Automatic connected vehicle(s) to SmartThings via cloud-to-cloud integration" +
 				" and polls your Automatic device's events on a regular interval"
-			paragraph "Version 0.8.3\n\n" +
+			paragraph "Version 0.8.4\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 			href url:"http://github.com/yracine", style:"embedded", required:false, title:"More information...", 
@@ -439,7 +439,7 @@ def procEvent() {
 		if (vehicleObject) {
         
 			log.debug "procEvent>found vehicle=$vehicleObject.vehicleId"
-        	vehicleObject.generateVehicleRTEvents("", eventFields)
+			vehicleObject.generateVehicleRTEvents("", eventFields)
 		} else {
 
 			log.error "procEvent>vehicleId =$vehicleObject.vehicleId not found"
@@ -467,7 +467,7 @@ def oauthInitUrl() {
 
 
 def buildRedirectUrl(action = "swapToken") {
-	log.debug "buildRedirectUrl, atomicState.accessToken=${atomicState.accessToken}," +
+	log.debug "buildRedirectUrl, redirectURL=" +
 		serverUrl + "/api/token/${atomicState.accessToken}/smartapps/installations/${app.id}/${action}"
 	if (action=="swapToken"){	
 		state.msg="MyAutomaticServiceMgr>" + serverUrl + "/api/token/${atomicState.accessToken}/smartapps/installations/${app.id}/${action}"        
