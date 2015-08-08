@@ -118,7 +118,7 @@ Error: invalid request
 d) In the IDE under https://graph.api.smartthings.com/ide/logs, you should see
 the following trace:
 
- buildRedirectUrl,....,https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
+ buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
  
 e) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
 
