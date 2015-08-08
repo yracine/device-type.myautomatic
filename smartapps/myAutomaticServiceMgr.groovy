@@ -457,7 +457,7 @@ def oauthInitUrl() {
 	def oauthParams = [
 		response_type: "code",
 		scope: "scope:public scope:user:profile scope:location scope:vehicle:profile " +
-        	"scope:vehicle:events scope:trip scope:behavior scope:current_location",
+        	"scope:vehicle:events scope:trip scope:behavior", // to be added: scope:current_location", for RT events 
 		client_id: stcid,
 		redirect_uri: buildRedirectUrl()
 	]
@@ -652,6 +652,7 @@ def getChildNamespace() { "yracine" }
 def getChildName() { "My Automatic Device" }
 
 def getServerUrl() { return "https://graph.api.smartthings.com" }
+
 
 def getSmartThingsClientId() { "insert your Automatic public key here!" }
 
