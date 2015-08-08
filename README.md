@@ -122,11 +122,11 @@ the following trace:
  
 e) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
 
-f) Save the URL redirect value at the Automatic Developer Portal!
+f) Save the URL redirect value at the Automatic Developer Portal
 
 g) Press back on your device to re-login by pressing again on MyAutomatic in the middle of the page 
 
-h) The Automatic login page should re-appear without error message, enter your credentials
+h) The Automatic login page should re-appear without any error message, enter your credentials
 
 i) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
 
