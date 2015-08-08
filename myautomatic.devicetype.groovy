@@ -1100,9 +1100,9 @@ void generateTripStats(vehicleId) {
 	totalHardBrakes = (totalHardBrakesInPeriod)?totalHardBrakesInPeriod.toLong():0
 	tripsAvgScoreSpeeding= (tripsAvgScoreSpeedingInPeriod)? tripsAvgScoreSpeedingInPeriod.toFloat():0
 	tripsAvgScoreEvents = (tripsAvgScoreEventsInPeriod)?tripsAvgScoreEventsInPeriod.toFloat():0
-   
-    dataStats  = dataStats + [
-    	'monthlyTripsAvgAverageKmpl':tripsAvgAverageKmpl,
+	
+	dataStats  = dataStats + [
+		'monthlyTripsAvgAverageKmpl':tripsAvgAverageKmpl,
 		'monthlyTripsAvgDistanceM':tripsAvgDistanceM,
 		'monthlyTripsAvgDurationS':tripsAvgDurationS,
 		'monthlyTotalDistanceM': totalDistanceM,
