@@ -80,9 +80,9 @@ c) Create a new app and name it "SmartThings"
 
 d) Copy and paste your Automatic client id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic Public Key here!" is indicated
 
-d) Copy and paste your Automatic secret id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic private Key here!" is indicated
+e) Copy and paste your Automatic secret id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic private Key here!" is indicated
 
-e) Using the ST IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.
+f) Using the ST IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.
 
 
 /*******************************************************************************************************************/
@@ -111,26 +111,26 @@ b) The smartapp will ask you to authenticate on the Automatic portal (by pressin
 
 c) Press on MyAutomatic in the middle of the login page
 
-c) The Automatic login page will appear with the following error message:
+d) The Automatic login page will appear with the following error message:
 
 Error: invalid request
 
-d) In the IDE under https://graph.api.smartthings.com/ide/logs, you should see
+e) In the IDE under https://graph.api.smartthings.com/ide/logs, you should see
 the following trace:
 
  buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
  
-e) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
+f) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
 
-f) Save the URL redirect value at the Automatic Developer Portal
+g) Save the URL redirect value at the Automatic Developer Portal
 
-g) Press back on your device to re-login by pressing again on MyAutomatic in the middle of the page 
+h) Press back on your device to re-login by pressing again on MyAutomatic in the middle of the page 
 
-h) The Automatic login page should re-appear without any error message, enter your credentials
+i) The Automatic login page should re-appear without any error message, enter your credentials
 
-i) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
+j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
 
-j) You may then select the Automatic device(s) to be exposed to SmartThings.
+k) You may then select the Automatic device(s) to be exposed to SmartThings.
 
 After pressing 'Done' on the last page, the smartapp will instantiate the MyAutomatic device object under 
 
