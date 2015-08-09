@@ -302,7 +302,7 @@ private boolean check_event(eventType, intervalInMinutes) {
 private boolean check_score(scoreType, minScoreThreshold) {
 	def msg
 	boolean scoreTooLow=false
-    float currentScore=50
+	float currentScore=50
     
 	def score=(scoreType=='scoreSpeeding')?vehicle.currentTripsAvgScoreSpeeding:vehicle.currentTripsAvgScoreEvents
 	if (score) {
@@ -319,7 +319,7 @@ private boolean check_score(scoreType, minScoreThreshold) {
 			send msg
 		}
 	}    
-    return scoreTooLow
+	return scoreTooLow
 }
 
 def checkRunningIntHr() {
@@ -338,7 +338,7 @@ def checkRunningIntHr() {
 	check_event(HARD_ACCEL, (intervalInHour*60))
 	check_event(HARD_BRAKE, (intervalInHour*60))
 	check_event(SPEEDING, (intervalInHour*60))
-    if (givenScoreEvents) {
+	if (givenScoreEvents) {
 		check_score("scoreEvents",givenScoreEvents)		    	
 	}    
 	if (givenScoreSpeeding) {
@@ -362,13 +362,13 @@ def checkRunningIntMin() {
 
 	log.trace "MonitorAutomaticCar>checkRunningIntMin() running at ${intervalInMin}-minute interval"
 	
-    // Get the vehicle's latest values 
+	// Get the vehicle's latest values 
 	vehicle.refresh()
 
 	check_event(HARD_ACCEL, intervalInMin)
 	check_event(HARD_BRAKE, intervalInMin)
 	check_event(SPEEDING, intervalInMin)
-    if (givenScoreEvents) {
+	if (givenScoreEvents) {
 		check_score("scoreEvents",givenScoreEvents)		    	
 	}    
 	if (givenScoreSpeeding) {
@@ -379,7 +379,7 @@ def checkRunningIntMin() {
 	def rainCheck = checkRainyWeather()
 	def weather = weatherStation?.currentWeather
 	if ((rainCheck != 'wet') && (rainCheck != 'snow' ) && (!weather?.toUpperCase().contains("RAIN") && (!weather?.toUpperCase().contains("SNOW")))) {  
-    	// unschedule special monitoring if not raining
+    		// unschedule special monitoring if not raining or snowing
 		scheduleJobs()
     }
 	
@@ -469,7 +469,7 @@ private def isFirstDayOfMonth() {
 
 def checkRainyWeather(evt) {
 	def latestValue = weatherStation?.latestValue("water")
-    def msg
+	def msg
     
 	log.debug "checkRainyWeather> latestValue= $latestValue"
 	if (latestValue == 'wet' || latestValue == 'snow') {
@@ -497,17 +497,17 @@ def scheduleJobs() {
 		log.trace "About to reschedule, rain checked =${rainCheck}, current weather = ${weather}"
 		if ((rainCheck == 'wet' || rainCheck == 'snow' ) || ((weather?.toUpperCase().contains("RAIN")) || (weather?.toUpperCase().contains("SNOW"))) && (givenRainIntInMin)) {  // schedule special monitoring during rain
 			if ((givenRainIntInMin < 10) || (givenRainIntInMin > 59)) {
-            	state.msg = "MonitorAutomaticCar>cycle interval when raining/snowing in minutes (${givenRainIntInMin}) is not within range,please restart"
+				state.msg = "MonitorAutomaticCar>cycle interval when raining/snowing in minutes (${givenRainIntInMin}) is not within range,please restart"
 				log.error state.msg
 				runIn((1*60), "sendWithDelay" )
-                return
+				return
  			} else {
 				if (detailedNotif == 'true') {
 					state.msg = "MonitorAutomaticCar> raining or snowing at ${weatherStation}, start special monitoring every ${givenRainIntInMin} min."  
 					runIn((1*60), "sendWithDelay" )
 				}
 				schedule("0 0/${givenRainIntInMin} * * * ?", checkRunningIntMin)
-                return
+				return
 			}
 		} else if ((rainCheck != 'wet') && (rainCheck != 'snow')) {
     
