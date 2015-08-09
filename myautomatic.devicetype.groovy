@@ -1275,8 +1275,8 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 						}                        
 					}
 					tripsList = tripsList + id + ','
-					if (eventTimestamp) {
-                    	// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
+					if (eventTimestamp)
+						// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
 						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z')
 						if (startedDate.getTime() > eventTimestamp) {                        
 							generateVehicleEvents(it)
@@ -1770,8 +1770,8 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 			eventFields.trip.start_location.name : eventFields.start_distance_m.toString(),
 		'eventTripEndLocation': (eventType=='notification:speeding')? 
 			eventFields.trip.end_location.name :eventFields.end_distance_m.toString(),
-        'eventTripSpeedKPH': (eventType=='notification:speeding')? 
-        	milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
+		'eventTripSpeedKPH': (eventType=='notification:speeding')? 
+			milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
 			formatDateInLocalTime(eventFields.started_at),
@@ -1863,14 +1863,14 @@ def generateEventRegionChanged(vehicleId,eventType,tripId,eventFields) {
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
 			formatDateInLocalTime(eventFields.created_at),
 		'eventTripId': tripId,    
-		'eventTripLocationLat': (eventType=='region:changed')? 
-      		eventFields.location.lat.toString(): eventFields.lat.toString(),
+		'eventTripLocationLat': (eventType=='region:changed')?
+			eventFields.location.lat.toString(): eventFields.lat.toString(),
 		'eventTripLocationLon': (eventType=='region:changed')? 
-      		eventFields.location.lon.toString():eventFields.lon.toString(),
+			eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripRegionStatus': (eventType=='region:changed')?
-      		eventFields.region.status:eventFields.region.status,
+			eventFields.region.status:eventFields.region.status,
 		'eventTripRegionName': (eventType=='region:changed')?
-      		eventFields.region.name:eventFields.region.name,
+			eventFields.region.name:eventFields.region.name,
 		'eventTripRegionTag': (eventType=='region:changed')?
 			eventFields.region.tag: eventFields.region.tag,        
 		'eventTripStartLocation': '',
