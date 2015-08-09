@@ -1275,7 +1275,7 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 						}                        
 					}
 					tripsList = tripsList + id + ','
-					if (eventTimestamp)
+					if (eventTimestamp) {
 						// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
 						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z')
 						if (startedDate.getTime() > eventTimestamp) {                        
