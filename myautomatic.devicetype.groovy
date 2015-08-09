@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9
+ *  Version 0.9.1
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -47,7 +47,6 @@ metadata {
 		command "generateVehicleEvents"
 		command "generateTripStats"
 		command "generateVehicleRTEvents"        
-
         
 		attribute "verboseTrace","string"
 		
@@ -385,7 +384,6 @@ metadata {
 					backgroundColor: "#ffffff"
 				)
 		}
-/*	Removed weekly and monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
 		// weekly tiles
 
 		valueTile(	"weektripsAvgAverageKmpl", "device.weeklyTripsAvgAverageKmpl",width: 1, height: 1,canChangeIcon: false,
@@ -462,6 +460,7 @@ metadata {
 				)
 		}
 
+/*	Removed monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
 		// monthly tiles
 
 		valueTile(	"monthtripsAvgAverageKmpl", "device.monthlyTripsAvgAverageKmpl",width: 1, height: 1,canChangeIcon: false,
@@ -547,12 +546,10 @@ metadata {
 			"tripsAvgAverageKmpl", "tripsAvgDistanceM", "tripsAvgDurationS","totalDistanceM",
 			"totalFuelVolumeL","totalNbTrips", "tripsAvgScoreSpeeding", "tripsAvgScoreEvents",
 			"yestripsAvgAverageKmpl", "yestripsAvgDistanceM", "yestripsAvgDurationS","yestotalDistanceM",
-			"yestotalFuelVolumeL","yestotalNbTrips", "yestripsAvgScoreSpeeding", "yestripsAvgScoreEvents"
-
-/*			Removed weekly and monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
-
+			"yestotalFuelVolumeL","yestotalNbTrips", "yestripsAvgScoreSpeeding", "yestripsAvgScoreEvents",
 			"weektripsAvgAverageKmpl", "weektripsAvgDistanceM", "weektripsAvgDurationS","weektotalDistanceM",
 			"weektotalFuelVolumeL","weektotalNbTrips","weektripsAvgScoreSpeeding", "weektripsAvgScoreEvents",
+/*			Removed monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
 			"monthtripsAvgAverageKmpl", "monthtripsAvgDistanceM", "monthtripsAvgDurationS", "monthtotalDistanceM",
 			"monthtotalFuelVolumeL","monthtotalNbTrips","monthtripsAvgScoreSpeeding", "monthtripsAvgScoreEvents",
 */            
@@ -592,6 +589,7 @@ void poll() {
 			year:data?.vehicles.results[0]?.year.toString()
 	]
 
+
 	// generate all stats only once every day
 	if (state?.lastGeneratedStatsDate != dateInLocalTime) {
 
@@ -602,6 +600,7 @@ void poll() {
 		state.lastGeneratedStatsDate= dateInLocalTime       
     
 	}
+
 	// Generate trip stats for today
 	String timezone = new Date().format("zzz", location.timeZone)
 	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
@@ -610,8 +609,10 @@ void poll() {
 	}
 	Date startDate = formatDate(dateAtMidnight)
 	Date endDate= new Date()
-
-	getTrips("","", startDate,endDate,'true')
+//	Generate Events since last poll() call only
+	getTrips("","", startDate,endDate, state?.lastPollTimestamp)
+	state.lastPollTimestamp = now()
+    
 	String exceptionCheck = device.currentValue("verboseTrace").toString()
 	if ((exceptionCheck.contains("exception")) || (exceptionCheck.contains("error"))) {  
 	// check if there is any exception or an error reported in the verboseTrace associated to the device 
@@ -951,7 +952,7 @@ void generateTripStats(vehicleId) {
 		log.debug("generateTripStats>yesterday: local date/time= ${nowInLocalTime}, startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
 			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	}
-	getTrips("","", startDate,endDate, 'true')
+	getTrips("","", startDate,endDate, null)
 
 	def tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
 	def tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
@@ -1000,49 +1001,64 @@ void generateTripStats(vehicleId) {
 		'yesterdayTripsAvgScoreEvents': tripsAvgScoreEvents
 	]    
 
-/*	Removed weekly and monthly stats due to rate limiting (need to be implemented by stats API on Automatic side
+	generateEvent(dataStats)
+	generateWeeklyTripStats()     
+//	generateMonthlyTripStats()
+}
+
+void generateWeeklyTripStats() {
+
+	String nowInLocalTime = new Date().format("yyyy-MM-dd HH:mm", location.timeZone)
+	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
+	String timezone = new Date().format("zzz", location.timeZone)
+	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
+	if (settings.trace) {
+		log.debug("generateTripStats>date at Midnight in UTC= ${dateAtMidnight}")
+	}
+	Date endDate = formatDate(dateAtMidnight) 
 
 //	Generate stats for the past week
 
-	startDate = (endDate -7)
+	Date startDate = (endDate -7)
 
 	if (settings.trace) {
 		log.debug("generateTripStats>past week (last 7 days): startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
 			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	}
-	getTrips("","", startDate,endDate, 'true')
+	getTrips("","", startDate,endDate, null)
 
-	tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
-	tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
-	tripsAvgDurationSInPeriod =  device.currentValue("tripsAvgDurationSInPeriod")
-	totalDistanceMInPeriod =  device.currentValue("totalDistanceMInPeriod")
-	tripsAvgFuelVolumeLInPeriod = device.currentValue("tripsAvgFuelVolumeLInPeriod")
-	tripsAvgCostUsdInPeriod =  device.currentValue("tripsAvgCostUsdInPeriod")
-	totalFuelVolumeLInPeriod =  device.currentValue("totalFuelVolumeLInPeriod")
-	totalCostUsdInPeriod =  device.currentValue("totalCostUsdInPeriod")
-	totalDurationSInPeriod =  device.currentValue("totalDurationSInPeriod")
-	totalNbTripsInPeriod=  device.currentValue("totalNbTripsInPeriod")
-	totalHardAccelsInPeriod= device.currentValue("totalHardAccelsInPeriod")
-	totalHardBrakesInPeriod = device.currentValue("totalHardBrakesInPeriod")
-	tripsAvgScoreSpeedingInPeriod = device.currentValue("tripsAvgScoreSpeedingInPeriod")
-	tripsAvgScoreEventsInPeriod = device.currentValue("tripsAvgScoreEventsInPeriod")
+	def tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
+	def tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
+	def tripsAvgDurationSInPeriod =  device.currentValue("tripsAvgDurationSInPeriod")
+	def totalDistanceMInPeriod =  device.currentValue("totalDistanceMInPeriod")
+	def tripsAvgFuelVolumeLInPeriod = device.currentValue("tripsAvgFuelVolumeLInPeriod")
+	def tripsAvgCostUsdInPeriod =  device.currentValue("tripsAvgCostUsdInPeriod")
+	def totalFuelVolumeLInPeriod =  device.currentValue("totalFuelVolumeLInPeriod")
+	def totalCostUsdInPeriod =  device.currentValue("totalCostUsdInPeriod")
+	def totalDurationSInPeriod =  device.currentValue("totalDurationSInPeriod")
+	def totalNbTripsInPeriod=  device.currentValue("totalNbTripsInPeriod")
+	def totalHardAccelsInPeriod= device.currentValue("totalHardAccelsInPeriod")
+	def totalHardBrakesInPeriod = device.currentValue("totalHardBrakesInPeriod")
+	def tripsAvgScoreSpeedingInPeriod = device.currentValue("tripsAvgScoreSpeedingInPeriod")
+	def tripsAvgScoreEventsInPeriod = device.currentValue("tripsAvgScoreEventsInPeriod")
     
-	tripsAvgAverageKmpl =  (tripsAvgAverageKmplInPeriod)? tripsAvgAverageKmplInPeriod.toFloat():0
-	tripsAvgDistanceM =  (tripsAvgDistanceMInPeriod)?tripsAvgDistanceMInPeriod.toFloat():0
-	tripsAvgDurationS =  (tripsAvgDurationSInPeriod)?tripsAvgDurationSInPeriod.toFloat():0
-	totalDistanceM =  (totalDistanceMInPeriod)?totalDistanceMInPeriod.toFloat():0
-	tripsAvgFuelVolumeL =  (tripsAvgFuelVolumeLInPeriod)? tripsAvgFuelVolumeLInPeriod.toFloat():0
-	tripsAvgCostUsd = (tripsAvgCostUsdInPeriod)?tripsAvgCostUsdInPeriod.toFloat():0 
-	totalFuelVolumeL =  (totalFuelVolumeLInPeriod)? totalFuelVolumeLInPeriod.toFloat():0
-	totalCostUsd = (totalCostUsdInPeriod)?totalCostUsdInPeriod.toFloat():0 
-	totalDurationS = (totalDurationSInPeriod)?totalDurationSInPeriod.toFloat():0 
-	totalNbTrips = (totalNbTripsInPeriod)?totalNbTripsInPeriod.toInteger():0 
-	totalHardAccels= (totalHardAccelsInPeriod)?totalHardAccelsInPeriod.toLong():0
-	totalHardBrakes = (totalHardBrakesInPeriod)?totalHardBrakesInPeriod.toLong():0
-	tripsAvgScoreSpeeding= (tripsAvgScoreSpeedingInPeriod)? tripsAvgScoreSpeedingInPeriod.toFloat():0
-	tripsAvgScoreEvents = (tripsAvgScoreEventsInPeriod)?tripsAvgScoreEventsInPeriod.toFloat():0
+	float tripsAvgAverageKmpl =  (tripsAvgAverageKmplInPeriod)? tripsAvgAverageKmplInPeriod.toFloat():0
+	float tripsAvgDistanceM =  (tripsAvgDistanceMInPeriod)?tripsAvgDistanceMInPeriod.toFloat():0
+	float tripsAvgDurationS =  (tripsAvgDurationSInPeriod)?tripsAvgDurationSInPeriod.toFloat():0
+	float totalDistanceM =  (totalDistanceMInPeriod)?totalDistanceMInPeriod.toFloat():0
+	float tripsAvgFuelVolumeL =  (tripsAvgFuelVolumeLInPeriod)? tripsAvgFuelVolumeLInPeriod.toFloat():0
+	float tripsAvgCostUsd = (tripsAvgCostUsdInPeriod)?tripsAvgCostUsdInPeriod.toFloat():0 
+	float totalFuelVolumeL =  (totalFuelVolumeLInPeriod)? totalFuelVolumeLInPeriod.toFloat():0
+	float totalCostUsd = (totalCostUsdInPeriod)?totalCostUsdInPeriod.toFloat():0 
+	float totalDurationS = (totalDurationSInPeriod)?totalDurationSInPeriod.toFloat():0 
+	int totalNbTrips = (totalNbTripsInPeriod)?totalNbTripsInPeriod.toInteger():0 
+	long totalHardAccels= (totalHardAccelsInPeriod)?totalHardAccelsInPeriod.toLong():0
+	long totalHardBrakes = (totalHardBrakesInPeriod)?totalHardBrakesInPeriod.toLong():0
+	float tripsAvgScoreSpeeding= (tripsAvgScoreSpeedingInPeriod)? tripsAvgScoreSpeedingInPeriod.toFloat():0
+	float tripsAvgScoreEvents = (tripsAvgScoreEventsInPeriod)?tripsAvgScoreEventsInPeriod.toFloat():0
+    
 
-	dataStats  = dataStats + [
+	def dataStats  = [
     	'weeklyTripsAvgAverageKmpl':tripsAvgAverageKmpl,
 		'weeklyTripsAvgDistanceM':tripsAvgDistanceM,
 		'weeklyTripsAvgDurationS':tripsAvgDurationS,
@@ -1059,49 +1075,57 @@ void generateTripStats(vehicleId) {
 		'weeklyTripsAvgScoreEvents': tripsAvgScoreEvents
 	]    
     
+	generateEvent(dataStats)
+    
+}
+
+void generateMonthlyTripStats() {
+
+	String nowInLocalTime = new Date().format("yyyy-MM-dd HH:mm", location.timeZone)
+   
 //	Generate stats for the past month
 
 	Calendar oneMonthAgoCal = new GregorianCalendar()
 	oneMonthAgoCal.add(Calendar.MONTH, -1)
 	Date oneMonthAgo = oneMonthAgoCal.getTime()
-	endDate = new Date()
+	Date endDate = new Date()
 	if (settings.trace) {
 		log.debug("getTripsStats>past month: startDate in UTC = ${String.format('%tF %<tT',oneMonthAgo)}," +
 			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	}
-	getTrips("","", startDate,endDate, 'false')
+	getTrips("","", startDate,endDate, null)
 
-	tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
-	tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
-	tripsAvgDurationSInPeriod =  device.currentValue("tripsAvgDurationSInPeriod")
-	totalDistanceMInPeriod =  device.currentValue("totalDistanceMInPeriod")
-	tripsAvgFuelVolumeLInPeriod = device.currentValue("tripsAvgFuelVolumeLInPeriod")
-	tripsAvgCostUsdInPeriod =  device.currentValue("tripsAvgCostUsdInPeriod")
-	totalFuelVolumeLInPeriod =  device.currentValue("totalFuelVolumeLInPeriod")
-	totalCostUsdInPeriod =  device.currentValue("totalCostUsdInPeriod")
-	totalDurationSInPeriod =  device.currentValue("totalDurationSInPeriod")
-	totalNbTripsInPeriod=  device.currentValue("totalNbTripsInPeriod")
-	totalHardAccelsInPeriod= device.currentValue("totalHardAccelsInPeriod")
-	totalHardBrakesInPeriod = device.currentValue("totalHardBrakesInPeriod")
-	tripsAvgScoreSpeedingInPeriod = device.currentValue("tripsAvgScoreSpeedingInPeriod")
-	tripsAvgScoreEventsInPeriod = device.currentValue("tripsAvgScoreEventsInPeriod")
+	def tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
+	def tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
+	def tripsAvgDurationSInPeriod =  device.currentValue("tripsAvgDurationSInPeriod")
+	def totalDistanceMInPeriod =  device.currentValue("totalDistanceMInPeriod")
+	def tripsAvgFuelVolumeLInPeriod = device.currentValue("tripsAvgFuelVolumeLInPeriod")
+	def tripsAvgCostUsdInPeriod =  device.currentValue("tripsAvgCostUsdInPeriod")
+	def totalFuelVolumeLInPeriod =  device.currentValue("totalFuelVolumeLInPeriod")
+	def totalCostUsdInPeriod =  device.currentValue("totalCostUsdInPeriod")
+	def totalDurationSInPeriod =  device.currentValue("totalDurationSInPeriod")
+	def totalNbTripsInPeriod=  device.currentValue("totalNbTripsInPeriod")
+	def totalHardAccelsInPeriod= device.currentValue("totalHardAccelsInPeriod")
+	def totalHardBrakesInPeriod = device.currentValue("totalHardBrakesInPeriod")
+	def tripsAvgScoreSpeedingInPeriod = device.currentValue("tripsAvgScoreSpeedingInPeriod")
+	def tripsAvgScoreEventsInPeriod = device.currentValue("tripsAvgScoreEventsInPeriod")
     
-	tripsAvgAverageKmpl =  (tripsAvgAverageKmplInPeriod)? tripsAvgAverageKmplInPeriod.toFloat():0
-	tripsAvgDistanceM =  (tripsAvgDistanceMInPeriod)?tripsAvgDistanceMInPeriod.toFloat():0
-	tripsAvgDurationS =  (tripsAvgDurationSInPeriod)?tripsAvgDurationSInPeriod.toFloat():0
-	totalDistanceM =  (totalDistanceMInPeriod)?totalDistanceMInPeriod.toFloat():0
-	tripsAvgFuelVolumeL =  (tripsAvgFuelVolumeLInPeriod)? tripsAvgFuelVolumeLInPeriod.toFloat():0
-	tripsAvgCostUsd = (tripsAvgCostUsdInPeriod)?tripsAvgCostUsdInPeriod.toFloat():0 
-	totalFuelVolumeL =  (totalFuelVolumeLInPeriod)? totalFuelVolumeLInPeriod.toFloat():0
-	totalCostUsd = (totalCostUsdInPeriod)?totalCostUsdInPeriod.toFloat():0 
-	totalDurationS = (totalDurationSInPeriod)?totalDurationSInPeriod.toFloat():0 
-	totalNbTrips = (totalNbTripsInPeriod)?totalNbTripsInPeriod.toInteger():0 
-	totalHardAccels= (totalHardAccelsInPeriod)?totalHardAccelsInPeriod.toLong():0
-	totalHardBrakes = (totalHardBrakesInPeriod)?totalHardBrakesInPeriod.toLong():0
-	tripsAvgScoreSpeeding= (tripsAvgScoreSpeedingInPeriod)? tripsAvgScoreSpeedingInPeriod.toFloat():0
-	tripsAvgScoreEvents = (tripsAvgScoreEventsInPeriod)?tripsAvgScoreEventsInPeriod.toFloat():0
-	
-	dataStats  = dataStats + [
+	float tripsAvgAverageKmpl =  (tripsAvgAverageKmplInPeriod)? tripsAvgAverageKmplInPeriod.toFloat():0
+	float tripsAvgDistanceM =  (tripsAvgDistanceMInPeriod)?tripsAvgDistanceMInPeriod.toFloat():0
+	float tripsAvgDurationS =  (tripsAvgDurationSInPeriod)?tripsAvgDurationSInPeriod.toFloat():0
+	float totalDistanceM =  (totalDistanceMInPeriod)?totalDistanceMInPeriod.toFloat():0
+	float tripsAvgFuelVolumeL =  (tripsAvgFuelVolumeLInPeriod)? tripsAvgFuelVolumeLInPeriod.toFloat():0
+	float tripsAvgCostUsd = (tripsAvgCostUsdInPeriod)?tripsAvgCostUsdInPeriod.toFloat():0 
+	float totalFuelVolumeL =  (totalFuelVolumeLInPeriod)? totalFuelVolumeLInPeriod.toFloat():0
+	float totalCostUsd = (totalCostUsdInPeriod)?totalCostUsdInPeriod.toFloat():0 
+	float totalDurationS = (totalDurationSInPeriod)?totalDurationSInPeriod.toFloat():0 
+	int totalNbTrips = (totalNbTripsInPeriod)?totalNbTripsInPeriod.toInteger():0 
+	long totalHardAccels= (totalHardAccelsInPeriod)?totalHardAccelsInPeriod.toLong():0
+	long totalHardBrakes = (totalHardBrakesInPeriod)?totalHardBrakesInPeriod.toLong():0
+	float tripsAvgScoreSpeeding= (tripsAvgScoreSpeedingInPeriod)? tripsAvgScoreSpeedingInPeriod.toFloat():0
+	float tripsAvgScoreEvents = (tripsAvgScoreEventsInPeriod)?tripsAvgScoreEventsInPeriod.toFloat():0
+   	
+	def dataStats  = [
 		'monthlyTripsAvgAverageKmpl':tripsAvgAverageKmpl,
 		'monthlyTripsAvgDistanceM':tripsAvgDistanceM,
 		'monthlyTripsAvgDurationS':tripsAvgDurationS,
@@ -1116,15 +1140,13 @@ void generateTripStats(vehicleId) {
 		'monthlyTotalHardBrakes': totalHardBrakes.toString(),
 		'monthlyTripsAvgScoreSpeeding':tripsAvgScoreSpeeding,
 		'monthlyTripsAvgScoreEvents': tripsAvgScoreEvents
-	]  
-*/  
+	]
 	generateEvent(dataStats)
-
+    
 }
-
-private def ISOdateFormat(date) {
+private def ISODateFormat(dateString) {
  	SimpleDateFormat ISO8601format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-	def ISOdate = ISO8601format.format(date)
+	def ISOdate = ISO8601format.parse(dateString)
 	return ISOdate
 }
 
@@ -1134,13 +1156,23 @@ private def formatDate(dateString) {
 	return aDate
 }
 
+private String formatDateInLocalTime(dateInString) {
+	if ((dateInString==null) || (dateInString.trim()=="")) {
+		return ""    
+	}    
+	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+	Date ISODate = ISODateFormat.parse(dateInString)
+	String dateInLocalTime = ISODate.format("yyyy-MM-dd HH:mm", location.timeZone)
+	return dateInLocalTime
+}
 // 	vehicleId - Id of the vehicle, by default the current one  
 //	tripId - Id of the trip, by default, all trips are selected 
 //	startDateTime - start timestamp for the query
 //	endDateTime - end timestamp for the query
-//	generateEvents - indicate whether or not vehicle events (hard acceleration, hard brake, etc.) will be posted as ST events
+//	eventTimestamp - event timestamp for generating events (ex. hard acceleration, hard brake, speeding, etc.)
+//		if null, do not generate events
 //	postData - indicates whether the data should be posted as is in the tripsData attribute
-void getTrips(vehicleId,tripId,startDateTime,endDateTime,generateEvents='false',postData='false') {
+void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postData='false') {
 	def AUTOMATIC_SUCCESS=200
 	def MAX_TRIP_DATA=50    
 	float totalDistanceM=0, totalDurationS=0, totalAverageKmpl=0, totalCostUsd=0,totalFuelVolumeL=0
@@ -1243,8 +1275,12 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime,generateEvents='false',
 						}                        
 					}
 					tripsList = tripsList + id + ','
-					if (generateEvents == 'true') {
-						generateVehicleEvents(it) 
+					if (eventTimestamp) {
+                    	// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
+						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z')
+						if (startedDate.getTime() > eventTimestamp) {                        
+							generateVehicleEvents(it)
+						}                            
 					}                        
 					if (settings.trace) {
 						log.debug "getTrips>tripId=${id},startedAt=${startedAt},endedAt=${endedAt}," +
@@ -1512,9 +1548,7 @@ void getVehicles(vehicleId, postData='false') {
 	}        
     
 	while ((statusCode!= AUTOMATIC_SUCCESS) && (j++ <2)) { // retries once if api call fails
-
 		api('vehicles', bodyReq) {resp->
-
 			statusCode= resp.status
 			if (statusCode == AUTOMATIC_SUCCESS) {
 				data?.vehicles=resp.data
@@ -1736,8 +1770,8 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 			eventFields.trip.start_location.name : eventFields.start_distance_m.toString(),
 		'eventTripEndLocation': (eventType=='notification:speeding')? 
 			eventFields.trip.end_location.name :eventFields.end_distance_m.toString(),
-        	'eventTripSpeedKPH': (eventType=='notification:speeding')? 
-        		milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
+        'eventTripSpeedKPH': (eventType=='notification:speeding')? 
+        	milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
 			formatDateInLocalTime(eventFields.started_at),
@@ -1830,13 +1864,13 @@ def generateEventRegionChanged(vehicleId,eventType,tripId,eventFields) {
 			formatDateInLocalTime(eventFields.created_at),
 		'eventTripId': tripId,    
 		'eventTripLocationLat': (eventType=='region:changed')? 
-      			eventFields.location.lat.toString(): eventFields.lat.toString(),
+      		eventFields.location.lat.toString(): eventFields.lat.toString(),
 		'eventTripLocationLon': (eventType=='region:changed')? 
-      			eventFields.location.lon.toString():eventFields.lon.toString(),
+      		eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripRegionStatus': (eventType=='region:changed')?
-      			eventFields.region.status:eventFields.region.status,
+      		eventFields.region.status:eventFields.region.status,
 		'eventTripRegionName': (eventType=='region:changed')?
-      			eventFields.region.name:eventFields.region.name,
+      		eventFields.region.name:eventFields.region.name,
 		'eventTripRegionTag': (eventType=='region:changed')?
 			eventFields.region.tag: eventFields.region.tag,        
 		'eventTripStartLocation': '',
@@ -2155,16 +2189,6 @@ private def determine_vehicle_id(vehicle_id) {
 private def get_appKey() {
 	return state.appKey
 }    
-
-private String formatDateInLocalTime(dateInString) {
-	if ((dateInString==null) || (dateInString.trim()=="")) {
-		return ""    
-	}    
-	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-	Date ISODate = ISODateFormat.parse(dateInString)
-	String dateInLocalTime = ISODate.format("yyyy-MM-dd HH:mm", location.timeZone)
-	return dateInLocalTime
-}
 
 
 // Get the client's refresh token
