@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9\n\n" +
+			paragraph "Version 0.9.1\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -159,7 +159,7 @@ def eventTypeHandler(evt) {
 		return
 	}
 	def timeAgo = new Date(now() - (1000 * deltaSeconds))
-	def recentEvents = vehicle.eventsSince(timeAgo)
+	def recentEvents = vehicle.eventStates(timeAgo)
 	log.trace "Found ${recentEvents?.size() ?: 0} events in the last $deltaSeconds seconds"
 
 
@@ -185,8 +185,8 @@ def eventTypeHandler(evt) {
 		if (evt.value == SPEEDING) {
 			tripFields.vehicle_events.each {
 				if (it.type=='speeding') {
-					speed=getSpeed(tripFields.vehicle_events.velocity_kph)
-					eventCreatedAt=formatDateInLocalTime(tripFields.vehicle_events.started_at.substring(0,18) + 'Z')   
+					speed=getSpeed(it.velocity_kph)
+					eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,18) + 'Z')   
 					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speed} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 					send msg
 				}                
@@ -195,7 +195,7 @@ def eventTypeHandler(evt) {
 		if (evt.value == HARD_BRAKE) {
 			tripFields.vehicle_events.each {
 				if (it.type=='hard_brake') {
-					eventCreatedAt=formatDateInLocalTime(tripFields.vehicle_events.created_at)
+					eventCreatedAt=formatDateInLocalTime(it.created_at)
 					msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 					send msg
 				}     
@@ -204,7 +204,7 @@ def eventTypeHandler(evt) {
 		if (evt.value == HARD_ACCEL) {
 			tripFields.vehicle_events.each {
 				if (it.type=='hard_accel') {
-					eventCreatedAt=formatDateInLocalTime(tripFields.vehicle_events.created_at)
+					eventCreatedAt=formatDateInLocalTime(it.created_at)
 					msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 					send msg
 				}
