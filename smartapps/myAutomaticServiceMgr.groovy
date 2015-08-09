@@ -432,11 +432,10 @@ def procEvent() {
 		return
 	}
     
-    	if (eventFields) {
-    		vehicleId=eventsFields.vehicle.id
+	if (eventFields) {
+		vehicleId=eventsFields.vehicle.id
 		def vehicleObject = getChildDevices().find { AutomaticDevices.contains(vehicleId) }
 		if (vehicleObject) {
-        
 			log.debug "procEvent>found vehicle=$vehicleObject.vehicleId"
 			vehicleObject.generateVehicleRTEvents("", eventFields)
 		} else {
@@ -644,14 +643,11 @@ private send(msg) {
 	log.debug msg
 }
 
-
-
 def getChildNamespace() { "yracine" }
 
 def getChildName() { "My Automatic Device" }
 
 def getServerUrl() { return "https://graph.api.smartthings.com" }
-
 
 def getSmartThingsClientId() { "insert your Automatic public key here!" }
 
