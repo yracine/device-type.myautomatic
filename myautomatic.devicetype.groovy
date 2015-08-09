@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.2
+ *  Version 0.9.3
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -571,9 +571,6 @@ void poll() {
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone)
 
 
-	// Update the vehicle information
-        
-	getVehicles(vehicleId)
 	def dataEvents = [
 			userid:data?.user.id,
 			username:data?.user.username,
@@ -592,8 +589,13 @@ void poll() {
 	// generate all stats only once every day
 	if (state?.lastGeneratedStatsDate != dateInLocalTime) {
     
-		// call getCurrentUserInfo() to update basic info on the car
+		// call getCurrentUserInfo() to update basic info on the user
+        
 		getCurrentUserInfo() 
+
+		// Update the vehicle information
+        
+		getVehicles(vehicleId)
 
 		if (settings.trace) {
 			log.debug "poll>about to call generateTripStats,dateInLocalTime=${dateInLocalTime},state.lastGeneratedDate= $state.lastGeneratedDate"
@@ -2239,3 +2241,4 @@ private def get_URI_ROOT() {
 private def get_URI_ACCOUNT_ROOT() {
 	return "https://accounts.automatic.com"
 }
+
