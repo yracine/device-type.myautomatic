@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.5
+ *  Version 0.9.6
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -572,22 +572,6 @@ void poll() {
         
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone)
 
-
-	def dataEvents = [
-		userid:data?.user.id,
-		username:data?.user.username,
-		email:data?.user.email,
-		firstName:data?.user.first_name,
-		lastName:data?.user.last_name,
-		vehicleId:data?.vehicles.results[0]?.id,
-		make:data?.vehicles.results[0]?.make,
-		model:data?.vehicles.results[0]?.model,
-		submodel:data?.vehicles.results[0]?.submodel,
-		displayName:data?.vehicles.results[0]?.display_name,
-		year:data?.vehicles.results[0]?.year.toString()
-	]
-
-
 	// generate all stats only once every day
 	if (state?.lastGeneratedStatsDate != dateInLocalTime) {
     
@@ -606,6 +590,22 @@ void poll() {
 		state.lastGeneratedStatsDate= dateInLocalTime       
     
 	}
+
+	def dataEvents = [
+		userid:data?.user.id,
+		username:data?.user.username,
+		email:data?.user.email,
+		firstName:data?.user.first_name,
+		lastName:data?.user.last_name,
+		vehicleId:data?.vehicles.results[0]?.id,
+		make:data?.vehicles.results[0]?.make,
+		model:data?.vehicles.results[0]?.model,
+		submodel:data?.vehicles.results[0]?.submodel,
+		displayName:data?.vehicles.results[0]?.display_name,
+		year:data?.vehicles.results[0]?.year.toString()
+	]
+
+
 
 	// Generate trip stats for today
 	String timezone = new Date().format("zzz", location.timeZone)
