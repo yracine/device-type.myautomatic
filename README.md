@@ -180,5 +180,8 @@ Parents may want to set a minimum Speeding Score or Events Score and if the kids
 
 The monitoring could be even more tight during the wet/snow season. Based on weatherStation, it can automatically switch to a monitoring cycle interval in minutes instead of hours when it's raining or snowing outside.....
 
+See the virtual weather station at
+
+https://github.com/yracine/device-type.weatherstation
 
 
