@@ -114,7 +114,7 @@ Error: invalid request
 e) In the IDE under https://graph.api.smartthings.com/ide/logs, you should see
 the following trace:
 
- buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
+buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
  
 f) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
 
@@ -135,8 +135,8 @@ https://graph.api.smartthings.com/device/list
 
 /*******************************************************************************************************************/
 
-7) Under the SmartThings app (on your tablet or smartphone), you should then
-see the new Automatic Object(s) under the 'Things' shortcut on the dashboard
+<b>7) Under the SmartThings app (on your tablet or smartphone), you should then
+see the new Automatic Object(s) under the 'Things' shortcut on the dashboard</b>
 
 /*******************************************************************************************************************/
 
@@ -144,8 +144,8 @@ CLick on it (gear icon at the top right corner) and press refresh several times 
 
 /*******************************************************************************************************************/
 
-8) (optional) After instantiation of MyAutomatic Objects, you can edit its preferences and set your home
-address for presence purposes.
+<b>8) (optional) After instantiation of MyAutomatic Objects, you can edit its preferences and set your home
+address for presence purposes</b>
 
 /*******************************************************************************************************************/
 
@@ -160,9 +160,11 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 - Save the changes by clicking 'Save' at the bottom.
 
 
-9) (optional) Install some of my SmartApp(s)
+/*******************************************************************************************************************/
+<b>9) (optional) Install some of my SmartApp(s)</b>
+/*******************************************************************************************************************/
 
-Under 
+See Under 
 
 https://github.com/yracine/device-type.myautomatic/tree/master/smartapps
 
