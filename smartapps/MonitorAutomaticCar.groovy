@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.1\n\n" +
+			paragraph "Version 0.9.2\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -303,11 +303,16 @@ private boolean check_score(scoreType, minScoreThreshold) {
 	def msg
 	boolean scoreTooLow=false
 	float currentScore=50
-    
+    		
 	def score=(scoreType=='scoreSpeeding')?vehicle.currentTripsAvgScoreSpeeding:vehicle.currentTripsAvgScoreEvents
 	if (score) {
 		currentScore=score.toFloat()
 	}        
+	if (score ==0) {
+		log.debug("check_score>${scoreType} has not been calculated yet, no trips available, exiting")
+		return	
+	}    
+    
 	if (currentScore < minScoreThreshold) {
 		msg= "MonitorAutomaticCar>${vehicle} vehicle has a low ${scoreType} (${currentScore}), your minimum threshold is ${minScoreThreshold}"
 		send msg
@@ -544,6 +549,9 @@ private def sendWithDelay() {
 		send(state.msg)
 	}
 }
+
+
+
 
 private def send(msg) {
 	if (sendPushMessage != "No") {
