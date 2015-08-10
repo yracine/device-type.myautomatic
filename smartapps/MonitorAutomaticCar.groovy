@@ -306,10 +306,10 @@ private boolean check_score(scoreType, minScoreThreshold) {
     
 	def score=(scoreType=='scoreSpeeding')?vehicle.currentTripsAvgScoreSpeeding:vehicle.currentTripsAvgScoreEvents
 	if (score) {
-    	currentScore=score.toFloat()
+		currentScore=score.toFloat()
 	}        
 	if (currentScore < minScoreThreshold) {
-        msg= "MonitorAutomaticCar>${vehicle} vehicle has a low ${scoreType} (${currentScore}), your minimum threshold is ${minScoreThreshold}"
+		msg= "MonitorAutomaticCar>${vehicle} vehicle has a low ${scoreType} (${currentScore}), your minimum threshold is ${minScoreThreshold}"
 		send msg
 		scoreTooLow=true
 	} else {
