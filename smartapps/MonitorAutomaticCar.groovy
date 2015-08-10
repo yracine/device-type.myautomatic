@@ -519,7 +519,7 @@ def scheduleJobs() {
 				msg = "MonitorAutomaticCar>not raining or snowing at the moment,continue scheduling at regular interval"  
 				log.trace msg 			
 			}
-    	}
+		}
 	}
 
 
