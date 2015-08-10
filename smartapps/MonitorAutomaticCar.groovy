@@ -381,9 +381,7 @@ def checkRunningIntMin() {
 	if ((rainCheck != 'wet') && (rainCheck != 'snow' ) && (!weather?.toUpperCase().contains("RAIN") && (!weather?.toUpperCase().contains("SNOW")))) {  
     		// unschedule special monitoring if not raining or snowing
 		scheduleJobs()
-    }
-	
-    
+	}
 }
 
 
