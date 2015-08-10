@@ -164,5 +164,21 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 - Save the changes by clicking 'Save' at the bottom.
 
 
+9) (optional) SmartApp(s)
+
+Under 
+
+https://github.com/yracine/device-type.myautomatic/tree/master/smartapps
+
+a) MonitorAutomaticCar
+
+Typical Use Case: Parents may want to closely monitor their kids' car driving abilities.
+
+The smartapp can detect any speeding, hard acceleration, hard brakes events after a trip has been completed and alerts parents of bad driving behaviors.
+
+Parents may want to set a minimum Speeding Score or Events Score and if kids go below these thresholds, parents will be notified ASAP.
+
+The monitoring could be even more tight during the wet/snow season. Based on weatherStation, it can automatically switch to a monitoring cycle interval in minutes instead of hours when it's raining or snowing outside.....
+
 
 
