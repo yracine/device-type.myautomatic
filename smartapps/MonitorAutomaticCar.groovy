@@ -40,14 +40,14 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.2\n\n" +
+			paragraph "Version 0.9.3\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
 			description: "http://github.com/yracine"
 		}
 		section("Monitor this Automatic Connected Vehicle") {
-			input "vehicle", "device.myAutomaticDevice", title: "Which vehicle?"
+			input "vehicle", "capability.presenceSensor", title: "Which vehicle?"
 		}
 		section("Select Months for tight monitoring (ex. school months, Wet/Snow season)") {
 			input "givenWetSeasonMonths", "enum",
