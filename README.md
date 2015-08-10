@@ -169,9 +169,9 @@ See Under
 
 https://github.com/yracine/device-type.myautomatic/tree/master/smartapps
 
-a) MonitorAutomaticCar
+<b>a) MonitorAutomaticCar</b>
 
-Typical Use Case: Parents may want to closely monitor their kids' car driving abilities.
+<b>Typical Use Case: Parents may want to closely monitor their kids' car driving abilities.</b>
 
 The smartapp can detect any Speeding, Hard Acceleration, Hard Brake events after a trip has been completed and alerts parents of bad driving behaviors.
 
