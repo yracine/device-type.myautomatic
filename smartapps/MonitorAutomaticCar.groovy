@@ -132,7 +132,7 @@ def initialize() {
 	state.msg=null
 	subscribe(vehicle, "eventType", eventTypeHandler)
 	if (weatherStation) {
-    	subscribe(weatherStation, "water.wet", checkRainyWeather)
+		subscribe(weatherStation, "water.wet", checkRainyWeather)
 	}        
 	scheduleJobs()
 	subscribe(app, appTouch)
