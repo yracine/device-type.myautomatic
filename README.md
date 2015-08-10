@@ -176,7 +176,7 @@ Typical Use Case: Parents may want to closely monitor their kids' car driving ab
 
 The smartapp can detect any speeding, hard acceleration, hard brakes events after a trip has been completed and alerts parents of bad driving behaviors.
 
-Parents may want to set a minimum Speeding Score or Events Score and if kids go below these thresholds, parents will be notified ASAP.
+Parents may want to set a minimum Speeding Score or Events Score and if the kids' scores go below these thresholds, the parents will be notified ASAP.
 
 The monitoring could be even more tight during the wet/snow season. Based on weatherStation, it can automatically switch to a monitoring cycle interval in minutes instead of hours when it's raining or snowing outside.....
 
