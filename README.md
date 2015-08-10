@@ -109,7 +109,7 @@ c) Press on MyAutomatic in the middle of the login page
 
 d) The Automatic login page will appear with the following error message:
 
-Error: invalid request
+<i>Error: invalid request</i>
 
 e) In the IDE under https://graph.api.smartthings.com/ide/logs, you should see
 the following trace:
