@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.3\n\n" +
+			paragraph "Version 0.9.4\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -146,7 +146,7 @@ def appTouch(evt) {
 
 
 def eventTypeHandler(evt) {
-	def deltaSeconds = 60
+	def deltaSeconds = 120
 	def HARD_ACCEL="Hard Acceleration"
 	def HARD_BRAKE="Hard Brake"
 	def SPEEDING="Speed Exceeded Threshold"
