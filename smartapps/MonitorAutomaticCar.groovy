@@ -177,7 +177,7 @@ def eventTypeHandler(evt) {
 			tripFields = new JsonSlurper().parseText(tripData)   
 			log.debug "eventTypeHandler>tripFields = $tripFields"
 		} catch (e) {
-			log.error("eventTypeHandler>jsonEventData not formatted (exception $e) correctly or empty, exiting")
+			log.error("eventTypeHandler>tripData not formatted correctly or empty (exception $e), exiting")
 			return
 		} 
 		def startAddress=tripFields.start_address.name
@@ -288,7 +288,7 @@ private boolean check_event(eventType, intervalInMinutes) {
 			foundEvent=true        
 			if (switches) {
 
-				if (lightMode ?.equals("Turn On Lights")) {
+				if (lightMode?.equals("Turn On Lights")) {
 					switches.on()
 				} else {
 					flashLights()
@@ -544,9 +544,6 @@ private def sendWithDelay() {
 		send(state.msg)
 	}
 }
-
-
-
 
 private def send(msg) {
 	if (sendPushMessage != "No") {
