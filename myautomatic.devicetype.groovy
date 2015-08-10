@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.4
+ *  Version 0.9.3
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -574,17 +574,17 @@ void poll() {
 
 
 	def dataEvents = [
-			userid:data?.user.id,
-			username:data?.user.username,
-			email:data?.user.email,
-			firstName:data?.user.first_name,
-			lastName:data?.user.last_name,
-			vehicleId:data?.vehicles.results[0]?.id,
-			make:data?.vehicles.results[0]?.make,
-			model:data?.vehicles.results[0]?.model,
-			submodel:data?.vehicles.results[0]?.submodel,
-			displayName:data?.vehicles.results[0]?.display_name,
-			year:data?.vehicles.results[0]?.year.toString()
+		userid:data?.user.id,
+		username:data?.user.username,
+		email:data?.user.email,
+		firstName:data?.user.first_name,
+		lastName:data?.user.last_name,
+		vehicleId:data?.vehicles.results[0]?.id,
+		make:data?.vehicles.results[0]?.make,
+		model:data?.vehicles.results[0]?.model,
+		submodel:data?.vehicles.results[0]?.submodel,
+		displayName:data?.vehicles.results[0]?.display_name,
+		year:data?.vehicles.results[0]?.year.toString()
 	]
 
 
@@ -1538,13 +1538,13 @@ def processTripsNextPage(vehicleId,tripCounter,metadata) {
 
 }
 
-// 	vehicleId - Id of the vehicle, by default the current one 
+// 	vehicleId - Id of the vehicle, by default, retrieve all vehicles under a user account 
 //	postData - indicates whether the data should be posted as event
 void getVehicles(vehicleId, postData='false') {
 	def AUTOMATIC_SUCCESS=200
 	def vehiclesData=[]
 	def vehiclesList=""
-    def bodyReq=""
+	def bodyReq=""
 	def statusCode=true
 	int j=0        
 	def id    
