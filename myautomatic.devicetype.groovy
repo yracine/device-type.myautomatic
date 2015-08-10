@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.4
+ *  Version 0.9.5
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -2229,6 +2229,7 @@ void initialSetup(device_client_id, auth_data, device_automatic_id) {
 		log.debug "initialSetup>end"
 	}
 	getCurrentUserInfo()
+	getVehicles(device_automatic_id)
 	poll()
 }
 
