@@ -155,8 +155,8 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 - Go to https://graph.api.smartthings.com/device/list
 - Click on the My Automatic object in the list
 - Edit the preferences by clicking on 'edit' (middle of the page) 
-- Set the trace input parameter to true (for debugging purposes only)
 - Set the homeAddress parameter to your zipcode or street name, city 
+- Set the trace input parameter to true (for debugging purposes only)
 - Save the changes by clicking 'Save' at the bottom.
 
 
