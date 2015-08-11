@@ -68,7 +68,7 @@ def about() {
  		section("About") {	
 			paragraph "MyAutomaticServiceMgr, the smartapp that connects your Automatic connected vehicle(s) to SmartThings via cloud-to-cloud integration" +
 				" and polls your Automatic device's events on a regular interval"
-			paragraph "Version 0.8.4\n\n" +
+			paragraph "Version 0.8.5\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 			href url:"http://github.com/yracine", style:"embedded", required:false, title:"More information...", 
@@ -425,7 +425,7 @@ def procEvent() {
  	log.debug "procEvent>request =${request}"
 
 	try {
-		eventFields = new JsonSlurper().parseText(request.params[0])   
+		eventFields = new JsonSlurper().parseText(request.body)   
 		log.debug "procEvent>eventFields = $eventFields"
 	} catch (e) {
 		log.error("procEvent>jsonEventData not formatted (exception $e) correctly or empty, exiting")
@@ -436,11 +436,11 @@ def procEvent() {
 		vehicleId=eventsFields.vehicle.id
 		def vehicleObject = getChildDevices().find { AutomaticDevices.contains(vehicleId) }
 		if (vehicleObject) {
-			log.debug "procEvent>found vehicle=$vehicleObject.vehicleId"
+			log.debug "procEvent>found vehicle=$vehicleId"
 			vehicleObject.generateVehicleRTEvents("", eventFields)
 		} else {
 
-			log.error "procEvent>vehicleId =$vehicleObject.vehicleId not found"
+			log.error "procEvent>vehicleId =$vehicleId not found"
 		}    
 	}    
 	log.debug "procEvent>end"
@@ -649,6 +649,6 @@ def getChildName() { "My Automatic Device" }
 
 def getServerUrl() { return "https://graph.api.smartthings.com" }
 
-def getSmartThingsClientId() { "insert your Automatic public key here!" }
+def getSmartThingsClientId() { "a318bc059f4a77b6d819" }
 
-def getSmartThingsPrivateKey() { "Insert your Automatic private key here!" }
+def getSmartThingsPrivateKey() { "fb8993c8f7791564fe13551446594974781416ad" }
