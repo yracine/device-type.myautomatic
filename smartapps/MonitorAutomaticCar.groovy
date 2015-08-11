@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.4\n\n" +
+			paragraph "Version 0.9.5\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -263,7 +263,7 @@ private boolean check_event(eventType, intervalInMinutes) {
 	def cycleTimeMsec = intervalInMinutes  * 60 * 1000
 	def eventStates = vehicle.statesSince("eventType", new Date((now() - cycleTimeMsec) as Long))
 	Boolean foundEvent=false
-	float nbHours= intervalInMinutes/60
+	float nbHours= (intervalInMinutes/60).round(1)
     
 	if ((givenEvents.contains(eventType))) {
 		if (!eventStates.find {(it.value == eventType)}) {
