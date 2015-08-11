@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.6
+ *  Version 0.9.7
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1780,7 +1780,7 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 			milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-			formatDateInLocalTime(eventFields.started_at),
+			formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z'),
 		'eventTripStartAddress': '',
 		'eventTripEndAddress': '',
 		'eventTripGForce': '',
