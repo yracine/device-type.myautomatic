@@ -41,8 +41,6 @@ metadata {
 		capability "Polling"
 		capability "Presence Sensor"
 
-		command "poll"
-		command "refresh"
 		command "getCurrentUserInfo"
 		command "getTrips"
 		command "getVehicles"
