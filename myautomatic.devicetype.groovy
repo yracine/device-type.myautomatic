@@ -780,14 +780,14 @@ private def getDistance(value) {
 
 private def kmplToMpg(value) {
 	if (!value) {
-    	return 0
+		return 0
 	}        
 	return (value * 2.352145833)  
 }
 
 private def mpgToKmpl(value) {
 	if (!value) {
-    	return 0
+		return 0
 	}        
 	return (value * 0.4251)  
 }
@@ -819,7 +819,7 @@ private def getVolume(value) {
 		return value    
     }
 	if (!value) {
-    	return 0
+		return 0
 	}        
 	return (value * 0.26417)
 }
