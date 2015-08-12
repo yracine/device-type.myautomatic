@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.7
+ *  Version 0.9.8
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1557,14 +1557,14 @@ void getVehicles(vehicleId, postData='false') {
 			if (statusCode == AUTOMATIC_SUCCESS) {
 				data?.vehicles=resp.data
 				data.vehicles.results.each {
+					id = it.id
+					def make = it.make
+					def model = it.model
+					def submodel = it.submodel
+					def year = it.year
+					def color = it.color
+					def displayName = it.display_name
 					if (settings.trace) {
-						id = it.id
-						def make = it.make
-						def model = it.model
-						def submodel = it.submodel
-						def year = it.year
-						def color = it.color
-						def displayName = it.display_name
 						sendEvent name: "verboseTrace", value:"getVehicles>vehicleId=${id},make=${make},model=${model}," +
 							"submodel=${model},year=${year},color=${color},displayName=${displayName}"
 					}
