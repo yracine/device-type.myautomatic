@@ -50,7 +50,7 @@ b) Hit the "+New SmartApp" at the top right corner
 c) Hit the "From Code" tab on the left corner
 
 d) Copy and paste the code from MyAutomaticServiceMgr
-under http://github.com/yracine/device-type.myautomatic/blob/master/smartapps/myAutomaticServiceMgr.groovy
+under http://github.com/yracine/device-type.myautomatic/blob/master/smartapps/myAutomaticServiceMgr
 
 e) Hit the create button at the bottom
 
