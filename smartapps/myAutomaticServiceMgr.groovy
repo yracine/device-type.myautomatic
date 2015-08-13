@@ -649,6 +649,6 @@ def getChildName() { "My Automatic Device" }
 
 def getServerUrl() { return "https://graph.api.smartthings.com" }
 
-def getSmartThingsClientId() { "a318bc059f4a77b6d819" }
+def getSmartThingsClientId() { "insert your public key here!" }
 
-def getSmartThingsPrivateKey() { "fb8993c8f7791564fe13551446594974781416ad" }
+def getSmartThingsPrivateKey() { "insert your private key here!" }
