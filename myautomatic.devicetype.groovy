@@ -587,15 +587,15 @@ void poll() {
 		}
 		// generate all stats only once every day
 		generateYesterdayTripStats(vehicleID)
-		generateWeeklyTripStats()     
-//		generateMonthlyTripStats() // not called due to rate limiting in ST
+		generateWeeklyTripStats(vehicleID)     
+//		generateMonthlyTripStats(vehicleID) // not called due to rate limiting in ST
 		state.lastGeneratedStatsDate= dateInLocalTime       
     
 	}
 
 	def dataEvents = [
 		userid:data?.user.id,
-		username:data?.user.username,
+		username:data?.user.usernae,
 		email:data?.user.email,
 		firstName:data?.user.first_name,
 		lastName:data?.user.last_name,
@@ -960,7 +960,7 @@ void generateYesterdayTripStats(vehicleId) {
 		log.debug("generateTripStats>yesterday: local date/time= ${nowInLocalTime}, startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
 			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	}
-	getTrips("","", startDate,endDate, null)
+	getTrips(vehicleId,"", startDate,endDate, null)
 
 	def tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
 	def tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
@@ -1012,7 +1012,7 @@ void generateYesterdayTripStats(vehicleId) {
 	generateEvent(dataStats)
 }
 
-void generateWeeklyTripStats() {
+void generateWeeklyTripStats(vehicleId) {
 
 	String nowInLocalTime = new Date().format("yyyy-MM-dd HH:mm", location.timeZone)
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
@@ -1031,7 +1031,7 @@ void generateWeeklyTripStats() {
 		log.debug("generateTripStats>past week (last 7 days): startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
 			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	}
-	getTrips("","", startDate,endDate, null)
+	getTrips(vehicleId,"", startDate,endDate, null)
 
 	def tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
 	def tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
@@ -1085,7 +1085,7 @@ void generateWeeklyTripStats() {
     
 }
 
-void generateMonthlyTripStats() {
+void generateMonthlyTripStats(vehicleId) {
 
 	String nowInLocalTime = new Date().format("yyyy-MM-dd HH:mm", location.timeZone)
    
@@ -1099,7 +1099,7 @@ void generateMonthlyTripStats() {
 		log.debug("getTripsStats>past month: startDate in UTC = ${String.format('%tF %<tT',oneMonthAgo)}," +
 			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	}
-	getTrips("","", startDate,endDate, null)
+	getTrips(vehicleId,"", startDate,endDate, null)
 
 	def tripsAvgAverageKmplInPeriod =  device.currentValue("tripsAvgAverageKmplInPeriod")
 	def tripsAvgDistanceMInPeriod =  device.currentValue("tripsAvgDistanceMInPeriod")
