@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.8
+ *  Version 0.9.9
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -45,8 +45,10 @@ metadata {
 		command "getTrips"
 		command "getVehicles"
 		command "generateVehicleEvents"
-		command "generateTripStats"
 		command "generateVehicleRTEvents"        
+		command "generateYesterdayTripStats"
+		command "generateWeeklyTripStats"
+		command "generateMonthlyTripStats"
         
 		attribute "verboseTrace","string"
 		
@@ -570,7 +572,6 @@ void poll() {
         
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone)
 
-	// generate all stats only once every day
 	if (state?.lastGeneratedStatsDate != dateInLocalTime) {
     
 		// call getCurrentUserInfo() to update basic info on the user
@@ -584,7 +585,10 @@ void poll() {
 		if (settings.trace) {
 			log.debug "poll>about to call generateTripStats,dateInLocalTime=${dateInLocalTime},state.lastGeneratedDate= $state.lastGeneratedDate"
 		}
-		generateTripStats(vehicleID)
+		// generate all stats only once every day
+		generateYesterdayTripStats(vehicleID)
+		generateWeeklyTripStats()     
+//		generateMonthlyTripStats() // not called due to rate limiting in ST
 		state.lastGeneratedStatsDate= dateInLocalTime       
     
 	}
@@ -666,7 +670,7 @@ void poll() {
 		'totalDurationS':totalDurationS, 
 		'totalNbTrips':totalNbTrips.toString(), 
 		'totalHardAccels':totalHardAccels.toString(),
-		'totalHardBrakes': totalHardBrakesInPeriod.toString(),
+		'totalHardBrakes': totalHardBrakes.toString(),
 		'tripsAvgScoreSpeeding':tripsAvgScoreSpeeding,
 		'tripsAvgScoreEvents': tripsAvgScoreEvents
 	]
@@ -936,7 +940,7 @@ private def doRequest(uri, args, type, success) {
 	}
 }
 
-void generateTripStats(vehicleId) {
+void generateYesterdayTripStats(vehicleId) {
 
 //	Generate stats for yesterday
 
@@ -1006,8 +1010,6 @@ void generateTripStats(vehicleId) {
 	]    
 
 	generateEvent(dataStats)
-	generateWeeklyTripStats()     
-//	generateMonthlyTripStats()
 }
 
 void generateWeeklyTripStats() {
