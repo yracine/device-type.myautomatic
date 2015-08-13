@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.6\n\n" +
+			paragraph "Version 0.9.7\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -263,7 +263,7 @@ private boolean check_event(eventType, intervalInMinutes) {
 	def cycleTimeMsec = intervalInMinutes  * 60 * 1000
 	def eventStates = vehicle.statesSince("eventType", new Date((now() - cycleTimeMsec) as Long))
 	boolean foundEvent=false
-	float nbHours= (intervalInMinutes/60).round(1)
+	float nbHours= (intervalInMinutes.toFloat()/60).round(1)
     
 	if ((givenEvents.contains(eventType))) {
 		if (!eventStates.find {(it.value == eventType)}) {
@@ -338,7 +338,7 @@ def checkRunningIntHr() {
 	log.trace "MonitorAutomaticCar>checkRunningIntHr() running at ${intervalInHour}-hour interval"
 
 	// Get the vehicle's latest values 
-	vehicle.refresh()
+	vehicle.poll()
     
 	check_event(HARD_ACCEL, (intervalInHour*60))
 	check_event(HARD_BRAKE, (intervalInHour*60))
@@ -368,7 +368,7 @@ def checkRunningIntMin() {
 	log.trace "MonitorAutomaticCar>checkRunningIntMin() running at ${intervalInMin}-minute interval"
 	
 	// Get the vehicle's latest values 
-	vehicle.refresh()
+	vehicle.poll()
 
 	check_event(HARD_ACCEL, intervalInMin)
 	check_event(HARD_BRAKE, intervalInMin)
