@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 0.9.9
+ *  Version 1.0
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -586,9 +586,9 @@ void poll() {
 			log.debug "poll>about to call generateTripStats,dateInLocalTime=${dateInLocalTime},state.lastGeneratedDate= $state.lastGeneratedDate"
 		}
 		// generate all stats only once every day
-		generateYesterdayTripStats(vehicleID)
-		generateWeeklyTripStats(vehicleID)     
-//		generateMonthlyTripStats(vehicleID) // not called due to rate limiting in ST
+		generateYesterdayTripStats(vehicleId)
+		generateWeeklyTripStats(vehicleId)     
+//		generateMonthlyTripStats(vehicleId) // not called due to rate limiting in ST
 		state.lastGeneratedStatsDate= dateInLocalTime       
     
 	}
