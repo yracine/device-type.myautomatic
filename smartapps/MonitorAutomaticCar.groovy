@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.8\n\n" +
+			paragraph "Version 0.9.9\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -133,6 +133,7 @@ def initialize() {
 	subscribe(vehicle, "eventType", eventTypeHandler)
 	if (weatherStation) {
 		subscribe(weatherStation, "water.wet", checkRainyWeather)
+		subscribe(weatherStation, "weather", checkRainyWeather)
 	}        
 	scheduleJobs()
 	subscribe(app, appTouch)
@@ -477,7 +478,9 @@ def checkRainyWeather(evt) {
 	def msg
     
 	log.debug "checkRainyWeather> latestValue= $latestValue"
-	if (latestValue == 'wet' || latestValue == 'snow') {
+	def weather = weatherStation?.currentWeather
+        
+	if ((rainCheck == 'wet' || rainCheck == 'snow' ) || ((weather?.toUpperCase().contains("RAIN")) || (weather?.toUpperCase().contains("SNOW")))) {
 		if (detailedNotif == 'true') {
 			msg = "MonitorAutomaticCar>it's raining or snowing at ${weatherStation}, will start special monitoring"
 			send msg
