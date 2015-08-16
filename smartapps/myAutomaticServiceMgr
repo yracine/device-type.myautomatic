@@ -381,7 +381,7 @@ def takeAction() {
 	log.trace "takeAction>begin"
 	def MAX_EXCEPTION_COUNT=5    
 	def msg
-    String exceptionCheck
+	String exceptionCheck
     
 	def devices = AutomaticDevices.collect { dni ->
     
