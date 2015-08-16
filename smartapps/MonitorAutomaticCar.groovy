@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 0.9.9\n\n" +
+			paragraph "Version 1.0\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -321,7 +321,7 @@ private boolean check_score(scoreType, minScoreThreshold) {
 		send msg
 		scoreTooLow=true
 	} else {
-		msg = "MonitorAutomaticCar>${vehicle} vehicle's ${scoreType} is currently higher than your minimum threshold (${minScoreThreshold})"
+		msg = "MonitorAutomaticCar>${vehicle} vehicle's ${scoreType} is currently higher than (or equal to) your minimum threshold (${minScoreThreshold})"
 		log.debug msg
 		if (detailedNotif == 'true') {
 			send msg
