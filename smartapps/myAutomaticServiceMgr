@@ -68,7 +68,7 @@ def about() {
  		section("About") {	
 			paragraph "MyAutomaticServiceMgr, the smartapp that connects your Automatic connected vehicle(s) to SmartThings via cloud-to-cloud integration" +
 				" and polls your Automatic device's events on a regular interval"
-			paragraph "Version 0.8.5\n\n" +
+			paragraph "Version 0.8.6\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 			href url:"http://github.com/yracine", style:"embedded", required:false, title:"More information...", 
@@ -513,7 +513,7 @@ def swapToken() {
 	atomicState.authToken = jsonMap.access_token
 	atomicState.expiresIn=jsonMap.expires_in
 	atomicState.tokenType = jsonMap.token_type
-	def authexptime = new Date((now() + (365 * 24 * 60 * 1000))).getTime() // the token is valid for a year
+	def authexptime = new Date((now() + (365 * 24 * 60 * 60 * 1000))).getTime() // the token is valid for a year
 	atomicState.authexptime = authexptime
 
 
