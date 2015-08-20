@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.0\n\n" +
+			paragraph "Version 1.1\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -159,61 +159,103 @@ def eventTypeHandler(evt) {
 		// do not send msg if detailedNotif is false    
 		return
 	}
-	def timeAgo = new Date(now() - (1000 * deltaSeconds))
-	def recentEvents = vehicle.eventStates(timeAgo)
-	log.trace "Found ${recentEvents?.size() ?: 0} events in the last $deltaSeconds seconds"
+	msg = "MonitorAutomaticCar>${vehicle} vehicle has triggerred ${evt.value} event..."
+	send msg
+	// get Trip Data		    
+	def tripId= vehicle.currentEventTripId
+	log.debug "eventTypeHandler>eventTripId = $tripId"
+	vehicle.getTrips("",tripId,null,null,null,'true')
+	String tripData = vehicle.currentTripsData
+	if (!tripData) {
+		return        
+	}     
+	try {
+		tripFields = new JsonSlurper().parseText(tripData)   
+		log.debug "eventTypeHandler>tripFields = $tripFields"
+	} catch (e) {
+		log.error("eventTypeHandler>tripData not formatted correctly or empty (exception $e), exiting")
+		return
+	} 
+	def startAddress=tripFields.start_address.name
+	def endAddress=tripFields.end_address.name        
+	if (evt.value == SPEEDING) {
+		tripFields.vehicle_events.each {
+			if (it.type=='speeding') {
+				speed=getSpeed(it.velocity_kph)
+				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,18) + 'Z')   
+				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speed} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				send msg
+			}                
+		}            
+	}        
+	if (evt.value == HARD_BRAKE) {
+		tripFields.vehicle_events.each {
+			if (it.type=='hard_brake') {
+				eventCreatedAt=formatDateInLocalTime(it.created_at)
+				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				send msg
+			}     
+		}                
+	}        
+	if (evt.value == HARD_ACCEL) {
+		tripFields.vehicle_events.each {
+			if (it.type=='hard_accel') {
+				eventCreatedAt=formatDateInLocalTime(it.created_at)
+				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				send msg
+			}
+		}                
+	}        
+}
 
+private def get_all_detailed_trips_info() {
+	def currentTripList = vehicle.currentTripsList
+	def tripFields    
+	if (!currentTripList) {
+		log.debug "get_all_detailed_trips_info> empty tripList exiting"
+		return    	
+	} 
+	def tripList=currentTripList.toString().split(",")    
+	log.debug "get_all_detailed_trips_info> tripList= $tripList"
 
-	def alreadySentSms = recentEvents.count {it.value && it.value == state?.eventType} > 1
-	if (alreadySentSms) {
-		log.debug "SMS already sent to $phone for this ${evt.value} event within the last $deltaSeconds seconds"
-	} else {
-		msg = "MonitorAutomaticCar>${vehicle} vehicle has triggerred ${evt.value} event..."
-		send msg
-		// get Trip Data		    
-		def tripId= vehicle.currentEventTripId
-		vehicle.getTrips("",tripId,null,null,'true')
-		def tripData=vehicle.currentTripData
+	tripList.each {
+		String tripId = it
+		log.debug "get_all_detailed_trips_info> tripId= $tripId"
+		vehicle.getTrips("",tripId,null,null,null,'true')
+		String tripData = vehicle.currentTripsData
+		if (!tripData) {
+			return        
+		}     
 		try {
 			tripFields = new JsonSlurper().parseText(tripData)   
-			log.debug "eventTypeHandler>tripFields = $tripFields"
+			log.debug "get_all_detailed_trips_info>tripFields = $tripFields"
 		} catch (e) {
-			log.error("eventTypeHandler>tripData not formatted correctly or empty (exception $e), exiting")
+			log.error("get_all_detailed_trips_info>tripData not formatted correctly or empty (exception $e), exiting")
 			return
 		} 
 		def startAddress=tripFields.start_address.name
 		def endAddress=tripFields.end_address.name        
-		if (evt.value == SPEEDING) {
-			tripFields.vehicle_events.each {
-				if (it.type=='speeding') {
-					speed=getSpeed(it.velocity_kph)
-					eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,18) + 'Z')   
-					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speed} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-					send msg
-				}                
+		def eventCreatedAt
+		tripFields.vehicle_events.each {
+			if (it.type=='speeding') {
+				speed=getSpeed(it.velocity_kph)
+				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,18) + 'Z')   
+				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speed} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				send msg            
 			}            
-		}        
-		if (evt.value == HARD_BRAKE) {
-			tripFields.vehicle_events.each {
-				if (it.type=='hard_brake') {
-					eventCreatedAt=formatDateInLocalTime(it.created_at)
-					msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-					send msg
-				}     
+	        
+			if (it.type=='hard_brake') {
+				eventCreatedAt=formatDateInLocalTime(it.created_at)
+				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				send msg            
 			}                
-		}        
-		if (evt.value == HARD_ACCEL) {
-			tripFields.vehicle_events.each {
-				if (it.type=='hard_accel') {
-					eventCreatedAt=formatDateInLocalTime(it.created_at)
-					msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-					send msg
-				}
-			}                
-		}        
-	}
-	// save the last evt value for check later    
-	state.eventType=evt.value    
+			if (it.type=='hard_accel') {
+				eventCreatedAt=formatDateInLocalTime(it.created_at)
+				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				send msg            
+			}
+		} /* end each vehicle Event */       
+	} /* end each Trip List */
 }
 
 private def getSpeed(value) {
@@ -353,6 +395,9 @@ def checkRunningIntHr() {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
     
+	if (detailedNotif == 'true') {
+		get_all_detailed_trips_info()
+	}
 	scheduleJobs()
 
 }
@@ -383,6 +428,9 @@ def checkRunningIntMin() {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
     
+	if (detailedNotif == 'true') {
+		get_all_detailed_trips_info()
+	}
 
 	def rainCheck = checkRainyWeather()
 	def weather = weatherStation?.currentWeather
