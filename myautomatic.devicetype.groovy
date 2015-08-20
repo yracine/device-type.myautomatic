@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.1
+ *  Version 1.2
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -914,7 +914,7 @@ private def doRequest(uri, args, type, success) {
 	]
 	try {
 		if (settings.trace) {
-//			sendEvent name: "verboseTrace", value: "doRequest>token= ${data.auth.access_token}"
+			sendEvent name: "verboseTrace", value: "doRequest>token= ${data.auth.access_token}"
 			sendEvent name: "verboseTrace", value:
 				"doRequest>about to ${type} with uri ${params.uri}, args= ${args}"
 				log.debug "doRequest> ${type}> uri ${params.uri}, args= ${args}"
@@ -1172,7 +1172,7 @@ private String formatDateInLocalTime(dateInString) {
 	return dateInLocalTime
 }
 // 	vehicleId - Id of the vehicle, by default the current one  
-//	tripId - Id of the trip, by default, all trips are selected 
+//	tripId - Id of the trip, could be a list of trips separated by commas, by default, all trips are selected 
 //	startDateTime - start timestamp for the query
 //	endDateTime - end timestamp for the query
 //	eventTimestamp - event timestamp for generating events (ex. hard acceleration, hard brake, speeding, etc.)
@@ -1185,7 +1185,7 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 	long totalHardAccels=0, totalHardBrakes=0, totalScoreSpeeding=0, totalScoreEvents=0
 	float tripsAvgDistanceM=0,tripsAvgDurationS,tripsAvgCostUsd=0,tripsAvgFuelVolumeL= 0
 	float tripsAvgAverageKmpl=0,tripsAvgScoreSpeeding=0,tripsAvgScoreEvents=0
-
+    
 	int nbTrips=0
 	def bodyReq=""
 	def id    
@@ -1196,8 +1196,8 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 	vehicleId= determine_vehicle_id(vehicleId) 	    
 
 	if (tripId) {
-		bodyReq = "${tripId}/" 
-	}        
+		bodyReq = tripId + '/'
+	}    
 //	Set the limit to 250 trips per page.    
 	bodyReq=bodyReq + "?vehicle=" + vehicleId + "&limit=250"
 
@@ -1207,19 +1207,29 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 		if (endDateTime) {
 			endTimestamp = (endDateTime.getTime()/1000).toDouble().round()
 			bodyReq = bodyReq+ "&ended_at__lte=" + endTimestamp.intValue()     	
-		}    
-
-	}    
+		}
+	}            
+	if (settings.trace) {
+		log.debug "getTrips>bodyReq=${bodyReq}, tripId=$tripId" 
+	}				                
+	    
 	int j=0        
 	def statusCode=true
 	while ((statusCode!= AUTOMATIC_SUCCESS) && (j++ <2)) { // retries once if api call fails
 		api('trips', bodyReq) {resp->
 			statusCode = resp.status        
 			if (statusCode == AUTOMATIC_SUCCESS) {
- 				data?.trips=resp.data
 				if (settings.trace) {
+					log.debug "getTrips>resp.data=${resp.data}" 
 					log.debug "getTrips>metadata=${data.trips._metadata}" 
 				}				                
+				if (!resp.data._metadata) {
+					// just one trip was found                
+					data?.trips?.results[0]=resp.data
+					data.trips?._metadata?.count=1                    
+				} else {
+					data?.trips=resp.data
+				}                    
                 
 				data.trips.results.each {
 					nbTrips++                    
@@ -1318,20 +1328,20 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 		tripsDataJson = new groovy.json.JsonBuilder(tripsData)
 	}
 	
-	sendEvent(name: "tripsList", value: "${tripsList.toString()}")
+	sendEvent(name: "tripsList", value: "${tripsList}")
 	sendEvent(name: "totalDistanceMInPeriod", value: "${totalDistanceM.toString()}")
 	sendEvent(name: "totalFuelVolumeLInPeriod", value: "${totalFuelVolumeL.toString()}")
 	sendEvent(name: "totalCostUsdInPeriod", value: "${totalCostUsd.toString()}")
 	sendEvent(name: "totalDurationSInPeriod", value: "${totalDurationS.toString()}")
 	sendEvent(name: "totalAverageKmplInPeriod", value: "${totalAverageKmpl.toString()}")
-	sendEvent(name: "totalNbTripsInPeriod", value: "${data.trips._metadata.count.toString()}")
+	sendEvent(name: "totalNbTripsInPeriod", value: "${nbTrips.toString()}")
 	sendEvent(name: "totalHardAccelsInPeriod", value:"${totalHardAccels.toString()}")
 	sendEvent(name: "totalHardBrakesInPeriod", value: "${totalHardBrakes.toString()}")
 	sendEvent(name: "totalScoreSpeedingInPeriod", value: "${totalScoreSpeeding.toString()}")
 	sendEvent(name: "totalScoreEventsInPeriod", value: "${totalScoreEvents.toString()}")
 
 	// Process Next Page
-	if (data.trips._metadata.next) {
+	if (data?.trips?._metadata?.next) {
 		if (settings.trace) {
 			log.debug "getTrips>vehicleId=${vehicleId},nextPage=${data.trips._metadata.next}"
 		}                
