@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.1\n\n" +
+			paragraph "Version 1.2\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -395,9 +395,6 @@ def checkRunningIntHr() {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
     
-	if (detailedNotif == 'true') {
-		get_all_detailed_trips_info()
-	}
 	scheduleJobs()
 
 }
@@ -428,10 +425,6 @@ def checkRunningIntMin() {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
     
-	if (detailedNotif == 'true') {
-		get_all_detailed_trips_info()
-	}
-
 	def rainCheck = checkRainyWeather()
 	def weather = weatherStation?.currentWeather
 	if ((rainCheck != 'wet') && (rainCheck != 'snow' ) && (!weather?.toUpperCase().contains("RAIN") && (!weather?.toUpperCase().contains("SNOW")))) {  
