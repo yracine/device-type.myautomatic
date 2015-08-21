@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.2
+ *  Version 1.3
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1162,13 +1162,19 @@ private def formatDate(dateString) {
 	return aDate
 }
 
-private String formatDateInLocalTime(dateInString) {
+private String formatDateInLocalTime(dateInString, timezone='') {
+	def myTimezone
 	if ((dateInString==null) || (dateInString.trim()=="")) {
 		return ""    
 	}    
 	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 	Date ISODate = ISODateFormat.parse(dateInString)
-	String dateInLocalTime = ISODate.format("yyyy-MM-dd HH:mm", location.timeZone)
+	if (timezone) {
+		myTimezone= TimeZone.getTimeZone(timezone)    
+	} else {
+		myTimezone=  location.timeZone  
+	}    
+	String dateInLocalTime = ISODate.format("yyyy-MM-dd HH:mm",myTimezone )
 	return dateInLocalTime
 }
 // 	vehicleId - Id of the vehicle, by default the current one  
@@ -1231,28 +1237,28 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 					data?.trips=resp.data
 				}                    
                 
-				data.trips.results.each {
+				for (i in 0..data.trips._metadata.count -1) {
 					nbTrips++                    
-					id= it.id
-					def startedAt=it.started_at
-					def endedAt=it.ended_at
-					def distanceM=it.distance_m
-					def durationS=it.duration_s
-					def vehicleURL=it.vehicle
-					def startLocation=it.start_location
-					def startAddress=it.start_address
-					def endLocation=it.end_location
-					def endAddress=it.end_address
-					def startTimezone=it.start_timezone       		
-					def endTimezone=it.end_timezone       		
-					def tags= it.tags       		
-					def fuelCostUsd=it.fuel_cost_usd
-					def fuelVolumeL=it.fuel_volume_l                    
-					def averageKmpl=it.average_kmpl
-					def hardAccels=it.hard_accels
-					def hardBrakes=it.hard_brakes
-					def scoreSpeeding=it.score_speeding
-					def scoreEvents=it.score_events
+					id= data.trips.results[i].id
+					def startedAt=data.trips.results[i].started_at
+					def endedAt=data.trips.results[i].ended_at
+					def distanceM=data.trips.results[i].distance_m
+					def durationS=data.trips.results[i].duration_s
+					def vehicleURL=data.trips.results[i].vehicle
+					def startLocation=data.trips.results[i].start_location
+					def startAddress=data.trips.results[i].start_address
+					def endLocation=data.trips.results[i].end_location
+					def endAddress=data.trips.results[i].end_address
+					def startTimezone=data.trips.results[i].start_timezone       		
+					def endTimezone=data.trips.results[i].end_timezone       		
+					def tags= data.trips.results[i].tags       		
+					def fuelCostUsd=data.trips.results[i].fuel_cost_usd
+					def fuelVolumeL=data.trips.results[i].fuel_volume_l                    
+					def averageKmpl=data.trips.results[i].average_kmpl
+					def hardAccels=data.trips.results[i].hard_accels
+					def hardBrakes=data.trips.results[i].hard_brakes
+					def scoreSpeeding=data.trips.results[i].score_speeding
+					def scoreEvents=data.trips.results[i].score_events
             
 					if (averageKmpl) {
 						totalAverageKmpl =totalAverageKmpl +averageKmpl.toFloat()                        
@@ -1285,7 +1291,7 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 					if (postData == 'true') {
                     
 						if (data.trips._metadata.count <= MAX_TRIP_DATA) {
-							tripsData << it  // to be transformed into Json later
+							tripsData << data.trips.results[i] // to be transformed into Json later
 						} else {
 							log.error "getTrips>vehicleId=${vehicleId},too much data to post, count=${data.trips._metadata.count} trips, no posting it"
 						}                        
@@ -1293,9 +1299,9 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 					tripsList = tripsList + id + ','
 					if (eventTimestamp) {
 						// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
-						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z')
+						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z', startTimezone )
 						if (startedDate.getTime() > eventTimestamp) {                        
-							generateVehicleEvents(it)
+							generateVehicleEvents(data.trips.results[i])
 						}                            
 					}                        
 					if (settings.trace) {
@@ -1304,16 +1310,16 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 							"endLocation=${endLocation},endAddress=${endAddress},startTimezone=${startTimezone},endTimezone=${endTimezone}," +       		
 							"averageKmpl=${averageKmpl},fuelVolumeL=${fuelVolumeL},fuelCostUsd=${fuelCostUsd}," +
 							"hardAccels=${hardAccels},hardBrakes=${hardBrakes},scoreSpeeding=${scoreSpeeding},scoreEvents=${scoreEvents}\n" +
-							"vehicle_events=${it.vehicle_events}"
+							"vehicle_events=${data.trips.results[i].vehicle_events}"
 						sendEvent name: "verboseTrace", value: "getTrips>tripId=${id},startedAt=${startedAt},endedAt=${endedAt}," +
 							"distanceM=${distanceM},durationS=${durationS},vehicleURL=${vehicleURL},startLocation=${startLocation},startAddress=${startAddress}," +
 							"endLocation=${endLocation},endAddress=${endAddress},startTimezone=${startTimezone},endTimezone=${endTimezone}," +       		
 							"averageKmpl=${averageKmpl},fuelVolumeL=${fuelVolumeL},fuelCostUsd=${fuelCostUsd}," +
 							"hardAccels=${hardAccels},hardBrakes=${hardBrakes},scoreSpeeding=${scoreSpeeding},scoreEvents=${scoreEvents}\n" +
-							"vehicle_events=${it.vehicle_events}"
+							"vehicle_events=${data.trips.results[i].vehicle_events}"
 					}
                         
-				} /* end each */                    
+				} /* end for */                    
 				sendEvent name: "verboseTrace", value:"getTrips>done for vehicleId=${vehicleId}"
 			} else {
 				log.error "getTrips>error=${statusCode.toString()} for vehicleId=${vehicleId}"
@@ -1749,9 +1755,11 @@ def generateEventTripFinished(vehicleId,eventType,tripId,eventFields) {
 		'eventTripCreatedAt': (eventType=='trip:finished')? 
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):'',
 		'eventTripStartedAt':(eventType=='trip:finished')?
-			formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z'):formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z',eventFields.trip.time_zone):
+            formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z',eventFields.start_timezone),
 		'eventTripEndedAt':(eventType=='trip:finished')?
-			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,18) + 'Z'):formatDateInLocalTime(eventFields.ended_at.substring(0,18) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,18) + 'Z',eventFields.trip.time_zone):
+            formatDateInLocalTime(eventFields.ended_at.substring(0,18) + 'Z',eventFields.end_timezone),
 	]
 	String endAddress =  device.currentValue("eventTripEndAddress")
     
@@ -1790,7 +1798,7 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 			milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-			formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z'),
+            formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z',eventFields.start_timezone),
 		'eventTripStartAddress': '',
 		'eventTripEndAddress': '',
 		'eventTripGForce': '',
@@ -1820,7 +1828,7 @@ def generateEventHardAccel(vehicleId,eventType,tripId,eventFields) {
 		'eventTripGForce': eventFields.g_force.toString(),
 		'eventTripCreatedAt': (eventType=='notification:hard_accel')?     
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-			formatDateInLocalTime(eventFields.created_at),
+            formatDateInLocalTime(eventFields.created_at,eventFields.start_timezone),
 		'eventTripStartLocation': '',
 		'eventTripEndLocation': '',
 		'eventTripStartAddress': '',
@@ -1851,7 +1859,7 @@ def generateEventHardBrake(vehicleId,eventType,tripId,eventFields) {
 		'eventTripGForce': eventFields.g_force.toString(),
 		'eventTripCreatedAt': (eventType=='notification:hard_brake')?  
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-			formatDateInLocalTime(eventFields.created_at),
+            formatDateInLocalTime(eventFields.created_at,eventFields.end_timezone),
 		'eventTripStartLocation': '',
 		'eventTripEndLocation': '',
 		'eventTripStartAddress': '',
@@ -1877,7 +1885,7 @@ def generateEventRegionChanged(vehicleId,eventType,tripId,eventFields) {
 		'eventVehicleId': vehicleId,    
 		'eventTripCreatedAt': (eventType=='region:changed')?
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-			formatDateInLocalTime(eventFields.created_at),
+            formatDateInLocalTime(eventFields.created_at,eventFields.end_timezone),
 		'eventTripId': tripId,    
 		'eventTripLocationLat': (eventType=='region:changed')?
 			eventFields.location.lat.toString(): eventFields.lat.toString(),
