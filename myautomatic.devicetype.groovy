@@ -1151,6 +1151,7 @@ void generateMonthlyTripStats(vehicleId) {
     
 }
 private def ISODateFormat(dateString) {
+	def myTimezone
  	SimpleDateFormat ISO8601format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 	def ISOdate = ISO8601format.parse(dateString)
 	return ISOdate
@@ -1299,7 +1300,7 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 					tripsList = tripsList + id + ','
 					if (eventTimestamp) {
 						// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
-						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z', startTimezone )
+						Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z' )
 						if (startedDate.getTime() > eventTimestamp) {                        
 							generateVehicleEvents(data.trips.results[i])
 						}                            
