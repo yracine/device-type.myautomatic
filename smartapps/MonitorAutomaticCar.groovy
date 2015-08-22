@@ -203,7 +203,7 @@ def eventTypeHandler(evt) {
 		}
 	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
-		eventCreatedAt=tripFields.ended_at.toString().substring(0,18)   
+		eventCreatedAt=tripFields.ended_at[0].toString().substring(0,18)   
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
