@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.4
+ *  Version 1.5
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1228,7 +1228,6 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 			if (statusCode == AUTOMATIC_SUCCESS) {
 				if (settings.trace) {
 					log.debug "getTrips>resp.data=${resp.data}" 
-					log.debug "getTrips>metadata=${data.trips._metadata}" 
 				}				                
 				if (!resp.data._metadata) {
 					// just one trip was found                
