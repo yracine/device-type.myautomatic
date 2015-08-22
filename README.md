@@ -144,7 +144,7 @@ Click on it (gear icon at the top right corner) and press refresh several times 
 
 /*******************************************************************************************************************/
 
-<b>8) (optional) After instantiation of MyAutomatic Objects, you can edit its preferences and set your home
+<b>8) (optional) After instantiation of MyAutomatic object, you can edit its preferences and set your home
 address for presence purposes</b>
 
 /*******************************************************************************************************************/
