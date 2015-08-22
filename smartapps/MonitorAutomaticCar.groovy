@@ -204,7 +204,7 @@ def eventTypeHandler(evt) {
 		}
 	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
-		eventCreatedAt= tripFields.ended_at.isCollectionOrArray()?tripFields.ended_at[0]:tripFields.ended_at
+		eventCreatedAt= (tripFields.ended_at instanceof List)?tripFields.ended_at[0]:tripFields.ended_at
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
@@ -436,7 +436,7 @@ def checkRunningIntHr() {
 	if (givenScoreSpeeding) {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
-	get_all_detailed_trips_info()    
+//	get_all_detailed_trips_info()    
 	scheduleJobs()
 
 }
