@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.4\n\n" +
+			paragraph "Version 1.5\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -147,7 +147,6 @@ def appTouch(evt) {
 
 
 def eventTypeHandler(evt) {
-	def deltaSeconds = 120
 	def HARD_ACCEL="Hard Acceleration"
 	def HARD_BRAKE="Hard Brake"
 	def SPEEDING="Speed Exceeded Threshold"
@@ -166,7 +165,7 @@ def eventTypeHandler(evt) {
 	def tripId= vehicle.currentEventTripId
 	log.debug "eventTypeHandler>eventTripId = $tripId"
 	vehicle.getTrips("",tripId,null,null,null,'true')
-	String tripData = vehicle.currentTripsData.toString()
+	String tripData = vehicle.currentTripsData
 	if (!tripData) {
 		return        
 	}     
@@ -177,41 +176,34 @@ def eventTypeHandler(evt) {
 		log.error("eventTypeHandler>tripData not formatted correctly or empty (exception $e), exiting")
 		return
 	} 
-	String startAddress=tripFields.start_address.name.toString().minus('[').minus(']')
-	String endAddress=tripFields.end_address.name.toString().minus('[').minus(']')        
-	if (evt.value == SPEEDING) {
-		tripFields.vehicle_events.each {
-			if (it.type.contains('speeding')) {
-				def speed =it.velocity_kph.toString().minus('[').minus(']')            
-				if (speed) {
-					float speedValue=getSpeed(speed)
-					eventCreatedAt=it.started_at.toString().substring(1,20)   
-					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-					send msg
-				}                    
+	String startAddress=tripFields?.start_address.name
+	String endAddress=tripFields?.end_address.name
+	def vehicleEvents= tripFields?.vehicle_events[0]
+
+	vehicleEvents.each {
+
+		if ((it.type=='speeding') && (evt.value==SPEEDING)) {
+			def speed =it.velocity_kph            
+			if (speed) {
+				float speedValue=getSpeed(speed)
+				eventCreatedAt=it.started_at.toString().substring(0,18)  
+				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				send msg
 			}                
 		}            
-	}        
-	if (evt.value == HARD_BRAKE) {
-		tripFields.vehicle_events.each {
-			if (it.type.contains('hard_brake')) {
-				eventCreatedAt=it.created_at.toString().substring(1,20)   
-				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				send msg
-			}     
-		}                
-	}        
-	if (evt.value == HARD_ACCEL) {
-		tripFields.vehicle_events.each {
-			if (it.type.contains('hard_accel')) {
-				eventCreatedAt=it.created_at.toString().substring(1,20)   
-				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-				send msg
-			}
-		}                
-	}        
+		if ((it.type=='hard_brake') && (evt.value == HARD_BRAKE)) {
+			eventCreatedAt=it.created_at.toString().substring(0,18)   
+			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+			send msg
+		}     
+		if ((it.type == 'hard_accel') && (evt.value == HARD_ACCEL)) {
+			eventCreatedAt=it.created_at.toString().substring(0,18)   
+			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+			send msg
+		}
+	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
-		eventCreatedAt=tripFields.ended_at.toString().substring(1,20)   
+		eventCreatedAt=tripFields.ended_at.toString().substring(0,18)   
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
@@ -236,7 +228,7 @@ private def get_all_detailed_trips_info() {
 	}
 	vehicle.getTrips("","", startDate,endDate, null, 'true')
 	def currentTripList = vehicle.currentTripsList
-	def tripFields    
+	def tripFields =null   
 	if (!currentTripList) {
 		log.debug "get_all_detailed_trips_info> empty tripList exiting"
 		return    	
@@ -248,28 +240,30 @@ private def get_all_detailed_trips_info() {
 		String tripId = it
 		log.debug "get_all_detailed_trips_info> tripId= $tripId"
 		vehicle.getTrips("",tripId,null,null,null,'true')
-		String tripData = vehicle.currentTripsData.toString()
+		String tripData = vehicle.currentTripsData
 		if (!tripData) {
 			return        
 		}     
 		try {
 			tripFields = new JsonSlurper().parseText(tripData)   
-//			log.debug "get_all_detailed_trips_info>tripFields = $tripFields"
 			log.debug "get_all_detailed_trips_info>tripFields.vehicle_events = $tripFields.vehicle_events"
 		} catch (e) {
 			log.error("get_all_detailed_trips_info>tripData not formatted correctly or empty (exception $e), exiting")
 			return
 		} 
-		String startAddress=tripFields.start_address.name.toString().minus('[').minus(']')
-		String endAddress=tripFields.end_address.name.toString().minus('[').minus(']')        
+		String startAddress=tripFields.start_address.name
+		String endAddress=tripFields.end_address.name        
 		String eventCreatedAt
-		tripFields.vehicle_events.each {
-			String type = it.type.toString().minus('[').minus(']')        
+		def vehicleEvents= tripFields.vehicle_events[0]
+        
+		log.debug "get_all_detailed_trips_info>parsed vehicleEvents = $vehicleEvents"
+		vehicleEvents.each {
+			def type = it.type        
 			log.debug ("event type= ${type}, startAddress: ${startAddress}, endAddress=${endAddress}")
 			if (type == 'speeding') {
-				def speed =it.velocity_kph.toString().minus('[').minus(']')            
+				def speed =it.velocity_kph            
 				float speedValue=getSpeed(speed)
-				eventCreatedAt=it.started_at.toString().substring(1,20)   
+				eventCreatedAt=it.started_at   
 				log.debug ("event startedAt: ${it.started_at}, timezone=${tripFields.end_timezone}")
 				def msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg            
@@ -277,12 +271,12 @@ private def get_all_detailed_trips_info() {
 	        
 			if (type =='hard_brake') {
 				log.debug ("event createdAt: ${it.created_at}, timezone=${tripFields.end_timezone}")
-				eventCreatedAt=it.created_at.toString().substring(1,20)   
+				eventCreatedAt=it.created_at   
 				def msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 				send msg            
 			}                
 			if (type=='hard_accel') {
-				eventCreatedAt=it.created_at.toString().substring(1,20)   
+				eventCreatedAt=it.created_at   
 				log.debug ("event createdAt: ${it.created_at}, timezone=${tripFields.end_timezone}")
 				def msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg            
