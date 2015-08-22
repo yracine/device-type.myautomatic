@@ -187,24 +187,26 @@ def eventTypeHandler(evt) {
 			def speed =it.velocity_kph            
 			if (speed) {
 				float speedValue=getSpeed(speed)
-				eventCreatedAt=it.started_at
+				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,20))   
 				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg
 			}                
 		}            
 		if ((it.type=='hard_brake') && (evt.value == HARD_BRAKE)) {
-			eventCreatedAt=it.created_at
+			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 			send msg
 		}     
 		if ((it.type == 'hard_accel') && (evt.value == HARD_ACCEL)) {
-			eventCreatedAt=it.created_at   
+			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 			send msg
 		}
 	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
-		eventCreatedAt= (tripFields.ended_at instanceof List)?tripFields.ended_at[0]:tripFields.ended_at
+		eventCreatedAt= (tripFields.ended_at instanceof List) ?
+        	formatDateInLocalTime(it.ended_at[0].substring(0,20))   :
+        	formatDateInLocalTime(it.ended_at.substring(0,20))   
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
@@ -266,7 +268,7 @@ private def get_all_detailed_trips_info() {
 			if (type == 'speeding') {
 				def speed =it.velocity_kph            
 				float speedValue=getSpeed(speed)
-				eventCreatedAt=it.started_at   
+				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,20))   
 				log.debug ("event startedAt: ${it.started_at}, timezone=${tripFields.end_timezone}")
 				def msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg            
@@ -274,12 +276,12 @@ private def get_all_detailed_trips_info() {
 	        
 			if (type =='hard_brake') {
 				log.debug ("event createdAt: ${it.created_at}, timezone=${tripFields.end_timezone}")
-				eventCreatedAt=it.created_at   
+				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
 				def msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 				send msg            
 			}                
 			if (type=='hard_accel') {
-				eventCreatedAt=it.created_at   
+				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
 				log.debug ("event createdAt: ${it.created_at}, timezone=${tripFields.end_timezone}")
 				def msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg            
