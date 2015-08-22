@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.5\n\n" +
+			paragraph "Version 1.6\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -178,32 +178,33 @@ def eventTypeHandler(evt) {
 	} 
 	String startAddress=tripFields?.start_address.name
 	String endAddress=tripFields?.end_address.name
-	def vehicleEvents= tripFields?.vehicle_events[0]
-
+	def vehicleEvents=(tripFields?.vehicle_events instanceof List)?    
+		tripFields?.vehicle_events[0]:
+		tripFields?.vehicle_events
 	vehicleEvents.each {
 
 		if ((it.type=='speeding') && (evt.value==SPEEDING)) {
 			def speed =it.velocity_kph            
 			if (speed) {
 				float speedValue=getSpeed(speed)
-				eventCreatedAt=it.started_at.toString().substring(0,18)  
+				eventCreatedAt=it.started_at
 				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg
 			}                
 		}            
 		if ((it.type=='hard_brake') && (evt.value == HARD_BRAKE)) {
-			eventCreatedAt=it.created_at.toString().substring(0,18)   
+			eventCreatedAt=it.created_at
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 			send msg
 		}     
 		if ((it.type == 'hard_accel') && (evt.value == HARD_ACCEL)) {
-			eventCreatedAt=it.created_at.toString().substring(0,18)   
+			eventCreatedAt=it.created_at   
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 			send msg
 		}
 	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
-		eventCreatedAt=tripFields.ended_at[0].toString().substring(0,18)   
+		eventCreatedAt= tripFields.ended_at.isCollectionOrArray()?tripFields.ended_at[0]:tripFields.ended_at
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
@@ -254,7 +255,9 @@ private def get_all_detailed_trips_info() {
 		String startAddress=tripFields.start_address.name
 		String endAddress=tripFields.end_address.name        
 		String eventCreatedAt
-		def vehicleEvents= tripFields.vehicle_events[0]
+		def vehicleEvents=(tripFields?.vehicle_events instanceof List)?    
+			tripFields?.vehicle_events[0]:
+			tripFields?.vehicle_events
         
 		log.debug "get_all_detailed_trips_info>parsed vehicleEvents = $vehicleEvents"
 		vehicleEvents.each {
@@ -433,7 +436,7 @@ def checkRunningIntHr() {
 	if (givenScoreSpeeding) {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
-//	get_all_detailed_trips_info()    
+	get_all_detailed_trips_info()    
 	scheduleJobs()
 
 }
@@ -467,7 +470,7 @@ def checkRunningIntMin() {
 	def rainCheck = checkRainyWeather()
 	def weather = weatherStation?.currentWeather
 	if ((rainCheck != 'wet') && (rainCheck != 'snow' ) && (!weather?.toUpperCase().contains("RAIN") && (!weather?.toUpperCase().contains("SNOW")))) {  
-    		// unschedule special monitoring if not raining or snowing
+		// unschedule special monitoring if not raining or snowing
 		scheduleJobs()
 	}
 }
