@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.5
+ *  Version 1.6
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1164,20 +1164,18 @@ private def formatDate(dateString) {
 }
 
 private String formatDateInLocalTime(dateInString, timezone='') {
-	def myTimezone
+	def myTimezone=(timezone)?TimeZone.getTimeZone(timezone):location.timeZone 
 	if ((dateInString==null) || (dateInString.trim()=="")) {
-		return ""    
+		return (new Date().format("yyyy-MM-dd HH:mm:ss", myTimezone))
 	}    
 	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 	Date ISODate = ISODateFormat.parse(dateInString)
-	if (timezone) {
-		myTimezone= TimeZone.getTimeZone(timezone)    
-	} else {
-		myTimezone=  location.timeZone  
-	}    
-	String dateInLocalTime = ISODate.format("yyyy-MM-dd HH:mm",myTimezone )
+	String dateInLocalTime =new Date(ISODate.getTime()).format("yyyy-MM-dd HH:mm:ss", myTimezone)
+	log.debug("formatDateInLocalTime>dateInString=$dateInString, dateInLocalTime=$dateInLocalTime")    
 	return dateInLocalTime
 }
+
+
 // 	vehicleId - Id of the vehicle, by default the current one  
 //	tripId - Id of the trip, could be a list of trips separated by commas, by default, all trips are selected 
 //	startDateTime - start timestamp for the query
@@ -1299,7 +1297,7 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 						tripsList = tripsList + id + ','
 						if (eventTimestamp) {
 							// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
-							Date startedDate=ISODateFormat(startedAt.substring(0,18) + 'Z' )
+							Date startedDate=ISODateFormat(startedAt.substring(0,19) + 'Z' )
 							if (startedDate.getTime() > eventTimestamp) {                        
 								generateVehicleEvents(data.trips.results[i])
 							}                            
@@ -1755,11 +1753,11 @@ def generateEventTripFinished(vehicleId,eventType,tripId,eventFields) {
 		'eventTripCreatedAt': (eventType=='trip:finished')? 
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):'',
 		'eventTripStartedAt':(eventType=='trip:finished')?
-			formatDateInLocalTime(eventFields.trip.started_at.substring(0,18) + 'Z'):
-            formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.started_at.substring(0,20) + 'Z'):
+            formatDateInLocalTime(eventFields.started_at.substring(0,20) + 'Z'),
 		'eventTripEndedAt':(eventType=='trip:finished')?
-			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,18) + 'Z'):
-            formatDateInLocalTime(eventFields.ended_at.substring(0,18) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,20) + 'Z'):
+            formatDateInLocalTime(eventFields.ended_at.substring(0,20) + 'Z'),
 	]
 	String endAddress =  device.currentValue("eventTripEndAddress")
     
@@ -1797,8 +1795,8 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 		'eventTripSpeedKPH': (eventType=='notification:speeding')? 
 			milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
-			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
-			formatDateInLocalTime(eventFields.started_at.substring(0,18) + 'Z'),
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):
+			formatDateInLocalTime(eventFields.started_at.substring(0,20) + 'Z'),
 		'eventTripStartAddress': '',
 		'eventTripEndAddress': '',
 		'eventTripGForce': '',
@@ -1827,7 +1825,7 @@ def generateEventHardAccel(vehicleId,eventType,tripId,eventFields) {
 			eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripGForce': eventFields.g_force.toString(),
 		'eventTripCreatedAt': (eventType=='notification:hard_accel')?     
-			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):
             formatDateInLocalTime(eventFields.created_at),
 		'eventTripStartLocation': '',
 		'eventTripEndLocation': '',
@@ -1858,7 +1856,7 @@ def generateEventHardBrake(vehicleId,eventType,tripId,eventFields) {
 			eventFields.location.lon.toString():eventFields.lon.toString(),
 		'eventTripGForce': eventFields.g_force.toString(),
 		'eventTripCreatedAt': (eventType=='notification:hard_brake')?  
-			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(eventFields.time_zone)):
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):
             formatDateInLocalTime(eventFields.created_at),
 		'eventTripStartLocation': '',
 		'eventTripEndLocation': '',
@@ -1884,7 +1882,7 @@ def generateEventRegionChanged(vehicleId,eventType,tripId,eventFields) {
 		'eventType': type,    
 		'eventVehicleId': vehicleId,    
 		'eventTripCreatedAt': (eventType=='region:changed')?
-			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss",  TimeZone.getTimeZone(eventFields.time_zone)):
+			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss",  location.timezone):
             formatDateInLocalTime(eventFields.created_at),
 		'eventTripId': tripId,    
 		'eventTripLocationLat': (eventType=='region:changed')?
@@ -1916,7 +1914,7 @@ def generateEventRegionChanged(vehicleId,eventType,tripId,eventFields) {
 // 	eventFields - event record as generated by Automatic for RT events or in vehicle_events field when calling getTrip() 
 def generateEventMilOnOff(vehicleId,eventType,eventFields) {
 
-	String eventCreatedAt = new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss",  TimeZone.getTimeZone(eventFields.time_zone))        
+	String eventCreatedAt = new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss",  location.timezone)        
 	def type = getEventName(eventType)
 	
 	eventsFields.dtcs.each {
