@@ -181,8 +181,8 @@ def eventTypeHandler(evt) {
 	def vehicleEvents=(tripFields?.vehicle_events instanceof List)?    
 		tripFields?.vehicle_events[0]:
 		tripFields?.vehicle_events
-	vehicleEvents.each {
 
+	vehicleEvents.each {
 		if ((it.type=='speeding') && (evt.value==SPEEDING)) {
 			def speed =it.velocity_kph            
 			if (speed) {
