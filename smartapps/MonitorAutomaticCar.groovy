@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.6\n\n" +
+			paragraph "Version 1.7\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -185,34 +185,42 @@ def eventTypeHandler(evt) {
 	vehicleEvents.each {
 		if ((it.type=='speeding') && (evt.value==SPEEDING)) {
 			def speed =it.velocity_kph            
+			eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,19) + 'Z')   
+			log.debug ("event createdAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt")
 			if (speed) {
 				float speedValue=getSpeed(speed)
-				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,20))   
-				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (speed > ${speedValue.round()} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg
-			}                
+			} else {
+				msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+			}
+			send msg            
 		}            
 		if ((it.type=='hard_brake') && (evt.value == HARD_BRAKE)) {
-			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
+			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19) + 'Z')   
+			log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt")
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 			send msg
 		}     
 		if ((it.type == 'hard_accel') && (evt.value == HARD_ACCEL)) {
-			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
+			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
+			log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt")
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 			send msg
 		}
 	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
 		eventCreatedAt= (tripFields.ended_at instanceof List) ?
-        		formatDateInLocalTime(it.ended_at[0].substring(0,20))   :
-        		formatDateInLocalTime(it.ended_at.substring(0,20))   
+			formatDateInLocalTime(tripFields.ended_at[0].substring(0,19)+ 'Z')   :
+			formatDateInLocalTime(tripFields.ended_at.substring(0,19)+ 'Z')   
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
 }
 
 private def get_all_detailed_trips_info() {
+	def msg
+    
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
 	String timezone = new Date().format("zzz", location.timeZone)
 	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
@@ -223,7 +231,7 @@ private def get_all_detailed_trips_info() {
 
 //	Generate stats for the past week
 
-	Date startDate = (endDate -2)
+	Date startDate = (endDate -7)
 
 	if (settings.trace) {
 		log.debug("get_all_detailed_trips_info>past week (last 7 days): startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
@@ -266,24 +274,28 @@ private def get_all_detailed_trips_info() {
 			def type = it.type        
 			log.debug ("event type= ${type}, startAddress: ${startAddress}, endAddress=${endAddress}")
 			if (type == 'speeding') {
-				def speed =it.velocity_kph            
-				float speedValue=getSpeed(speed)
-				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,20))   
-				log.debug ("event startedAt: ${it.started_at}, timezone=${tripFields.end_timezone}")
-				def msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (${speedValue} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-				send msg            
+				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,19)+ 'Z')   
+				log.debug ("event startedAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
+				def speed =it.velocity_kph
+				if (speed) {                
+					float speedValue=getSpeed(speed)
+					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (speed> ${speedValue.round()} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				} else {
+					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				}
+				send msg
 			}            
 	        
 			if (type =='hard_brake') {
-				log.debug ("event createdAt: ${it.created_at}, timezone=${tripFields.end_timezone}")
-				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
-				def msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
+				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
+				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 				send msg            
 			}                
 			if (type=='hard_accel') {
-				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,20))   
-				log.debug ("event createdAt: ${it.created_at}, timezone=${tripFields.end_timezone}")
-				def msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
+				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
+				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
+				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 				send msg            
 			}
 		} /* end each vehicle Event */       
@@ -324,20 +336,17 @@ private def kmToMiles(distance) {
 }
 
 private String formatDateInLocalTime(dateInString, timezone='') {
-	def myTimezone
+	def myTimezone=(timezone)?TimeZone.getTimeZone(timezone):location.timeZone 
 	if ((dateInString==null) || (dateInString.trim()=="")) {
-		return ""    
+		return (new Date().format("yyyy-MM-dd HH:mm:ss", myTimezone))
 	}    
 	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 	Date ISODate = ISODateFormat.parse(dateInString)
-	if (timezone) {
-		myTimezone= TimeZone.getTimeZone(timezone)    
-	} else {
-		myTimezone=  location.timeZone  
-	}    
-	String dateInLocalTime = ISODate.format("yyyy-MM-dd HH:mm",myTimezone )
+	String dateInLocalTime =new Date(ISODate.getTime()).format("yyyy-MM-dd HH:mm:ss", myTimezone)
+	log.debug("formatDateInLocalTime>dateInString=$dateInString, dateInLocalTime=$dateInLocalTime")    
 	return dateInLocalTime
 }
+
 
 private def formatDate(dateString) {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm zzz")
@@ -407,7 +416,7 @@ private boolean check_score(scoreType, minScoreThreshold) {
 		send msg
 		scoreTooLow=true
 	} else {
-		msg = "MonitorAutomaticCar>${vehicle} vehicle's ${scoreType} is currently higher than (or equal to) your minimum threshold (${minScoreThreshold})"
+		msg = "MonitorAutomaticCar>${vehicle} vehicle's ${scoreType} is currently >= your minimum threshold (${minScoreThreshold})"
 		log.debug msg
 		if (detailedNotif == 'true') {
 			send msg
