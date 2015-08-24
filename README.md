@@ -184,3 +184,8 @@ See the virtual weather station at
 https://github.com/yracine/device-type.weatherstation
 
 
+<b>b) automaticReport</b>
+
+The smartapp allows a ST user to generate daily reports on Automatic Connected vehicle's events.
+
+
