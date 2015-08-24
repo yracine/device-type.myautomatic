@@ -1754,10 +1754,10 @@ def generateEventTripFinished(vehicleId,eventType,tripId,eventFields) {
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):'',
 		'eventTripStartedAt':(eventType=='trip:finished')?
 			formatDateInLocalTime(eventFields.trip.started_at.substring(0,19) + 'Z'):
-            formatDateInLocalTime(eventFields.started_at.substring(0,19) + 'Z'),
+			formatDateInLocalTime(eventFields.started_at.substring(0,19) + 'Z'),
 		'eventTripEndedAt':(eventType=='trip:finished')?
 			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,19) + 'Z'):
-            formatDateInLocalTime(eventFields.ended_at.substring(0,19) + 'Z'),
+			formatDateInLocalTime(eventFields.ended_at.substring(0,19) + 'Z'),
 	]
 	String endAddress =  device.currentValue("eventTripEndAddress")
     
