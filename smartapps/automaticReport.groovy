@@ -99,14 +99,14 @@ private def generateReport() {
 	if (settings.givenStartDate) { 
 		def givenStartTime=(settings.givenStartTime) ?:"00:00"    
 		dateTime = givenStartDate + " " + givenStartTime + " " + timezone
-		log.debug( "Start datetime= ${dateTime}" )
+		log.debug( "generateReport>start datetime= ${dateTime}" )
  		startDate = formatDate(dateTime)
 	}
     
 	if (settings.givenEndDate) {
 		def givenEndTime=(settings.givenEndTime) ?:"00:00"    
 		dateTime = givenEndDate  + " " + givenEndTime + " " + timezone
-		log.debug( "End datetime= ${dateTime}" )
+		log.debug( "generateReport>end datetime= ${dateTime}" )
 		endDate = formatDate(dateTime)
 	}
 
