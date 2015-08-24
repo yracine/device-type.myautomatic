@@ -171,7 +171,6 @@ def eventTypeHandler(evt) {
 	}     
 	try {
 		tripFields = new JsonSlurper().parseText(tripData)   
-		log.debug "eventTypeHandler>tripFields = $tripFields"
 	} catch (e) {
 		log.error("eventTypeHandler>tripData not formatted correctly or empty (exception $e), exiting")
 		return
@@ -218,89 +217,6 @@ def eventTypeHandler(evt) {
 	}        
 }
 
-private def get_all_detailed_trips_info() {
-	def msg
-    
-	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
-	String timezone = new Date().format("zzz", location.timeZone)
-	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
-	if (settings.trace) {
-		log.debug("get_all_detailed_trips_info>date at Midnight in UTC= ${dateAtMidnight}")
-	}
-	Date endDate = formatDate(dateAtMidnight) 
-
-//	Generate stats for the past week
-
-	Date startDate = (endDate -7)
-
-	if (settings.trace) {
-		log.debug("get_all_detailed_trips_info>past week (last 7 days): startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
-			"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
-	}
-	vehicle.getTrips("","", startDate,endDate, null, 'true')
-	def currentTripList = vehicle.currentTripsList
-	def tripFields =null   
-	if (!currentTripList) {
-		log.debug "get_all_detailed_trips_info> empty tripList exiting"
-		return    	
-	} 
-	def tripList=currentTripList.toString().split(",")    
-	log.debug "get_all_detailed_trips_info> tripList= $tripList"
-
-	tripList.each {
-		String tripId = it
-		log.debug "get_all_detailed_trips_info> tripId= $tripId"
-		vehicle.getTrips("",tripId,null,null,null,'true')
-		String tripData = vehicle.currentTripsData
-		if (!tripData) {
-			return        
-		}     
-		try {
-			tripFields = new JsonSlurper().parseText(tripData)   
-			log.debug "get_all_detailed_trips_info>tripFields.vehicle_events = $tripFields.vehicle_events"
-		} catch (e) {
-			log.error("get_all_detailed_trips_info>tripData not formatted correctly or empty (exception $e), exiting")
-			return
-		} 
-		String startAddress=tripFields.start_address.name
-		String endAddress=tripFields.end_address.name        
-		String eventCreatedAt
-		def vehicleEvents=(tripFields?.vehicle_events instanceof List)?    
-			tripFields?.vehicle_events[0]:
-			tripFields?.vehicle_events
-        
-		log.debug "get_all_detailed_trips_info>parsed vehicleEvents = $vehicleEvents"
-		vehicleEvents.each {
-			def type = it.type        
-			log.debug ("event type= ${type}, startAddress: ${startAddress}, endAddress=${endAddress}")
-			if (type == 'speeding') {
-				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,19)+ 'Z')   
-				log.debug ("event startedAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				def speed =it.velocity_kph
-				if (speed) {                
-					float speedValue=getSpeed(speed)
-					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding (speed> ${speedValue.round()} ${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-				} else {
-					msg = "MonitorAutomaticCar>${vehicle} vehicle was speeding at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-				}
-				send msg
-			}            
-	        
-			if (type =='hard_brake') {
-				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
-				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				send msg            
-			}                
-			if (type=='hard_accel') {
-				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
-				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${type} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
-				send msg            
-			}
-		} /* end each vehicle Event */       
-	} /* end each Trip List */
-}
 
 private def getSpeed(value) {
 	if (!value) {
@@ -447,7 +363,6 @@ def checkRunningIntHr() {
 	if (givenScoreSpeeding) {
 		check_score("scoreSpeeding",givenScoreSpeeding)		    	
 	}    
-//	get_all_detailed_trips_info()    
 	scheduleJobs()
 
 }
