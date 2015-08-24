@@ -22,7 +22,7 @@ definition(
     name: "automaticReport",
     namespace: "yracine",
     author: "Yves Racine",
-    description: "This smartapp allows a ST user to generate daily or weekly report on their Automatic Connected vehicle",
+    description: "This smartapp allows a ST user to generate daily Reports on their Automatic Connected vehicle",
     category: "My Apps",
 	iconUrl: "https://www.automatic.com/_assets/images/favicons/favicon-32x32-3df4de42.png",
 	iconX2Url: "https://www.automatic.com/_assets/images/favicons/favicon-96x96-06fd8c85.png",
@@ -37,7 +37,7 @@ preferences {
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
 		description: "http://github.com/yracine"	}
 
-	section("Generate daily or weekly report (maximum 7 days) for this Automatic Connected Vehicle") {
+	section("Generate daily report for this Automatic Connected Vehicle") {
 		input "automatic", "device.myAutomaticDevice", title: "Automatic?"
 
 	}
@@ -56,9 +56,6 @@ preferences {
 	section( "Notifications" ) {
 		input "sendPushMessage", "enum", title: "Send a push notification?", metadata:[values:["Yes", "No"]], required: false
 		input "phoneNumber", "phone", title: "Send a text message?", required: false
-    }
-	section("Detailed Notifications") {
-		input "detailedNotif", "Boolean", title: "Detailed Notifications?",metadata:[values:["true", "false"]], required:false
     }
     
 }
@@ -159,7 +156,7 @@ private def generateReport() {
 				def speed =it.velocity_kph
 				float speedValue=getSpeed(speed)
 				msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
-                	"start Trip Distance=${startPos.round()}${getDistanceScale()},end Trip Distance=${endPos.round()}${getDistanceScale()}"
+					"start Trip Distance=${startPos.round()}${getDistanceScale()},end Trip Distance=${endPos.round()}${getDistanceScale()}"
 				send msg
 			}            
 	        
