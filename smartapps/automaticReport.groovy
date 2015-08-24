@@ -92,7 +92,7 @@ private def generateReport() {
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
 	String timezone = new Date().format("zzz", location.timeZone)
 	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
-    log.debug("generateReport>date at Midnight in UTC= ${dateAtMidnight}")
+	log.debug("generateReport>date at Midnight in UTC= ${dateAtMidnight}")
 	Date endDate = formatDate(dateAtMidnight) 
 	Date startDate = endDate -1
     
@@ -103,7 +103,7 @@ private def generateReport() {
  		startDate = formatDate(dateTime)
 	}
     
-    if (settings.givenEndDate) {
+	if (settings.givenEndDate) {
 		def givenEndTime=(settings.givenEndTime) ?:"00:00"    
 		dateTime = givenEndDate  + " " + givenEndTime + " " + timezone
 		log.debug( "End datetime= ${dateTime}" )
