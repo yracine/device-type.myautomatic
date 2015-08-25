@@ -31,7 +31,7 @@ definition(
 preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
-		paragraph "Version 0.9\n\n" +
+		paragraph "Version 1.0\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -112,7 +112,7 @@ private def generateReport() {
 
 	log.debug("generateReport>startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
 		"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
-	automatic.getTrips("","", startDate,endDate, null, 'true')
+	automatic.getTrips("","", startDate,endDate, null, 'false')
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
 	if (!currentTripList) {
@@ -156,7 +156,7 @@ private def generateReport() {
 				def speed =it.velocity_kph
 				float speedValue=getSpeed(speed)
 				msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
-					"start Trip Distance=${startPos.round()}${getDistanceScale()},end Trip Distance=${endPos.round()}${getDistanceScale()}"
+					"Start Trip Distance=${startPos.round()}${getDistanceScale()},End Trip Distance=${endPos.round()}${getDistanceScale()}"
 				send msg
 			}            
 	        
