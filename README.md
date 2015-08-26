@@ -114,7 +114,7 @@ d) The Automatic login page will appear with the following error message:
 e) In the IDE, under https://graph.api.smartthings.com/ide/logs, you should see
 the following trace:
 
-buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken
+<i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
  
 f) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
 
