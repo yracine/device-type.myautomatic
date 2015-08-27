@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.7\n\n" +
+			paragraph "Version 1.8\n\n" +
 				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 				"Copyright©2015 Yves Racine"
 			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -483,7 +483,7 @@ private def isFirstDayOfMonth() {
 
 
 def checkRainyWeather(evt) {
-	def latestValue = weatherStation?.latestValue("water")
+	def rainCheck = weatherStation?.latestValue("water")
 	def msg
     
 	log.debug "checkRainyWeather> latestValue= $latestValue"
