@@ -31,7 +31,7 @@ definition(
 preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
-		paragraph "Version 1.0\n\n" +
+		paragraph "Version 1.1\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -61,8 +61,8 @@ preferences {
 }
 
 def installed() {
-	log.debug "Installed with settings: ${settings}"
-
+	log.debug ("automaticReport>installed with settings: ${settings}")
+    
 	initialize()
 }
 
@@ -75,7 +75,7 @@ def updated() {
 }
 
 def initialize() {
-
+	state.msg=null
 	subscribe(app, appTouch)
 	generateReport()    
 }
@@ -88,7 +88,8 @@ def appTouch(evt) {
 private def generateReport() {
 	def msg
 	String dateTime    
-
+	state.msg=null
+    
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
 	String timezone = new Date().format("zzz", location.timeZone)
 	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
@@ -155,9 +156,9 @@ private def generateReport() {
 				log.debug ("event startedAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
 				def speed =it.velocity_kph
 				float speedValue=getSpeed(speed)
-				msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
+				state.msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
 					"Start Trip Distance=${startPos.round()}${getDistanceScale()},End Trip Distance=${endPos.round()}${getDistanceScale()}"
-				send msg
+				runIn((1*30), "sendWithDelay" )
 			}            
 	        
 			if (type =='hard_brake') {
@@ -166,8 +167,8 @@ private def generateReport() {
 				def lon =it.lon
 				def lat = it.lat                
 				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				send msg            
+				state.msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				runIn((1*30), "sendWithDelay" )
 			}                
 			if (type=='hard_accel') {
 				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
@@ -175,8 +176,8 @@ private def generateReport() {
 				def lon =it.lon
 				def lat = it.lat                
 				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				send msg            
+				state.msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				runIn((1*30), "sendWithDelay" )
 			}
 		} /* end each vehicle Event */       
 	} /* end each Trip List */
@@ -250,6 +251,13 @@ private def formatDate(dateString) {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm zzz")
 	Date aDate = sdf.parse(dateString)
 	return aDate
+}
+
+private def sendWithDelay() {
+	
+	if (state.msg) {
+		send(state.msg)
+	}
 }
 
 private send(msg) {
