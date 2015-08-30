@@ -31,7 +31,7 @@ definition(
 preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
-		paragraph "Version 1.1\n\n" +
+		paragraph "Version 1.2\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -113,38 +113,34 @@ private def generateReport() {
 
 	log.debug("generateReport>startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
 		"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
-	automatic.getTrips("","", startDate,endDate, null, 'false')
+	automatic.getTrips("","", startDate,endDate, null, 'true')
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
 	if (!currentTripList) {
 		log.debug "generateReport> empty tripList exiting"
 		return    	
 	} 
-	def tripList=currentTripList.toString().split(",")    
-	log.debug "generateReport> tripList= $tripList"
-
-	tripList.each {
-		String tripId = it
-		log.debug "generateReport> tripId= $tripId"
-		automatic.getTrips("",tripId,null,null,null,'true')
-		String tripData = automatic.currentTripsData
-		if (!tripData) {
-			return        
-		}     
-		try {
-			tripFields = new JsonSlurper().parseText(tripData)   
-//			log.debug("generateReport> vehicle_events=$tripFields.vehicle_events[0]")            
-		} catch (e) {
-			log.error("generateReport>tripData not formatted correctly or empty (exception $e), exiting")
-			return
-		} 
-		String startAddress=tripFields.start_address.name
-		String endAddress=tripFields.end_address.name        
+	String tripData = automatic.currentTripsData
+	if (!tripData) {
+		log.debug("generateReport>no trip data found, exiting")            
+		return        
+	}
+	try {
+		tripFields = new JsonSlurper().parseText(tripData)   
+//		log.debug("generateReport> vehicle_events=$tripFields.vehicle_events[0]")            
+	} catch (e) {
+		log.error("generateReport>tripData not formatted correctly or empty (exception $e), exiting")
+		return
+	} 
+	def nbTripsValue = automatic.currentTotalNbTripsInPeriod
+    int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
+	for (i in 0..nbTrips-1) {
+		def tripId=tripFields[i].id    
+		String startAddress=tripFields[i].start_address.name
+		String endAddress=tripFields[i].end_address.name        
+		def vehicleEvents=tripFields[i]?.vehicle_events 
+		log.debug ("generateReport> found ${tripId} trip from start Address=${startAddress} to endAddress=${endAddress}, \nvehicleEvents=${vehicleEvents}")
 		String eventCreatedAt
-		def vehicleEvents=(tripFields?.vehicle_events instanceof List)?    
-			tripFields?.vehicle_events[0]:
-			tripFields?.vehicle_events
-        
 		vehicleEvents.each {
 			def type = it.type        
 			if (type == 'speeding') {
@@ -153,12 +149,12 @@ private def generateReport() {
 				def endDistance= it.end_distance_m
 				float startPos= getDistance(startDistance)
 				float endPos= getDistance(endDistance)                
-				log.debug ("event startedAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
+				log.debug ("generateReport> found ${type} event startedAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields[i].end_timezone}")
 				def speed =it.velocity_kph
 				float speedValue=getSpeed(speed)
-				state.msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
+				msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
 					"Start Trip Distance=${startPos.round()}${getDistanceScale()},End Trip Distance=${endPos.round()}${getDistanceScale()}"
-				runIn((1*30), "sendWithDelay" )
+				send msg
 			}            
 	        
 			if (type =='hard_brake') {
@@ -166,21 +162,21 @@ private def generateReport() {
 				def gforce=it.g_force   
 				def lon =it.lon
 				def lat = it.lat                
-				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				state.msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				runIn((1*30), "sendWithDelay" )
+				log.debug ("generateReport> found ${type} event startedAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields[i].end_timezone}")
+				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				send msg
 			}                
 			if (type=='hard_accel') {
 				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
 				def gforce=it.g_force                
 				def lon =it.lon
 				def lat = it.lat                
-				log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields.end_timezone}")
-				state.msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				runIn((1*30), "sendWithDelay" )
+				log.debug ("generateReport> found ${type} event startedAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields[i].end_timezone}")
+				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
+				send msg
 			}
 		} /* end each vehicle Event */       
-	} /* end each Trip List */
+	} /* end for each Trip  */
 }
 
 private def getSpeed(value) {
