@@ -32,14 +32,14 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.5\n\n" +
+		paragraph "Version 1.6\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
 		description: "http://github.com/yracine"	}
 
 	section("Generate daily report for this Automatic Connected Vehicle") {
-		input "automatic", "device.myAutomaticDevice", title: "Automatic?"
+		input "automatic", "capability.presenceSensor", title: "Automatic?"
 
 	}
 	section("Start date for the report, format = YYYY-MM-DD") {
@@ -85,7 +85,9 @@ def appTouch(evt) {
 
 private def generateReport() {
 	def msg
-	String dateTime    
+	def AUTOMATIC_SPEEDING_EVENT='speeding'    
+	def AUTOMATIC_HARD_BRAKE_EVENT='hard_brake'    
+	def AUTOMATIC_HARD_BRAKE_ACCEL='hard_accel'    
    
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
 	String timezone = new Date().format("zzz", location.timeZone)
@@ -94,19 +96,20 @@ private def generateReport() {
 	Date endDate = formatDate(dateAtMidnight) 
 	Date startDate = endDate -1
         
-	def givenStartDate = (settings.givenStartDate) ?: dateInLocalTime
+	def givenStartDate = (settings.givenStartDate) ?: startDate.format("yyyy-MM-dd", location.timeZone) 
 	def givenStartTime=(settings.givenStartTime) ?:"00:00"    
-	dateTime = givenStartDate + " " + givenStartTime + " " + timezone
+	def dateTime = givenStartDate + " " + givenStartTime + " " + timezone
 	startDate = formatDate(dateTime)
 	log.debug("generateReport>start dateTime = ${dateTime}, startDate in UTC = ${startDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
     
-	def givenEndDate = (settings.givenEndDate) ?: (endDate).format("yyyy-MM-dd", location.timeZone) 
+	def givenEndDate = (settings.givenEndDate) ?: endDate.format("yyyy-MM-dd", location.timeZone) 
 	def givenEndTime=(settings.givenEndTime) ?:"00:00"    
 	dateTime = givenEndDate + " " + givenEndTime + " " + timezone
 	endDate = formatDate(dateTime)
 	log.debug("generateReport>end dateTime = ${dateTime}, endDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
 
 	automatic.getTrips("","", startDate,endDate, null, 'true')
+
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
 	if (!currentTripList) {
@@ -136,7 +139,7 @@ private def generateReport() {
 		String eventCreatedAt
 		vehicleEvents.each {
 			def type = it.type        
-			if (type == 'speeding') {
+			if (type == AUTOMATIC_SPEEDING_EVENT) {
 				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,19)+ 'Z')
 				def startDistance = it.start_distance_m
 				def endDistance= it.end_distance_m
@@ -150,7 +153,7 @@ private def generateReport() {
 				send(msg)
 			}            
 	        
-			if (type =='hard_brake') {
+			if (type ==AUTOMATIC_HARD_BRAKE_EVENT) {
 				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')
 				def gforce=it.g_force   
 				def lon =it.lon
@@ -159,7 +162,7 @@ private def generateReport() {
 				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 				send(msg)
 			}                
-			if (type=='hard_accel') {
+			if (type==AUTOMATIC_HARD_ACCEL_EVENT) {
 				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
 				def gforce=it.g_force                
 				def lon =it.lon
@@ -171,6 +174,17 @@ private def generateReport() {
 		} /* end each vehicle Event */       
 	} /* end for each Trip  */
 }
+
+private def report_states_between_dates(eventType, startDate, endDate) {
+	def eventStates = automatic.statesBetween("eventType",  startDate as Date, endDate as Date)
+    
+	def countEventType = eventStates.count {it.value && it.value == eventType} 
+	
+	def msg = "automaticReport>${automatic} triggerred ${countEventType} ${eventType} event(s) between  " +
+		"${startDate.format("yyyy-MM-dd HH:mm:ss")} and ${endDate.format("yyyy-MM-dd HH:mm:ss")}"    
+	send(msg)
+}
+
 
 private def getSpeed(value) {
 	if (!value) {
