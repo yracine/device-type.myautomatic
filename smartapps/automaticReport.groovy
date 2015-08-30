@@ -129,7 +129,7 @@ private def generateReport() {
 		return
 	} 
 	def nbTripsValue = automatic.currentTotalNbTripsInPeriod
-    int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
+	int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
 	for (i in 0..nbTrips-1) {
 		def tripId=tripFields[i].id    
 		String startAddress=tripFields[i].start_address.name
