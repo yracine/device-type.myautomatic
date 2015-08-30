@@ -32,7 +32,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.4\n\n" +
+		paragraph "Version 1.5\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -98,13 +98,13 @@ private def generateReport() {
 	def givenStartTime=(settings.givenStartTime) ?:"00:00"    
 	dateTime = givenStartDate + " " + givenStartTime + " " + timezone
 	startDate = formatDate(dateTime)
-	log.debug("generateReport>dateTime = ${dateTime}, startDate in UTC = ${String.format('%tF %<tT',startDate)}")
+	log.debug("generateReport>dateTime = ${dateTime}, startDate in UTC = ${startDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
     
 	def givenEndDate = (settings.givenEndDate) ?: (endDate).format("yyyy-MM-dd", location.timeZone) 
 	def givenEndTime=(settings.givenEndTime) ?:"00:00"    
 	dateTime = givenEndDate + " " + givenEndTime + " " + timezone
 	endDate = formatDate(dateTime)
-	log.debug("generateReport>dateTime = ${dateTime}, endDate in UTC = ${String.format('%tF %<tT',endDate)}")
+	log.debug("generateReport>dateTime = ${dateTime}, startDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
 
 	automatic.getTrips("","", startDate,endDate, null, 'true')
 	def currentTripList = automatic.currentTripsList
