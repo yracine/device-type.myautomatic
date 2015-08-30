@@ -22,7 +22,7 @@ definition(
     name: "automaticReport",
     namespace: "yracine",
     author: "Yves Racine",
-    description: "This smartapp allows a ST user to generate daily Reports on their Automatic Connected vehicle",
+    description: "This smartapp allows a ST user to manually generate daily Reports on their Automatic Connected vehicle",
     category: "My Apps",
 	iconUrl: "https://www.automatic.com/_assets/images/favicons/favicon-32x32-3df4de42.png",
 	iconX2Url: "https://www.automatic.com/_assets/images/favicons/favicon-96x96-06fd8c85.png",
@@ -31,7 +31,8 @@ definition(
 preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
-		paragraph "Version 1.2\n\n" +
+		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
+		paragraph "Version 1.3\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -61,8 +62,7 @@ preferences {
 }
 
 def installed() {
-	log.debug ("automaticReport>installed with settings: ${settings}")
-    
+	log.debug "automaticReport>installed with settings: ${settings}"
 	initialize()
 }
 
@@ -75,9 +75,7 @@ def updated() {
 }
 
 def initialize() {
-	state.msg=null
 	subscribe(app, appTouch)
-	generateReport()    
 }
 
 def appTouch(evt) {
@@ -88,8 +86,7 @@ def appTouch(evt) {
 private def generateReport() {
 	def msg
 	String dateTime    
-	state.msg=null
-    
+   
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
 	String timezone = new Date().format("zzz", location.timeZone)
 	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
@@ -133,7 +130,7 @@ private def generateReport() {
 		return
 	} 
 	def nbTripsValue = automatic.currentTotalNbTripsInPeriod
-    int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
+	int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
 	for (i in 0..nbTrips-1) {
 		def tripId=tripFields[i].id    
 		String startAddress=tripFields[i].start_address.name
@@ -154,7 +151,7 @@ private def generateReport() {
 				float speedValue=getSpeed(speed)
 				msg = "automaticReport>${automatic} was speeding (speed> ${speedValue.round()}${getSpeedScale()}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress};" +
 					"Start Trip Distance=${startPos.round()}${getDistanceScale()},End Trip Distance=${endPos.round()}${getDistanceScale()}"
-				send msg
+				send(msg)
 			}            
 	        
 			if (type =='hard_brake') {
@@ -164,7 +161,7 @@ private def generateReport() {
 				def lat = it.lat                
 				log.debug ("generateReport> found ${type} event startedAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields[i].end_timezone}")
 				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				send msg
+				send(msg)
 			}                
 			if (type=='hard_accel') {
 				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
@@ -173,7 +170,7 @@ private def generateReport() {
 				def lat = it.lat                
 				log.debug ("generateReport> found ${type} event startedAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt, timezone=${tripFields[i].end_timezone}")
 				msg = "automaticReport>${automatic} triggerred the ${type} event (gforce=${gforce}, lat=${lat},lon=${lon}) at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
-				send msg
+				send(msg)
 			}
 		} /* end each vehicle Event */       
 	} /* end for each Trip  */
@@ -249,11 +246,12 @@ private def formatDate(dateString) {
 	return aDate
 }
 
-private def sendWithDelay() {
+private def sendMsgWithDelay() {
 	
 	if (state.msg) {
 		send(state.msg)
 	}
+	state.msg=""    
 }
 
 private send(msg) {
