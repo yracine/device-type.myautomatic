@@ -90,7 +90,7 @@ private def generateReport() {
 	String dateInLocalTime = new Date().format("yyyy-MM-dd", location.timeZone) 
 	String timezone = new Date().format("zzz", location.timeZone)
 	String dateAtMidnight = dateInLocalTime + " 00:00 " + timezone    
-	log.debug("generateReport>date at Midnight in UTC= ${dateAtMidnight}")
+	log.debug("generateReport>date at Midnight= ${dateAtMidnight}")
 	Date endDate = formatDate(dateAtMidnight) 
 	Date startDate = endDate -1
         
@@ -98,13 +98,13 @@ private def generateReport() {
 	def givenStartTime=(settings.givenStartTime) ?:"00:00"    
 	dateTime = givenStartDate + " " + givenStartTime + " " + timezone
 	startDate = formatDate(dateTime)
-	log.debug("generateReport>dateTime = ${dateTime}, startDate in UTC = ${startDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
+	log.debug("generateReport>start dateTime = ${dateTime}, startDate in UTC = ${startDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
     
 	def givenEndDate = (settings.givenEndDate) ?: (endDate).format("yyyy-MM-dd", location.timeZone) 
 	def givenEndTime=(settings.givenEndTime) ?:"00:00"    
 	dateTime = givenEndDate + " " + givenEndTime + " " + timezone
 	endDate = formatDate(dateTime)
-	log.debug("generateReport>dateTime = ${dateTime}, startDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
+	log.debug("generateReport>end dateTime = ${dateTime}, endDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
 
 	automatic.getTrips("","", startDate,endDate, null, 'true')
 	def currentTripList = automatic.currentTripsList
