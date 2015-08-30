@@ -32,7 +32,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.3\n\n" +
+		paragraph "Version 1.4\n\n" +
 			"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
 			"Copyright©2015 Yves Racine"
 		href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
@@ -93,23 +93,19 @@ private def generateReport() {
 	log.debug("generateReport>date at Midnight in UTC= ${dateAtMidnight}")
 	Date endDate = formatDate(dateAtMidnight) 
 	Date startDate = endDate -1
+        
+	def givenStartDate = (settings.givenStartDate) ?: dateInLocalTime
+	def givenStartTime=(settings.givenStartTime) ?:"00:00"    
+	dateTime = givenStartDate + " " + givenStartTime + " " + timezone
+	startDate = formatDate(dateTime)
+	log.debug("generateReport>dateTime = ${dateTime}, startDate in UTC = ${String.format('%tF %<tT',startDate)}")
     
-	if (settings.givenStartDate) { 
-		def givenStartTime=(settings.givenStartTime) ?:"00:00"    
-		dateTime = givenStartDate + " " + givenStartTime + " " + timezone
-		log.debug( "generateReport>start datetime= ${dateTime}" )
- 		startDate = formatDate(dateTime)
-	}
-    
-	if (settings.givenEndDate) {
-		def givenEndTime=(settings.givenEndTime) ?:"00:00"    
-		dateTime = givenEndDate  + " " + givenEndTime + " " + timezone
-		log.debug( "generateReport>end datetime= ${dateTime}" )
-		endDate = formatDate(dateTime)
-	}
+	def givenEndDate = (settings.givenEndDate) ?: (endDate).format("yyyy-MM-dd", location.timeZone) 
+	def givenEndTime=(settings.givenEndTime) ?:"00:00"    
+	dateTime = givenEndDate + " " + givenEndTime + " " + timezone
+	endDate = formatDate(dateTime)
+	log.debug("generateReport>dateTime = ${dateTime}, endDate in UTC = ${String.format('%tF %<tT',endDate)}")
 
-	log.debug("generateReport>startDate in UTC = ${String.format('%tF %<tT',startDate)}," +
-		"endDate in UTC= ${String.format('%tF %<tT', endDate)}")
 	automatic.getTrips("","", startDate,endDate, null, 'true')
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
@@ -130,7 +126,7 @@ private def generateReport() {
 		return
 	} 
 	def nbTripsValue = automatic.currentTotalNbTripsInPeriod
-	int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
+    int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
 	for (i in 0..nbTrips-1) {
 		def tripId=tripFields[i].id    
 		String startAddress=tripFields[i].start_address.name
