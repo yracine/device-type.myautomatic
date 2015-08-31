@@ -1419,7 +1419,7 @@ private def processTripsNextPage(vehicleId,tripCounter,metadata) {
 	def statusCode=true
 	while ((statusCode!= AUTOMATIC_SUCCESS) && (j++ <2)) { // retries once if api call fails
 		doRequest(metadata.next,null,'get') {resp->
-			statusCode = resp.status        
+		statusCode = resp.status        
         	if (statusCode == AUTOMATIC_SUCCESS) {
  				data?.trips=resp.data
 				if (settings.trace) {
