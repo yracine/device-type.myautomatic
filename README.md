@@ -27,7 +27,7 @@ INSTALLATION STEPS
 
 a) Go to https://graph.api.smartthings.com/ide/devices
 
-b) Hit the "+New SmartDevice" at the top right corner
+b) Hit the "+New Device Type" at the top right corner
 
 c) Hit the "From Code" tab on the left corner
 
@@ -101,7 +101,7 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 /*******************************************************************************************************************/
 
 
-a) From your phone or tablet, within the smartThings app and on the main screen, click on '+' at the bottom, scroll right to to My Apps, and execute MyAutomaticServiceMgr.
+a) From your phone or tablet, within the smartThings app and on the main screen, click on '+' at the bottom, under SmartApps, scroll down to My Apps, and execute MyAutomaticServiceMgr.
 
 b) The smartapp will ask you to authenticate on the Automatic portal (by pressing Next on the first page)
 
