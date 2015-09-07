@@ -40,11 +40,12 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.8\n\n" +
-				"If you like this app, please support the developer via PayPal:\n\nyracine@yahoo.com\n\n" +
-				"Copyright©2015 Yves Racine"
-			href url: "http://github.com/yracine", style: "embedded", required: false, title: "More information...",
-			description: "http://github.com/yracine"
+			paragraph "Version 1.8.1" 
+			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Next Page link below " 
+			href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" 
+			paragraph "Copyright©2015 Yves Racine"
+			href url:"http://github.com/yracine/device-type.myautomatic", style:"embedded", required:false, title:"More information..."  
+				description: "http://github.com/yracine"
 		}
 		section("Monitor this Automatic Connected Vehicle") {
 			input "vehicle", "capability.presenceSensor", title: "Which vehicle?"
