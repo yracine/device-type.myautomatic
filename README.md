@@ -132,6 +132,8 @@ i) The Automatic login page should re-appear without any error message, enter yo
 
 j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
 
+If you get a blank screen after pressing 'Next or you get the following error: " Error - bad state. Unable to complete page configuration", you'd need to enable oAuth as specified in step 2f) above.
+
 k) You may then select the Automatic device(s) to be exposed to SmartThings.
 
 After pressing 'Done' on the last page, the smartapp will instantiate the MyAutomatic device object under 
