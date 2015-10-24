@@ -692,6 +692,6 @@ def getChildName() { "My Automatic Device" }
 
 def getServerUrl() { return getApiServerUrl()  }
 
-f getSmartThingsClientId() { "insert your public key here!" }
+def getSmartThingsClientId() { "insert your public key here!" }
 
 def getSmartThingsPrivateKey() { "insert your private key here!" }
