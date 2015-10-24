@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.8.2" 
+			paragraph "Version 1.9" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 					title:"Paypal donation..."
@@ -136,7 +136,10 @@ def initialize() {
 	if (weatherStation) {
 		subscribe(weatherStation, "water.wet", checkRainyWeather)
 		subscribe(weatherStation, "weather", checkRainyWeather)
-	}        
+	}    
+	//Subscribe to different events (ex. sunrise and sunset events) to trigger rescheduling if needed
+	subscribe(location, "sunset", scheduleJobs)
+	subscribe(location, "sunsetTime", scheduleJobs)
 	scheduleJobs()
 	subscribe(app, appTouch)
 }
