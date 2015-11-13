@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.9
+ *  Version 1.9.1
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1572,18 +1572,25 @@ void getVehicles(vehicleId, postData='false') {
 	if (vehicleId) {
 		bodyReq = "${vehicleId}/" 
 	}        
+	if (settings.trace) {
+		log.debug "getVehicles>bodyReq=${bodyReq}, vehicleId=$vehicleId" 
+	}				                
     
 	while ((statusCode!= AUTOMATIC_SUCCESS) && (j++ <2)) { // retries once if api call fails
 		api('vehicles', bodyReq) {resp->
 			statusCode= resp.status
 			if (statusCode == AUTOMATIC_SUCCESS) {
+				if (settings.trace) {
+					log.debug "getVehicles>resp.data=${resp.data}" 
+				}				                
 				if (!resp.data._metadata) {
 					// just one vehicle was found                
 					data?.vehicles?.results[0]=resp.data
 					data.vehicles?._metadata?.count=1                    
 				} else {
 					data?.vehicles=resp.data
-				}                    
+				}     
+                
 				if (data.vehicles._metadata.count) {            
 					for (i in 0..data.vehicles._metadata.count -1) {
 						id = data.vehicles.results[i].id
