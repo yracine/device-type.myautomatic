@@ -1606,7 +1606,7 @@ void getVehicles(vehicleId, postData='false') {
 						vehiclesList = vehiclesList + id + ','                     
 					} /* end for vehicle */                
 					sendEvent name: "verboseTrace", value:"getVehicles>done for vehicleId=${vehicleId}"
-           		} /* end if metadata.vehicles.count */         
+				} /* end if metadata.vehicles.count */         
 			} else {
 				log.error "getVehicles>error=${statusCode.toString()}"
 				sendEvent name: "verboseTrace", value:"getVehicles>error=${statusCode.toString()} for vehicleId=${vehicleId}"
