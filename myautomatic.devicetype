@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.8.3
+ *  Version 1.9
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -568,7 +568,7 @@ metadata {
 void poll() {
     
 	
-	def vehicleId= determine_vehicle_id(settings.vehicleId) 	    
+	def vehicleId= determine_vehicle_id("") 	    
 	// Update the vehicle information
         
 	getVehicles(vehicleId)
@@ -1577,31 +1577,39 @@ void getVehicles(vehicleId, postData='false') {
 		api('vehicles', bodyReq) {resp->
 			statusCode= resp.status
 			if (statusCode == AUTOMATIC_SUCCESS) {
-				data?.vehicles=resp.data
-				data.vehicles.results.each {
-					id = it.id
-					def make = it.make
-					def model = it.model
-					def submodel = it.submodel
-					def year = it.year
-					def color = it.color
-					def displayName = it.display_name
-					if (settings.trace) {
-						sendEvent name: "verboseTrace", value:"getVehicles>vehicleId=${id},make=${make},model=${model}," +
-							"submodel=${model},year=${year},color=${color},displayName=${displayName}"
-					}
-					if (postData == 'true') {
+				if (!resp.data._metadata) {
+					// just one vehicle was found                
+					data?.vehicles?.results[0]=resp.data
+					data.vehicles?._metadata?.count=1                    
+				} else {
+					data?.vehicles=resp.data
+				}                    
+				if (data.vehicles._metadata.count) {            
+					for (i in 0..data.vehicles._metadata.count -1) {
+						id = data.vehicles.results[i].id
+						def make = data.vehicles.results[i].make
+						def model = data.vehicles.results[i].model
+						def submodel = data.vehicles.results[i].submodel
+						def year = data.vehicles.results[i].year
+						def color = data.vehicles.results[i].color
+						def displayName = data.vehicles.results[i].display_name
 						if (settings.trace) {
-							log.debug "getVehicles>adding ${data.vehicles[i]} to vehiclesData"
+							sendEvent name: "verboseTrace", value:"getVehicles>vehicleId=${id},make=${make},model=${model}," +
+								"submodel=${model},year=${year},color=${color},displayName=${displayName}"
 						}
-						vehiclesData << it  // to be transformed into Json later
-					}
-					vehiclesList = vehiclesList + id + ','                     
-				} /* end each vehicle */                
-				sendEvent name: "verboseTrace", value:"getVehicles>done"
+						if (postData == 'true') {
+							if (settings.trace) {
+								log.debug "getVehicles>adding ${data.vehicles.results[i]} to vehiclesData"
+							}
+							vehiclesData << data.vehicles.results[i]  // to be transformed into Json later
+						}
+						vehiclesList = vehiclesList + id + ','                     
+					} /* end for vehicle */                
+					sendEvent name: "verboseTrace", value:"getVehicles>done for vehicleId=${vehicleId}"
+           		} /* end if metadata.vehicles.count */         
 			} else {
 				log.error "getVehicles>error=${statusCode.toString()}"
-				sendEvent name: "verboseTrace", value:"getVehicles>error=${statusCode.toString()}"
+				sendEvent name: "verboseTrace", value:"getVehicles>error=${statusCode.toString()} for vehicleId=${vehicleId}"
 				// introduce a 1 second delay before re-attempting any other command                    
 				def cmd= []           
 				cmd << "delay 1000"                    
