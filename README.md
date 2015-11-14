@@ -154,7 +154,7 @@ see the new Automatic Object(s) under the 'Things' shortcut on the dashboard</b>
 
 /**************************************************************************************************/
 
-Click on it (gear icon at the top right corner) and press refresh several times to populate its fields
+Click on it  and press refresh several times to populate its fields
 
 /**************************************************************************************************/
 
