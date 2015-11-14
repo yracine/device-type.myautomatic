@@ -81,6 +81,12 @@ d) Copy and paste your Automatic client id to the MyAutomaticServiceMgr smartapp
 
 e) Copy and paste your Automatic secret id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic private Key here!" is indicated
 
+Examples of keys, not valid at Automatic:
+
+def getSmartThingsClientId() { "kjPlS3AAQtaUGlmB30IU9g" }
+
+def getSmartThingsPrivateKey() { "6Qg0niXeQDSk-dkfU475og" }
+
 f) Using the ST IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.
 
 
