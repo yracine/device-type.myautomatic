@@ -32,7 +32,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.6.1" 
+		paragraph "Version 1.6.2" 
 		paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 			href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 				title:"Paypal donation..."
@@ -143,7 +143,7 @@ private def generateReport() {
 		vehicleEvents.each {
 			def type = it.type        
 			if (type == AUTOMATIC_SPEEDING_EVENT) {
-				eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,19)+ 'Z')
+				eventCreatedAt=formatDateInLocalTime(it.started_at)
 				def startDistance = it.start_distance_m
 				def endDistance= it.end_distance_m
 				float startPos= getDistance(startDistance)
@@ -157,7 +157,7 @@ private def generateReport() {
 			}            
 	        
 			if (type ==AUTOMATIC_HARD_BRAKE_EVENT) {
-				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')
+				eventCreatedAt=formatDateInLocalTime(it.created_at)
 				def gforce=it.g_force   
 				def lon =it.lon
 				def lat = it.lat                
@@ -166,7 +166,7 @@ private def generateReport() {
 				send(msg)
 			}                
 			if (type==AUTOMATIC_HARD_ACCEL_EVENT) {
-				eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
+				eventCreatedAt=formatDateInLocalTime(it.created_at)   
 				def gforce=it.g_force                
 				def lon =it.lon
 				def lat = it.lat                
@@ -247,7 +247,7 @@ private String formatDateInLocalTime(dateInString, timezone='') {
 		return (new Date().format("yyyy-MM-dd HH:mm:ss", myTimezone))
 	}    
 	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-	Date ISODate = ISODateFormat.parse(dateInString)
+	Date ISODate = ISODateFormat.parse(dateInString.substring(0,19)+ 'Z')
 	String dateInLocalTime =new Date(ISODate.getTime()).format("yyyy-MM-dd HH:mm:ss", myTimezone)
 	return dateInLocalTime
 }
