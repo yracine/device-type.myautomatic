@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.9" 
+			paragraph "Version 1.9.1" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 					title:"Paypal donation..."
@@ -189,7 +189,7 @@ def eventTypeHandler(evt) {
 	vehicleEvents.each {
 		if ((it.type=='speeding') && (evt.value==SPEEDING)) {
 			def speed =it.velocity_kph            
-			eventCreatedAt=formatDateInLocalTime(it.started_at.substring(0,19) + 'Z')   
+			eventCreatedAt=formatDateInLocalTime(it.started_at)   
 			log.debug ("event createdAt: ${it.started_at}, eventCreatedInLocalTime=$eventCreatedAt")
 			if (speed) {
 				float speedValue=getSpeed(speed)
@@ -201,13 +201,13 @@ def eventTypeHandler(evt) {
 			send msg            
 		}            
 		if ((it.type=='hard_brake') && (evt.value == HARD_BRAKE)) {
-			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19) + 'Z')   
+			eventCreatedAt=formatDateInLocalTime(it.created_at)   
 			log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt")
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress} "
 			send msg
 		}     
 		if ((it.type == 'hard_accel') && (evt.value == HARD_ACCEL)) {
-			eventCreatedAt=formatDateInLocalTime(it.created_at.substring(0,19)+ 'Z')   
+			eventCreatedAt=formatDateInLocalTime(it.created_at)   
 			log.debug ("event createdAt: ${it.created_at}, eventCreatedInLocalTime=$eventCreatedAt")
 			msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt} on trip ${tripId} from ${startAddress} to ${endAddress}"
 			send msg
@@ -215,8 +215,8 @@ def eventTypeHandler(evt) {
 	} /* end each vehicle event */        
 	if (evt.value == TRIP_COMPLETED) {
 		eventCreatedAt= (tripFields.ended_at instanceof List) ?
-			formatDateInLocalTime(tripFields.ended_at[0].substring(0,19)+ 'Z')   :
-			formatDateInLocalTime(tripFields.ended_at.substring(0,19)+ 'Z')   
+			formatDateInLocalTime(tripFields.ended_at)   :
+			formatDateInLocalTime(tripFields.ended_at)   
 		msg = "MonitorAutomaticCar>${vehicle} vehicle triggerred the ${evt.value} event at ${eventCreatedAt}"
 		send msg
 	}        
@@ -262,7 +262,7 @@ private String formatDateInLocalTime(dateInString, timezone='') {
 		return (new Date().format("yyyy-MM-dd HH:mm:ss", myTimezone))
 	}    
 	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-	Date ISODate = ISODateFormat.parse(dateInString)
+	Date ISODate = ISODateFormat.parse(dateInString.substring(0,19) + 'Z')
 	String dateInLocalTime =new Date(ISODate.getTime()).format("yyyy-MM-dd HH:mm:ss", myTimezone)
 	log.debug("formatDateInLocalTime>dateInString=$dateInString, dateInLocalTime=$dateInLocalTime")    
 	return dateInLocalTime
