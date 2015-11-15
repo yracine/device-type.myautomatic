@@ -2,7 +2,7 @@
  *  My Automatic Device
  *
  *  Copyright 2015 Yves Racine
- *  Version 1.9.2
+ *  Version 1.9.3
  *  linkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *  Refer to readme file for installation instructions.
  *
@@ -1153,8 +1153,8 @@ void generateMonthlyTripStats(vehicleId) {
 private def ISODateFormat(dateString) {
 	def myTimezone
  	SimpleDateFormat ISO8601format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-	def ISOdate = ISO8601format.parse(dateString)
-	return ISOdate
+	Date aDate = ISO8601format.parse(dateString.substring(0,19) + 'Z')
+	return aDate
 }
 
 private def formatDate(dateString) {
@@ -1169,7 +1169,7 @@ private String formatDateInLocalTime(dateInString, timezone='') {
 		return (new Date().format("yyyy-MM-dd HH:mm:ss", myTimezone))
 	}    
 	SimpleDateFormat ISODateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-	Date ISODate = ISODateFormat.parse(dateInString)
+	Date ISODate = ISODateFormat.parse(dateInString.substring(0,19) + 'Z')
 	String dateInLocalTime =new Date(ISODate.getTime()).format("yyyy-MM-dd HH:mm:ss", myTimezone)
 	log.debug("formatDateInLocalTime>dateInString=$dateInString, dateInLocalTime=$dateInLocalTime")    
 	return dateInLocalTime
@@ -1297,11 +1297,9 @@ void getTrips(vehicleId,tripId,startDateTime,endDateTime, eventTimestamp,postDat
 						tripsList = tripsList + id + ','
                         
 						if (eventTimestamp) {
-							String truncatedStartedAt=startedAt.substring(0,19) + 'Z'   
-							log.debug "getTrips>tripId=${id},startedAt=${startedAt},truncatedStartedAt=${truncatedStartedAt}"
 							// generate events when startedDate greater than eventTimestamp (to avoid generating the same events twice)
-							Date startedDate=ISODateFormat(truncatedStartedAt)
-							if (startedDate.getTime() > eventTimestamp) {                        
+							Date startedDate=ISODateFormat(startedAt)
+							if ((startedDate) && (startedDate.getTime() > eventTimestamp)) {                        
 								generateVehicleEvents(data.trips.results[i])
 							}                                                        
 						}                        
@@ -1781,11 +1779,11 @@ def generateEventTripFinished(vehicleId,eventType,tripId,eventFields) {
 		'eventTripCreatedAt': (eventType=='trip:finished')? 
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):'',
 		'eventTripStartedAt':(eventType=='trip:finished')?
-			formatDateInLocalTime(eventFields.trip.started_at.substring(0,19) + 'Z'):
-			formatDateInLocalTime(eventFields.started_at.substring(0,19) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.started_at):
+			formatDateInLocalTime(eventFields.started_at),
 		'eventTripEndedAt':(eventType=='trip:finished')?
-			formatDateInLocalTime(eventFields.trip.ended_at.substring(0,19) + 'Z'):
-			formatDateInLocalTime(eventFields.ended_at.substring(0,19) + 'Z'),
+			formatDateInLocalTime(eventFields.trip.ended_at):
+			formatDateInLocalTime(eventFields.ended_at),
 	]
 	String endAddress =  device.currentValue("eventTripEndAddress")
     
@@ -1824,7 +1822,7 @@ def generateEventSpeeding(vehicleId,eventType,tripId,eventFields) {
 			milesToKm(eventFields.speed_mpg):eventFields.velocity_kph,
 		'eventTripCreatedAt': (eventType=='notification:speeding')?     
 			new Date(eventFields.created_at).format("yyyy-MM-dd HH:mm:ss", location.timezone):
-			formatDateInLocalTime(eventFields.started_at.substring(0,19) + 'Z'),
+			formatDateInLocalTime(eventFields.started_at),
 		'eventTripStartAddress': '',
 		'eventTripEndAddress': '',
 		'eventTripGForce': '',
