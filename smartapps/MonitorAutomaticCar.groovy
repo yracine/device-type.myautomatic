@@ -40,7 +40,7 @@ def monitoringSettings() {
 	dynamicPage(name: "monitoringSettings", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Monitor your Connected Vehicle at regular intervals, based on 2 different cycles throughout the year" 
-			paragraph "Version 1.9.1" 
+			paragraph "Version 1.9.2" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 					title:"Paypal donation..."
@@ -108,7 +108,7 @@ def otherSettings() {
 			input "phoneNumber", "phone", title: "Send a text message?", required: false
 		}
 		section("Send vehicle Event Notifications") {
-			input "detailedNotif", "Boolean", title: "Send any upcoming Vehicle Event Notifications?", metadata: [values: ["true", "false"]], required:
+			input "detailedNotif", "bool", title: "Send any upcoming Vehicle Event Notifications?", required:
 				false
 		}
 		section([mobileOnly: true]) {
@@ -160,7 +160,7 @@ def eventTypeHandler(evt) {
 	def tripFields,eventCreatedAt
     
 	log.debug "eventTypeHandler>evt.value= ${evt.value}"
-	if (detailedNotif != 'true') {	
+	if (!detailedNotif) {	
 		// do not send msg if detailedNotif is false    
 		return
 	}
@@ -290,7 +290,7 @@ private boolean check_event(eventType, intervalInMinutes) {
 				msg ="MonitorAutomaticCar>${vehicle} vehicle has not triggerred any ${eventType} events in the last ${intervalInMinutes} minutes"
 			}            
 			log.debug msg
-			if (detailedNotif == 'true') {
+			if (detailedNotif) {
 				send msg
 			}
 		} else {
@@ -339,7 +339,7 @@ private boolean check_score(scoreType, minScoreThreshold) {
 	} else {
 		msg = "MonitorAutomaticCar>${vehicle} vehicle's ${scoreType} is currently >= your minimum threshold (${minScoreThreshold})"
 		log.debug msg
-		if (detailedNotif == 'true') {
+		if (detailedNotif) {
 			send msg
 		}
 	}    
@@ -495,7 +495,7 @@ def checkRainyWeather(evt) {
 	def weather = weatherStation?.currentWeather
         
 	if ((rainCheck == 'wet' || rainCheck == 'snow' ) || ((weather?.toUpperCase().contains("RAIN")) || (weather?.toUpperCase().contains("SNOW")))) {
-		if (detailedNotif == 'true') {
+		if (detailedNotif) {
 			msg = "MonitorAutomaticCar>it's raining or snowing at ${weatherStation}, will start special monitoring"
 			send msg
 		}
@@ -524,7 +524,7 @@ def scheduleJobs() {
 				runIn((1*60), "sendWithDelay" )
 				return
  			} else {
-				if (detailedNotif == 'true') {
+				if (detailedNotif) {
 					state.msg = "MonitorAutomaticCar> raining or snowing at ${weatherStation}, start special monitoring every ${givenRainIntInMin} min."  
 					runIn((1*60), "sendWithDelay" )
 				}
@@ -534,7 +534,7 @@ def scheduleJobs() {
 		} else if ((rainCheck != 'wet') && (rainCheck != 'snow')) {
     
 			unschedule()
-			if (detailedNotif == 'true') {
+			if (detailedNotif) {
 				msg = "MonitorAutomaticCar>not raining or snowing at the moment,continue scheduling at regular interval"  
 				log.trace msg 			
 			}
@@ -544,7 +544,7 @@ def scheduleJobs() {
 
 	if (isWetSeason()) {
 
-		if (detailedNotif == 'true') {
+		if (detailedNotif) {
 			state.msg = "MonitorAutomaticCar>during wet/snow season, monitor ${vehicle} every ${givenWetSeasonIntInHr} hour(s)"
 			runIn((1*60), "sendWithDelay" )
 		}
@@ -552,7 +552,7 @@ def scheduleJobs() {
 
 	} else {
 
-		if (detailedNotif == 'true') {
+		if (detailedNotif) {
 			state.msg = "MonitorAutomaticCar>during dry season, monitor ${vehicle} every ${givenDrySeasonIntInHr} hour(s)"
 			runIn((1*60), "sendWithDelay" )
 		}
