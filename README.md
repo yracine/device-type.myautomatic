@@ -6,7 +6,6 @@ linkedIn profile:   ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
 
 Date:               2015-08-08
 
-Code: http://github.com/yracine/device-type.myautomatic
 
 **************************************************************************************************
 If you like My Automatic device and related smartapps, please support the developer:
