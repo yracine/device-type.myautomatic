@@ -67,7 +67,7 @@ def about() {
  		section("About") {	
 			paragraph "MyAutomaticServiceMgr, the smartapp that connects your Automatic connected vehicle(s) to SmartThings via cloud-to-cloud integration" +
 				" and polls your Automatic device's events on a regular interval"
-			paragraph "Version 0.9.6" 
+			paragraph "Version 0.9.7" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 					title:"Paypal donation..."
@@ -367,8 +367,6 @@ def initialize() {
 	state?.exceptionCount=0
 	state?.oauthTokenProvided=false
 	state?.msg=null    
-	delete_child_devices()	
-	create_child_devices()
     
     
 	state?.poll = [ last: 0, rescheduled: now() ]
@@ -379,6 +377,9 @@ def initialize() {
 		runIn(30,"sendMsgWithDelay")
  		return
 	}
+	delete_child_devices()	
+	create_child_devices()
+
 	//Subscribe to different events (ex. sunrise and sunset events) to trigger rescheduling if needed
 	subscribe(location, "sunrise", rescheduleIfNeeded)
 	subscribe(location, "sunset", rescheduleIfNeeded)
@@ -474,7 +475,7 @@ def procEvent() {
  	log.debug "procEvent>request =${request}"
 
 	try {
-		eventFields = new JsonSlurper().parseText(request.body)   
+		eventFields = new JsonSlurper().parseText(request.JSON)   
 		log.debug "procEvent>eventFields = $eventFields"
 	} catch (e) {
 		log.error("procEvent>jsonEventData not formatted (exception $e) correctly or empty, exiting")
