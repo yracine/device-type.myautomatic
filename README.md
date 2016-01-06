@@ -8,11 +8,22 @@ Date:               2015-08-08
 
 
 **************************************************************************************************
-If you like My Automatic device and related smartapps, please support the developer:
 
+/*********************************************************************************************
 
-<br/> [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](
-https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest)
+please take note of the following statement:**
+
+**http://thingsthataresmart.wiki/index.php?title=My_Automatic_Device#Notes_to_MyAutomatic_Device_Users_-_Contribution_is_now_require**
+
+/*********************************************************************************************
+
+You can now download the code at 
+
+<b>
+http://www.maisonsecomatiq.com/#!store/tc3yr 
+</b>
+
+P.S. Technical support packages are aslo available.
 
 Setup time: About 5 minutes
 
