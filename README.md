@@ -119,11 +119,8 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 /**************************************************************************************************/
 
 
-a) From your phone or tablet, within the smartThings app and on the main screen, click on '+' at the bottom, under SmartApps, scroll down to My Apps, and execute MyAutomaticServiceMgr.
 
-<b>If you have upgraded to the new UI, click on the Smartapps link in the upper section of any of the following
-screens: Home & Marketspace, and then MyApps (last item in the list).</b>
-
+<b>Click on the Smartapps link in the upper section of the following Marketsspace screen (last icon at the bottom), and then MyApps (last item in the list).</b>
 
 b) The smartapp will ask you to authenticate on the Automatic portal (by pressing Next on the first page)
 
