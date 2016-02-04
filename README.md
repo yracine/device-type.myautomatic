@@ -119,8 +119,7 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 /**************************************************************************************************/
 
 
-
-<b>Click on the Smartapps link in the upper section of the following Marketsspace screen (last icon at the bottom), and then MyApps (last item in the list).</b>
+<b>Under the ST app, click on the Smartapps link in the upper section of the following Marketspace screen (last icon at the bottom), and then MyApps (last item in the list).</b>
 
 b) The smartapp will ask you to authenticate on the Automatic portal (by pressing Next on the first page)
 
@@ -157,7 +156,7 @@ https://graph.api.smartthings.com/device/list
 /**************************************************************************************************/
 
 <b>7) Under the SmartThings app (on your tablet or smartphone), you should then
-see the new Automatic Object(s) under the 'Things' shortcut on the dashboard</b>
+see the new Automatic Object(s) under the 'myHome/Things' shortcut on the dashboard</b>
 
 /**************************************************************************************************/
 
