@@ -208,7 +208,7 @@ d) Save the URL value at the Automatic Developer Portal
 
 /**************************************************************************************************/
 
-<b>9) (optional) Install some of my SmartApp(s)</b>
+<b>10) (optional) Install some of my SmartApp(s)</b>
 /**************************************************************************************************/
 
 See Under 
