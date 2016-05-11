@@ -198,6 +198,10 @@ b) Paste the redirect URL to the Automatic Developer portal under Webhook URL fi
 
 c) Substitute "swapToken" by "procEvent" in the field
 
+The field value should then look like:
+
+<i>https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/procEvent</i> 
+
 d) Save the URL value at the Automatic Developer Portal
 
 
