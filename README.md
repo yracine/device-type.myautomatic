@@ -44,6 +44,9 @@ b) Hit the "+New Device Handler" at the top right corner
 c) Hit the "From Code" tab on the left corner
 
 d) Copy and paste the code from myautomatic.devicetype from the source file
+
+The code is sent to you via your paypal email address.
+
 e) Hit the create button at the bottom
 
 f) Hit the "publish/for me" button at the top right corner (in the code window)
@@ -60,6 +63,8 @@ b) Hit the "+New SmartApp" at the top right corner
 c) Hit the "From Code" tab on the left corner
 
 d) Copy and paste the code from MyAutomaticServiceMgr from the source file
+
+The code is sent to you via your paypal email address.
 
 e) Hit the create button at the bottom
 
