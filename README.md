@@ -188,7 +188,7 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 
 /**************************************************************************************************/
 
-a) At the Automatic Developer portal, copy the OAuth Redirect URL field
+a) At the Automatic Developer portal, copy the OAuth Redirect URL field entered in step 5f)
 
 The field should be similar to:
 
@@ -202,7 +202,9 @@ The field value should then look like:
 
 <i>https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/procEvent</i> 
 
-d) Save the URL value at the Automatic Developer Portal
+d) Make sure that the Event Delivery Preference field is set to "WEBHOOK"
+
+e) Save the URL value at the Automatic Developer Portal
 
 
 
