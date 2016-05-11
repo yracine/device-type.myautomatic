@@ -184,7 +184,7 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 
 /**************************************************************************************************/
 
-<b>9) (optional) To enable near real-time automatic events processing in SmartThings</b>
+<b>9) (optional) <i>NEW:</i> To enable near real-time automatic events processing in SmartThings</b>
 
 /**************************************************************************************************/
 
@@ -196,7 +196,9 @@ The field should be simimlar to:
  
 b) Paste the redirect URL to the Automatic Developer portal under Webhook URL field
 
-c) Save the URL value at the Automatic Developer Portal
+c) Substitute "swapToken" by "procEvent" in the field
+
+d) Save the URL value at the Automatic Developer Portal
 
 
 
