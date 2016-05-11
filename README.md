@@ -190,7 +190,7 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 
 a) At the Automatic Developer portal, copy the OAuth Redirect URL field
 
-The field should be simimlar to:
+The field should be similar to:
 
 <i>https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i> 
  
