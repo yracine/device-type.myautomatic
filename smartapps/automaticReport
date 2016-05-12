@@ -13,7 +13,6 @@
  *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  *
- *  Software Distribution is restricted and shall be done only with Developer's written approval.
  */
  
 import java.text.SimpleDateFormat
@@ -33,7 +32,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.6.2" 
+		paragraph "Version 1.6.3" 
 		paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 			href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 				title:"Paypal donation..."
@@ -112,7 +111,7 @@ private def generateReport() {
 	endDate = formatDate(dateTime)
 	log.debug("generateReport>end dateTime = ${dateTime}, endDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
 
-	automatic.getTrips("","", startDate,endDate, null, 'true')
+	automatic.getTrips("","", startDate,endDate, null, true)
 
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
