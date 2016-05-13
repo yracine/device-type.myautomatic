@@ -174,10 +174,10 @@ address for presence purposes</b>
 
 Edit the preferences of MyAutomatic device(s) to set your home address or enable more tracing
 
-2- Go to https://graph.api.smartthings.com/device/list
+Go to https://graph.api.smartthings.com/device/list
 - Click on the My Automatic object in the list
 - Edit the preferences by clicking on 'edit' (middle of the page) 
-- Set the homeAddress parameter to your zipcode or street name (minimum information for presence sensor) 
+- Set the homeAddress parameter to your zipcode or street name (minimum information for presence detection) 
 - Set the trace input parameter to true (for debugging purposes only)
 - Edit the localFuelCostPerVolUnit parameter to reflect the local fuel cost per gallon/liter
 - Save the changes by clicking 'Save' at the bottom.
@@ -190,15 +190,15 @@ Edit the preferences of MyAutomatic device(s) to set your home address or enable
 
 a) At the Automatic Developer portal, copy the OAuth Redirect URL field entered in step 5f)
 
-The field should be similar to:
+The field's value should be similar to:
 
 <i>https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i> 
  
 b) Paste the redirect URL to the Automatic Developer portal under Webhook URL field
 
-c) Substitute "swapToken" by "procEvent" in the field
+c) Substitute "swapToken" by "procEvent" in the field (at the end)
 
-The field value should then look like:
+The field value should now look like:
 
 <i>https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/procEvent</i> 
 
