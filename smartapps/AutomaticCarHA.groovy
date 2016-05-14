@@ -52,7 +52,7 @@ def HASettingsPage() {
 		section("For the following Automatic Connected Vehicle") {
 			input "vehicle", "capability.presenceSensor", title: "Which vehicle?"
 		}
-		section("And, when these trip events are triggerred") {
+		section("And, when these trip events are triggered") {
 			input "givenEvents", "enum",
 				title: "Which Events(s)?",
 				multiple: true,
@@ -132,7 +132,7 @@ def eventHandler(evt) {
     
 	def lat = vehicle.currentEventTripLocationLat    
 	def lon = vehicle.currentEventTripLocationLon
-	msg = "AutomaticCarHA>${vehicle} vehicle has triggerred ${eventType} event at ${started_at}, lon: ${lon}, lat: ${lat}..."
+	msg = "AutomaticCarHA>${vehicle} vehicle has triggered ${eventType} event at ${started_at}, lon: ${lon}, lat: ${lat}..."
 	log.debug msg
 	if (detailedNotif) {
 		send msg    
