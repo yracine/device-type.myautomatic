@@ -49,7 +49,7 @@ def HASettingsPage() {
 				href url:"http://github.com/yracine/device-type.myautomatic", style:"embedded", required:false, title:"More information..."  
 					description: "http://github.com/yracine"
 		}
-		section("For the following Automatic Connected Vehicle(s)") {
+		section("For the following Automatic Connected Vehicle") {
 			input "vehicle", "capability.presenceSensor", title: "Which vehicle?"
 		}
 		section("And, when these trip events are triggerred") {
