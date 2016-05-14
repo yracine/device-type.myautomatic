@@ -237,3 +237,27 @@ https://github.com/yracine/device-type.weatherstation
 The smartapp allows a ST user to generate daily reports on Automatic Connected vehicle's events.
 
 
+<b>b) automaticReport</b>
+
+The smartapp allows a ST user to generate daily reports on Automatic Connected vehicle's events such as Hard Acceleration,Hard Brake and Speeding.
+
+<b>c) automaticCarHA</b>
+
+The smartapp allows a ST user to create their own home automation scenarios based on the following list of real-time Automatic events.
+It can turn on/off/flash some switch(es) and/or execute a routine.
+
+The list of RT Automatic events are:
+
+- 'ignition:on',
+- 'ignition:off',
+- 'trip:finished',
+- 'notification:speeding',
+- 'notification:hard_brake',
+- 'notification:hard_accel',
+- 'region:changed',
+- 'mil:on',  (check engine light On)
+- 'mil:off', (check engine light Off)
+- 'hmi:interaction',
+- 'location:updated',
+
+
