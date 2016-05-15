@@ -234,11 +234,6 @@ https://github.com/yracine/device-type.weatherstation
 
 <b>b) automaticReport</b>
 
-The smartapp allows a ST user to generate daily reports on Automatic Connected vehicle's events.
-
-
-<b>b) automaticReport</b>
-
 The smartapp allows a ST user to generate daily reports on Automatic Connected vehicle's events such as Hard Acceleration,Hard Brake and Speeding.
 
 <b>c) automaticCarHA</b>
