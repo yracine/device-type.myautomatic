@@ -121,7 +121,7 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 /**************************************************************************************************/
 
 
-<b>Under the ST app, click on the Smartapps link in the upper section of the following Marketspace screen (last icon at the bottom), and then MyApps (last item in the list).</b>
+<b>a) Under the ST app, click on the Smartapps link in the upper section of the following Marketspace screen (last icon at the bottom), and then MyApps (last item in the list).</b>
 
 b) The smartapp will ask you to authenticate on the Automatic portal (by pressing Next on the first page)
 
