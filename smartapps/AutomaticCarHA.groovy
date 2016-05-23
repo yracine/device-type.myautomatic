@@ -41,7 +41,7 @@ def HASettingsPage() {
 	dynamicPage(name: "HASettingsPage", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Near Real-Time Automatic Car automation with SmartThings" 
-			paragraph "Version 1.0.1" 
+			paragraph "Version 1.0.2" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 					title:"Paypal donation..."
@@ -120,19 +120,19 @@ def updated() {
 }
 
 def initialize() {
-	subscribe(vehicle, "eventTripStartedAt", eventHandler)
+	subscribe(vehicle, "eventTripCreatedAt", eventHandler)
 }
 
 def eventHandler(evt) {
 	def msg
 
-	def started_at =vehicle.currentEventTripStartedAt   
+	def createdAt =vehicle.currentEventTripCreatedAt   
 	String eventType = vehicle.currentEventType
 	log.debug "eventHandler>evt.value=${evt.value}, eventType=${eventType}"
     
 	def lat = vehicle.currentEventTripLocationLat    
 	def lon = vehicle.currentEventTripLocationLon
-	msg = "AutomaticCarHA>${vehicle} vehicle has triggered ${eventType} event at ${started_at}, lon: ${lon}, lat: ${lat}..."
+	msg = "AutomaticCarHA>${vehicle} vehicle has triggered ${eventType} event at ${createdAt}, (lon: ${lon}, lat: ${lat})..."
 	log.debug msg
 	if (detailedNotif) {
 		send msg    
