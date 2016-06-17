@@ -117,7 +117,7 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 
 /**************************************************************************************************/
 
-<b>5) Execute MyAutomaticServiceMgr</b>
+<b>5) Under the ST app, execute MyAutomaticServiceMgr</b>
 /**************************************************************************************************/
 
 
