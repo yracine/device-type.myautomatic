@@ -178,7 +178,7 @@ Click on it  and press refresh several times to populate its fields
 /**************************************************************************************************/
 
 <b>8) (optional) After instantiation of MyAutomatic object, you can edit its preferences and set your home
-address for presence purposes</b>
+address for presence detection purposes</b>
 
 /**************************************************************************************************/
 
