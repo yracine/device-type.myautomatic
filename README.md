@@ -34,6 +34,7 @@ PRE-REQUISITES
 - Basic information about your car entered in the Automatic app or at the Automatic portal
     (ex.  display Name, model, submodel, color, etc)
 - Your Automatic car connected vehicle fully operational
+- Your Automatic credentials (username/password)
 
 
 =====================
