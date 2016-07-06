@@ -41,7 +41,7 @@ def HASettingsPage() {
 	dynamicPage(name: "HASettingsPage", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Near Real-Time Automatic Car automation with SmartThings" 
-			paragraph "Version 1.0.2" 
+			paragraph "Version 1.0.3" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
 					title:"Paypal donation..."
@@ -65,7 +65,6 @@ def HASettingsPage() {
 						'notification:speeding',
 						'notification:hard_brake',
 						'notification:hard_accel',
-						'region:changed',
 						'mil:on',
 						'mil:off',
 						'hmi:interaction',
