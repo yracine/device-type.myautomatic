@@ -28,7 +28,7 @@ P.S. Technical support packages are also available.
 Setup time: About 10 minutes (with real time processing)
 
 =====================
-PRE-REQUISITES
+PREREQUISITES
 =====================
 
 - Basic information about your car entered in the Automatic app or at the Automatic portal
