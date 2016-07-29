@@ -35,6 +35,7 @@ PREREQUISITES
     (ex.  display Name, model, submodel, color, etc)
 - Your Automatic connected vehicle fully operational
 - Your Automatic credentials (username/password)
+- Developer access to SmartThings (http://graph.api.smartthings.com/)
 
 
 =====================
