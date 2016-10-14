@@ -32,7 +32,7 @@ PREREQUISITES
 =====================
 
 - Basic information about your car entered in the Automatic app or at the Automatic portal
-    (ex.  display Name, model, submodel, color, etc)
+    (ex.  model, submodel, color, etc)
 - Your Automatic connected vehicle fully operational
 - Your Automatic credentials (username/password)
 - Developer access to SmartThings (http://graph.api.smartthings.com/)
