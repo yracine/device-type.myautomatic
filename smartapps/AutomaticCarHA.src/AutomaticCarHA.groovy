@@ -43,9 +43,9 @@ def HASettingsPage() {
 	dynamicPage(name: "HASettingsPage", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Near Real-Time Automatic Car automation with SmartThings" 
-			paragraph "Version 1.0.3" 
+			paragraph "Version 1.0.4" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
-				href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
+				href url: "https://www.paypal.me/ecomatiqhomes",
 					title:"Paypal donation..."
 			paragraph "Copyright©2016 Yves Racine"
 				href url:"http://github.com/yracine/device-type.myautomatic", style:"embedded", required:false, title:"More information..."  
