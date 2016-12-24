@@ -36,10 +36,10 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.6.5" 
+		paragraph "Version 1.6.6" 
 		paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
-			href url: "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=yracine%40yahoo%2ecom&lc=US&item_name=Maisons%20ecomatiq&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest",
-				title:"Paypal donation..."
+			href url: "https://www.paypal.me/ecomatiqhomes",
+					title:"Paypal donation..."
 		paragraph "Copyright©2015 Yves Racine" 
 			href url:"http://github.com/yracine/device-type.myautomatic", style:"embedded", required:false, title:"More information..."  
 				description: "http://github.com/yracine"
@@ -115,7 +115,7 @@ private def generateReport() {
 	endDate = formatDate(dateTime)
 	log.debug("generateReport>end dateTime = ${dateTime}, endDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
 
-	automatic.getTrips("","", startDate,endDate, null, true)
+	automatic.getTrips("","T_76464e9758b4a032", null,null, null, true)
 
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
@@ -180,6 +180,8 @@ private def generateReport() {
 			}
 		} /* end each vehicle Event */       
 	} /* end for each Trip  */
+    
+    
 }
 
 private def report_states_between_dates(eventType, startDate, endDate) {
