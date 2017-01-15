@@ -25,7 +25,7 @@ http://www.maisonsecomatiq.com/#!store/tc3yr
 
 P.S. Technical support packages are also available.
 
-Setup time: About 10 minutes (with real time processing)
+Setup time: About 10-15 minutes (with real time processing) depending on your ST skills.
 
 =====================
 PREREQUISITES
