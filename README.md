@@ -205,6 +205,8 @@ Go to https://graph.api.smartthings.com/device/list
 - Edit the localFuelCostPerVolUnit parameter to reflect the local fuel cost per gallon/liter
 - Save the changes by clicking 'Save' at the bottom.
 
+ You only need to edit the above parameters
+
  P.S. Don't enter any values the vehicleId or for the appKey as the values are only
     used for the PIN authentication method.  If you do it, you may
     experience authentication issues when used with MyAutomaticServiceMgr smartapp.
