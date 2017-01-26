@@ -36,7 +36,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.6.7" 
+		paragraph "Version 1.6.8" 
 		paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 			href url: "https://www.paypal.me/ecomatiqhomes",
 					title:"Paypal donation..."
