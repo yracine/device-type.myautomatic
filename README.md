@@ -163,7 +163,7 @@ the following trace:
 
 <i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
  
-f) Copy and paste the redirect URL to the Automatic Developer portal under OAuth Redirect URL 
+f) Copy and paste the redirect URL (part in blue above) to the Automatic Developer portal under OAuth Redirect URL 
 
 g) Save the URL redirect value at the Automatic Developer Portal
 
