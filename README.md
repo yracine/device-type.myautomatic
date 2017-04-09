@@ -114,7 +114,7 @@ a) Open a new browser tab, and go to http://developer.automatic.com and create y
 
 b) Go to https://developer.automatic.com/my-apps
 
-c) Create a new app with the name of your choice.
+c) Create a new app with the name of your choice (ex. your own name to be unique).
 
 d) Copy and paste your Automatic client id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic Public Key here!" is indicated
 
