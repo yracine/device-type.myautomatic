@@ -5,7 +5,7 @@
  *  LinkedIn profile: ca.linkedin.com/pub/yves-racine-m-sc-a/0/406/4b/
  *
  *  Developer retains all right, title, copyright, and interest, including all copyright, patent rights, trade secret 
- *  in the Background technology. May be subject to consulting fees under the Agreement between the Developer and the Customer. 
+ * in the Background technology. May be subject to consulting fees under the Agreement between the Developer and the Customer. 
  *  Developer grants a non exclusive perpetual license to use the Background technology in the Software developed for and delivered 
  *  to Customer under this Agreement. However, the Customer shall make no commercial use of the Background technology without
  *  Developer's written consent.
@@ -43,7 +43,7 @@ def HASettingsPage() {
 	dynamicPage(name: "HASettingsPage", install: false, uninstall: true, nextPage: "otherSettings") {
 		section("About") {
 			paragraph "Near Real-Time Automatic Car automation with SmartThings" 
-			paragraph "Version 1.0.4" 
+			paragraph "Version 1.0.5" 
 			paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 				href url: "https://www.paypal.me/ecomatiqhomes",
 					title:"Paypal donation..."
@@ -88,14 +88,14 @@ def HASettingsPage() {
 
 def otherSettings() {
 	dynamicPage(name: "otherSettings", title: "Other Settings", install: true, uninstall: false) {
-		section("Detailed Notifications") {
-			input "detailedNotif", "bool", title: "Detailed Notifications?", required:
-				false
-		}
 		section("Notifications") {
 			input "sendPushMessage", "enum", title: "Send a push notification?", metadata: [values: ["Yes", "No"]], required:
 				false
 			input "phoneNumber", "phone", title: "Send a text message?", required: false
+		}
+		section("Detailed Notifications") {
+			input "detailedNotif", "bool", title: "Detailed Notifications?", required:
+				false
 		}
 		section([mobileOnly: true]) {
 			label title: "Assign a name for this SmartApp", required: false
@@ -134,8 +134,8 @@ def eventHandler(evt) {
 	def lat = vehicle.currentEventTripLocationLat    
 	def lon = vehicle.currentEventTripLocationLon
 	msg = "AutomaticCarHA>${vehicle} vehicle has triggered ${eventType} event at ${createdAt}, (lon: ${lon}, lat: ${lat})..."
-	log.debug msg
 	if (detailedNotif) {
+		log.debug msg
 		send msg    
 	}
 	check_event(eventType)
@@ -150,8 +150,8 @@ private boolean check_event(eventType) {
 	if ((givenEvents.contains(eventType))) {
 		foundEvent=true    
 		msg = "AutomaticCarHA>${vehicle} vehicle has triggered ${eventType}, about to ${switchMode} ${switches}"
-		log.debug msg
 		if (detailedNotif) {
+			log.debug msg
 			send msg    
 		}
 		        
@@ -166,8 +166,8 @@ private boolean check_event(eventType) {
 		}
 		if (phrase) {
 			msg = "AutomaticCarHA>${vehicle} vehicle has triggered ${eventType}, about to execute ${phrase} routine"
-			log.debug msg
 			if (detailedNotif) {
+				log.debug msg
 				send msg    
 			}
 			location.helloHome?.execute(phrase)        
@@ -183,18 +183,26 @@ private flashLights() {
 	def offFor = offFor ?: 1000
 	def numFlashes = numFlashes ?: 3
 
-	log.debug "LAST ACTIVATED IS: ${state.lastActivated}"
+	if (detailedNotif) {
+		log.debug "LAST ACTIVATED IS: ${state.lastActivated}"
+	}        
 	if (state.lastActivated) {
 		def elapsed = now() - state.lastActivated
 		def sequenceTime = (numFlashes + 1) * (onFor + offFor)
 		doFlash = elapsed > sequenceTime
-		log.debug "DO FLASH: $doFlash, ELAPSED: $elapsed, LAST ACTIVATED: ${state.lastActivated}"
+		if (detailedNotif) {
+			log.debug "DO FLASH: $doFlash, ELAPSED: $elapsed, LAST ACTIVATED: ${state.lastActivated}"
+		}            
 	}
 
 	if (doFlash) {
-		log.debug "FLASHING $numFlashes times"
+		if (detailedNotif) {
+			log.debug "FLASHING $numFlashes times"
+		}            
 		state.lastActivated = now()
-		log.debug "LAST ACTIVATED SET TO: ${state.lastActivated}"
+		if (detailedNotif) {
+			log.debug "LAST ACTIVATED SET TO: ${state.lastActivated}"
+		}            
 		def initialActionOn = switches.collect {
 			it.currentSwitch != "on"
 		}
@@ -210,7 +218,9 @@ private flashLights() {
 					}
 			}
 			delay += onFor
-			log.trace "Switch off after $delay msec"
+			if (detailedNotif) {
+				log.trace "Switch off after $delay msec"
+			}                
 			switches.eachWithIndex {
 				s, i ->
 					if (initialActionOn[i]) {
@@ -223,6 +233,9 @@ private flashLights() {
 		}
 	}
 }
+
+
+
 
 
 
