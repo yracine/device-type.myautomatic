@@ -108,15 +108,15 @@ h) Keep the smartapp open in your IDE for the next step
 # 3) Create/login to your Automatic Developer account
 
 
-a) Open a new browser tab, and go to http://developer.automatic.com and create your developer account if needed
+<b>a) Open a new browser tab, and go to http://developer.automatic.com and create your developer account if needed</b>
 
-b) Go to https://developer.automatic.com/my-apps
+<b>b) Go to https://developer.automatic.com/my-apps</b>
 
-c) Create a new app with the name of your choice (ex. your own name to be unique).
+<b>c) Create a new app with the name of your choice (ex. your own name to be unique).</b>
 
-d) Copy and paste your Automatic client id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic Public Key here!" is indicated
+<b>d) Copy and paste your Automatic client id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic Public Key here!" is indicated</b>
 
-e) Copy and paste your Automatic secret id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic private Key here!" is indicated
+<b>e) Copy and paste your Automatic secret id to the MyAutomaticServiceMgr smartapp at the bottom of the file where "insert Automatic private Key here!" is indicated</b>
 
 Examples of keys, not valid at Automatic:
 
@@ -124,7 +124,7 @@ def getSmartThingsClientId() { "kjPlS3AAQtaUGlmB30IU9g" }
 
 def getSmartThingsPrivateKey() { "6Qg0niXeQDSk-dkfU475og" }
 
-f) Using the ST IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.
+<b>f) Using the ST IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.</b>
 
 
 
@@ -143,36 +143,36 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 
 <b>a) Under the ST app, click on the Smartapps link in the upper section of the following Marketspace screen (last icon at the bottom), and then MyApps (last item in the list).</b>
 
-b) The smartapp will ask you to authenticate on the Automatic portal (by pressing Next on the first page)
+<b>b) The smartapp will ask you to authenticate on the Automatic portal (by pressing Next on the first page)</b>
 
-c) Press on MyAutomatic in the middle of the login page
+<b>c) Press on MyAutomatic in the middle of the login page</b>
 
-d) The Automatic login page will appear with the following error message:
+<b>d) The Automatic login page will appear with the following error message:</b>
 
 <i>Error: invalid request</i>
 
-e) In the IDE, under https://graph.api.smartthings.com/ide/logs or under the device's list of events, you should see
-the following trace:
+<b>e) In the IDE, under https://graph.api.smartthings.com/ide/logs or under the device's list of events, you should see
+the following trace:</b>
 
 <i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
  
-f) Copy and paste the redirect URL (part in blue above) to the Automatic Developer portal under OAuth Redirect URL 
+<b>f) Copy and paste the redirect URL (part in blue above) to the Automatic Developer portal under OAuth Redirect URL </b>
 
-g) Save the URL redirect value at the Automatic Developer Portal
+<b>g) Save the URL redirect value at the Automatic Developer Portal</b>
 
-h) Press back on your device to re-login by pressing again on MyAutomatic in the middle of the page 
+<b>h) Press back on your device to re-login by pressing again on MyAutomatic in the middle of the page </b>
 
-i) The Automatic login page should re-appear without any error message, enter your Automatic credentials
+<b>i) The Automatic login page should re-appear without any error message, enter your Automatic credentials</b>
 
-j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account
+<b>j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account</b>
 
-If you get a blank screen after pressing 'Next or you get the following error: " Error - bad state. Unable to complete page configuration", you'd need to enable oAuth as specified in step 2f) above.
+If you get a blank screen after pressing 'Next or you get the following error: " Error - bad state. Unable to complete page configuration", you'd need to enable oAuth as</b> specified in step 2f) above.</b>
 
-k) You may then select the Automatic device(s) to be exposed to SmartThings.
+<b>k) You may then select the Automatic device(s) to be exposed to SmartThings.</b>
 
 After pressing 'Done' on the last page, the smartapp will instantiate the MyAutomatic device object under 
 
-https://graph.api.smartthings.com/device/list
+https://graph.api.smartthings.com/device/list<b>
 
 
 # 7) View the Automatic device(s) Under the SmartThings app 
