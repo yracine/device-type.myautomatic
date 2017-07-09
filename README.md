@@ -94,7 +94,7 @@ After you purchase the code at my store, it is sent to your paypal verified emai
 
 e) Hit the create button at the bottom
 
-f) <b>Make sure that enable OAuth in Smartapp settings is active</b> 
+<b>f) Make sure that enable OAuth in Smartapp settings is active</b> 
 
 * Goto app settings (top right corner, click on it)
 * Click on Oauth (middle of the page), and enable OAuth in Smart app
