@@ -183,7 +183,7 @@ Click on ir (or them)  and press refresh several times to populate its fields
 
 
 
-# 8) (optional) Set Device's preferences
+# 8) (Optional) Set Device's preferences
 
 Edit the preferences of MyAutomatic device(s) to set your home address or enable more tracing
 
@@ -192,7 +192,7 @@ Go to https://graph.api.smartthings.com/device/list
 - Edit the preferences by clicking on 'edit' (middle of the page) 
 - Set the homeAddress parameter to your zipcode or street name (minimum information for presence detection) 
 - Set the trace input parameter to true (for debugging purposes only)
-- Edit the localFuelCostPerVolUnit parameter to reflect the local fuel cost per gallon/liter
+- Edit the localFuelCostPerVolUnit parameter to reflect your local fuel cost per gallon/liter
 - Save the changes by clicking 'Save' at the bottom.
 
  You only need to edit the above parameters
