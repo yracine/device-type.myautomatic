@@ -183,7 +183,7 @@ Click on ir (or them)  and press refresh several times to populate its fields
 
 
 
-# 8) (optional) Edit Device's preferences
+# 8) (optional) Set Device's preferences
 
 Edit the preferences of MyAutomatic device(s) to set your home address or enable more tracing
 
