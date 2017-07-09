@@ -224,26 +224,13 @@ See Under
 
 https://github.com/yracine/device-type.myautomatic/tree/master/smartapps
 
-<b>a) MonitorAutomaticCar</b>
-
-<b>Typical Use Case: Parents may want to closely monitor their kids' car driving abilities.</b>
-
-The smartapp can detect any Speeding, Hard Acceleration, Hard Brake events after a trip has been completed and alerts parents of bad driving behaviors.
-
-Parents may want to set a minimum Speeding Score or Events Score and if the kids' scores go below these thresholds, the parents will be notified ASAP.
-
-The monitoring could be even more tight during the wet/snow season. Based on weatherStation, it can automatically switch to a monitoring cycle interval in minutes instead of hours when it's raining or snowing outside.....
-
-See the virtual weather station at
-
-https://github.com/yracine/device-type.weatherstation
 
 
-<b>b) automaticReport</b>
+<b>a) automaticReport</b>
 
 The smartapp allows a ST user to generate daily reports on Automatic Connected vehicle's events such as Hard Acceleration,Hard Brake and Speeding.
 
-<b>c) automaticCarHA</b>
+<b>b) automaticCarHA</b>
 
 The smartapp allows a ST user to create their own home automation scenarios based on the following list of real-time Automatic events.
 It can turn on/off/flash some switch(es) and/or execute a routine.
@@ -263,3 +250,20 @@ The list of RT Automatic events are:
 - 'location:updated',
 
 
+<b>c) MonitorAutomaticCar</b>
+
+Available at my store:
+
+www.ecomatiqhomes.com/store
+
+<b>Typical Use Case: Parents may want to closely monitor their kids' car driving abilities.</b>
+
+The smartapp can detect any Speeding, Hard Acceleration, Hard Brake events during a trip (in quasi real time) and alerts parents of bad driving behaviors.
+
+Parents may want to set a minimum Speeding Score or Events Score and if the kids' scores go below these thresholds, the parents will be notified ASAP.
+
+The monitoring could be even more tight during the wet/snow season. Based on weatherStation, it can automatically switch to a monitoring cycle interval in minutes instead of hours when it's raining or snowing outside.....
+
+See the virtual weather station at
+
+https://github.com/yracine/device-type.weatherstation
