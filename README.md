@@ -50,8 +50,8 @@ Or the SmartThings documentation here:
 http://docs.smartthings.com/en/latest/publishing/index.html#ensure-proper-location
 
 
-If you are on a different shard, you need to change the links below for your right shard. 
-As an example, in North America,
+<b>If you are on a different shard, you need to change the links below for your right shard. 
+As an example, in North America, </b>
 
 replace https://graph.api.smartthings.com/ide/devices by https://graph-na02-useast1.api.smartthings.com
 
