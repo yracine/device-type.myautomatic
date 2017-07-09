@@ -9,13 +9,12 @@ Date:               2015-08-08
 
 **************************************************************************************************
 
-/*********************************************************************************************
 
-please take note of the following statement:**
+
+Please take note of the following statement:**
 
 **http://thingsthataresmart.wiki/index.php?title=My_Automatic_Device#Notes_to_MyAutomatic_Device_Users_-_Contribution_is_now_require**
 
-/*********************************************************************************************
 
 You can now download the code at 
 
