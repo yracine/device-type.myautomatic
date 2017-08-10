@@ -171,7 +171,7 @@ https://graph.api.smartthings.com/device/list<b>
 
 On your tablet or smartphone), you should then see the new Automatic Object(s) under the 'myHome/Things' shortcut on the dashboard
 
-Click on ir (or them)  and press refresh several times to populate its fields
+Click on it (or them)  and press refresh several times to populate its fields
 
 
 
