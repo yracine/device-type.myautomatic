@@ -154,6 +154,8 @@ the following trace:</b>
 
 <b>h) Copy and paste the full redirect URL (https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken)  to the Automatic Developer portal under the URL oAUth Redirect field </b>
 
+ <b> P.S.If you don't save the Base URL properly, the Automatic Developer portal will not save the full oAUth redirect URL correctly!!</b>
+
 <b>i) Enter your Automatic username and password and press 'Authorize' in the next page.
 
 <b>j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account</b>
