@@ -154,7 +154,7 @@ the following trace:</b>
 
 <b>h) Copy and paste the full redirect URL (https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken)  to the Automatic Developer portal under the URL oAUth Redirect field </b>
 
- <b> P.S.If you don't save the Base URL properly, the Automatic Developer portal will not save the full oAUth redirect URL correctly!!</b>
+ <b> P.S.If you don't save the Base URL prior to this field, the Automatic Developer portal will not save the full oAUth redirect URL correctly!!</b>
 
 <b>i) Enter your Automatic username and password and press 'Authorize' in the next page.
 
