@@ -146,13 +146,13 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 <b>e) In the IDE, under https://graph.api.smartthings.com/ide/logs or under the device's list of events, you should see
 the following trace:</b>
 
-<i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
+<i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api:port/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
  
 <b>f) Copy and paste the base redirect URL (https://graph.api.smartthings.com/api:port/)  to the Automatic Developer portal under the URL field </b>
 
 <b>g) Save the base URL value at the Automatic Developer Portal</b>
 
-<b>h) Copy and paste the full redirect URL (https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken)  to the Automatic Developer portal under the URL oAUth Redirect field </b>
+<b>h) Copy and paste the full redirect URL (https://graph.api.smartthings.com/api:port/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken)  to the Automatic Developer portal under the URL oAUth Redirect field and Save!</b>
 
  <b> P.S.If you don't save the Base URL prior to this field, the Automatic Developer portal will not save the full oAUth redirect URL correctly!!</b>
 
