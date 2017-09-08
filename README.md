@@ -140,22 +140,21 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 
 <b>c) Press on MyAutomatic in the middle of the login page</b>
 
-<b>d) The Automatic login page will appear with the following error message:</b>
+<b>d) The Automatic login page will appear 
 
-<i>Error: invalid request</i>
 
 <b>e) In the IDE, under https://graph.api.smartthings.com/ide/logs or under the device's list of events, you should see
 the following trace:</b>
 
 <i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
  
-<b>f) Copy and paste the redirect URL (part in blue above) to the Automatic Developer portal under OAuth Redirect URL </b>
+<b>f) Copy and paste the base redirect URL (https://graph.api.smartthings.com/api:port/)  to the Automatic Developer portal under the URL field </b>
 
-<b>g) Save the URL redirect value at the Automatic Developer Portal</b>
+<b>g) Save the base URL redirect value at the Automatic Developer Portal</b>
 
-<b>h) Press back on your device to re-login by pressing again on MyAutomatic in the middle of the page </b>
+<b>h) Copy and paste the full redirect URL (https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken)  to the Automatic Developer portal under the URL oAUth Redirect field </b>
 
-<b>i) The Automatic login page should re-appear without any error message, enter your Automatic credentials</b>
+<b>i) Enter your Automatic username and password and press 'Authorize' in the next page.
 
 <b>j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account</b>
 
