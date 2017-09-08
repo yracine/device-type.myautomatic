@@ -150,7 +150,7 @@ the following trace:</b>
  
 <b>f) Copy and paste the base redirect URL (https://graph.api.smartthings.com/api:port/)  to the Automatic Developer portal under the URL field </b>
 
-<b>g) Save the base URL redirect value at the Automatic Developer Portal</b>
+<b>g) Save the base URL value at the Automatic Developer Portal</b>
 
 <b>h) Copy and paste the full redirect URL (https://graph.api.smartthings.com/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken)  to the Automatic Developer portal under the URL oAUth Redirect field </b>
 
