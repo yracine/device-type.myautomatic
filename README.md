@@ -117,7 +117,7 @@ def getSmartThingsClientId() { "kjPlS3AAQtaUGlmB30IU9g" }
 
 def getSmartThingsPrivateKey() { "6Qg0niXeQDSk-dkfU475og" }
 
-<b>f) Using the ST IDE, save and Publish the MyAutomaticServiceMgr smartapp with your credentials.</b>
+<b>f) Using the ST IDE, save and publish the MyAutomaticServiceMgr smartapp with your credentials.</b>
 
 
 
