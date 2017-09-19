@@ -22,18 +22,18 @@ Setup time: About 10-15 minutes (with real time processing) depending on your ST
 PREREQUISITES
 =====================
 
-- Basic information about your car entered in the Automatic app or at the Automatic portal
+- (a) Basic information about your car entered in the Automatic app or at the Automatic portal
     (ex.  model, submodel, color, etc)
-- Your Automatic connected vehicle fully operational
-- Your Automatic credentials (username/password)
-- Developer access to SmartThings (http://graph.api.smartthings.com/)
-- <b>Location set for your ST account </b> 
+- (b) Your Automatic connected vehicle fully operational
+- (c) Your Automatic credentials (username/password)
+- (d) Developer access to SmartThings (http://graph.api.smartthings.com/)
+- (e) <b>Location set for your ST account </b> 
 
 Under the ST mobile app, click on the 3-horizontal lines- "hamburger"- menu in the upper left corner, and then the "gear'" icon to review your location and save it.
 
 https://support.smartthings.com/hc/en-us/articles/205956850-How-to-edit-Location-settings
 
--  <b> Determine your shard, please consult this thread: </b>
+- (f) <b> Determine your shard, please consult this thread: </b>
 
 https://community.smartthings.com/t/faq-how-to-find-out-what-shard-cloud-slice-ide-url-your-account-location-is-on/53923
 
