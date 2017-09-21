@@ -245,7 +245,6 @@ The list of RT Automatic events are:
 - 'notification:speeding',
 - 'notification:hard_brake',
 - 'notification:hard_accel',
-- 'region:changed',
 - 'mil:on',  (check engine light On)
 - 'mil:off', (check engine light Off)
 - 'hmi:interaction',
