@@ -120,6 +120,21 @@ def getSmartThingsPrivateKey() { "6Qg0niXeQDSk-dkfU475og" }
 <b>f) Using the ST IDE, save and publish the MyAutomaticServiceMgr smartapp with your credentials.</b>
 
 
+<b>g) If you're located outside of the US, since V2.6, I've included the option to insert your GOOGLE KEY for the Location APIs
+as Automatic doesn't provide address info for people located outside of the US anymore (since July 2017)
+
+- Insert your GOOGLE API Key at the end of MyServiceAutomaticMgr file
+
+Refer to the following instructions for more details:
+
+// To be populated with your own Google API key if you're located outside of the US.
+
+// Go to https://developers.google.com/maps/documentation/geocoding/get-api-key
+
+// Make sure that your key is registered for your project at https://console.developers.google.com/apis/credentials
+
+def get_GOOGLE_LOCATION_API_KEY() { return "Insert your GOOGLE Key Here!" }
+
 
 # 4) Activate live logging for more tracing
 
