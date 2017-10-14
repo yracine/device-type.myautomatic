@@ -36,7 +36,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.7" 
+		paragraph "Version 1.7.1" 
 		paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 			href url: "https://www.paypal.me/ecomatiqhomes",
 					title:"Paypal donation..."
@@ -139,8 +139,8 @@ private def generateReport() {
 	int nbTrips = (nbTripsValue)? nbTripsValue.toInteger():0
 	for (i in 0..nbTrips-1) {
 		def tripId=tripFields[i].id    
-		String startAddress=tripFields[i].start_address.name
-		String endAddress=tripFields[i].end_address.name        
+		String startAddress=tripFields[i]?.start_address?.name
+		String endAddress=tripFields[i]?.end_address?.name        
 		def vehicleEvents=tripFields[i]?.vehicle_events 
 		log.debug ("generateReport> found ${tripId} trip from start Address=${startAddress} to endAddress=${endAddress}, \nvehicleEvents=${vehicleEvents}")
 		String eventCreatedAt
