@@ -36,7 +36,7 @@ preferences {
 	section("About") {
 		paragraph "automaticReport, the smartapp that generates daily runtime reports about your Automatic connected vehicle"
 		paragraph "You can only run the smartapp manually by pressing the arrow sign on the app's icon" 
-		paragraph "Version 1.6.8" 
+		paragraph "Version 1.7" 
 		paragraph "If you like this smartapp, please support the developer via PayPal and click on the Paypal link below " 
 			href url: "https://www.paypal.me/ecomatiqhomes",
 					title:"Paypal donation..."
@@ -115,7 +115,7 @@ private def generateReport() {
 	endDate = formatDate(dateTime)
 	log.debug("generateReport>end dateTime = ${dateTime}, endDate in UTC =${endDate.format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"))}")
 
-	automatic.getTrips("","", null,null, null, true)
+	automatic.getTrips("","", startDate, endDate, null, true, true)
 
 	def currentTripList = automatic.currentTripsList
 	def tripFields =null   
