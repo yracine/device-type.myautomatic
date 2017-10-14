@@ -123,11 +123,9 @@ def getSmartThingsPrivateKey() { "6Qg0niXeQDSk-dkfU475og" }
 <b>g) If you're located outside of the US, since V2.6, I've included the option to insert your GOOGLE KEY for the Location APIs
 as Automatic doesn't provide address info for people located outside of the US anymore (since July 2017)
 
-- Insert your GOOGLE API Key at the end of MyServiceAutomaticMgr file
+- Insert your GOOGLE API Key at the end of MyServiceAutomaticMgr file (only if you're located outside of the US)
 
 Refer to the following instructions for more details:
-
-// To be populated with your own Google API key if you're located outside of the US.
 
 // Go to https://developers.google.com/maps/documentation/geocoding/get-api-key
 
