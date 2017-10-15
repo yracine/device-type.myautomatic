@@ -120,8 +120,9 @@ def getSmartThingsPrivateKey() { "6Qg0niXeQDSk-dkfU475og" }
 <b>f) Using the ST IDE, save and publish the MyAutomaticServiceMgr smartapp with your credentials.</b>
 
 
-<b>g) If you're located outside of the US, since V2.6, I've included the option to insert your GOOGLE KEY for the Location APIs
-as Automatic doesn't provide address info for people located outside of the US anymore (since July 2017)
+<b>g)(optional) For better presence detection, I've included the option to insert your GOOGLE KEY for the Location APIs.
+As Automatic doesn't provide address info for people located outside of the US anymore (since July 2017), this is required
+for people located outside of the US.
 
 - Insert your GOOGLE API Key at the end of MyServiceAutomaticMgr file (only if you're located outside of the US)
 
