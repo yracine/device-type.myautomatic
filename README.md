@@ -103,7 +103,7 @@ h) Keep the smartapp open in your IDE for the next step
 
 <b>a) Open a new browser tab, and go to http://developer.automatic.com and create your developer account if needed</b>
 
-<b>b) Go to https://developer.automatic.com/my-apps</b>    (or whatever your shard is)
+<b>b) Go to https://developer.automatic.com/my-apps</b>    
 
 <b>c) Create a new app with the name of your choice (ex. your own name to be unique).</b>
 
