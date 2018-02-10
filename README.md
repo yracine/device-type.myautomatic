@@ -170,7 +170,7 @@ the following trace:</b>
 
  <b> P.S. If you don't save the Base URL prior to this field, the Automatic Developer portal will not save the full oAUth redirect URL correctly!!</b>
 
-<b>i) Enter your Automatic username and password and press 'Authorize' in the next page.
+<b>i) Under the ST mobile app, enter your Automatic username and password and press 'Authorize' in the next page.
 
 <b>j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account</b>
 
