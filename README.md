@@ -55,7 +55,7 @@ INSTALLATION STEPS
 
 
 
-# 1) Create a new device handler (My Automatic Device) for your device(s)
+# 1) In the IDE, create a new device handler (My Automatic Device) for your device(s)
 
 a) Go to https://graph.api.smartthings.com/ide/devices    (or whatever your shard is)
 
@@ -72,7 +72,7 @@ e) Hit the create button at the bottom
 f) Hit the "publish/for me" button at the top right corner (in the code window)
 
 
-# 2) Create a new smartapp (MyAutomaticServiceMgr)
+# 2) In the IDE, create a new smartapp (MyAutomaticServiceMgr)
 
 
 a) Go to https://graph.api.smartthings.com/ide/apps    (or whatever your shard is)
@@ -98,7 +98,7 @@ g) Go back to the code window, and hit the "publish/for me" button at the top ri
 h) Keep the smartapp open in your IDE for the next step
 
 
-# 3) Create/login to your Automatic Developer account
+# 3) At the automatic portal, create/login to your Automatic Developer account
 
 
 <b>a) Open a new browser tab, and go to http://developer.automatic.com and create your developer account if needed</b>
@@ -135,7 +135,7 @@ Refer to the following instructions for more details:
 def get_GOOGLE_LOCATION_API_KEY() { return "Insert your GOOGLE Key Here!" }
 
 
-# 4) Activate live logging for more tracing
+# 4) In the IDE, activate live logging for more tracing
 
 
 Go to 
@@ -157,8 +157,7 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 <b>d) The Automatic login page will appear 
 
 
-<b>e) In the IDE, under https://graph.api.smartthings.com/ide/logs or under the device's list of events, you should see
-the following trace:</b>
+<b>e) In the IDE, under https://graph.api.smartthings.com/ide/logs (or according to your shard) or under the device's list of events, you should see the following trace:</b>
 
 <i>buildRedirectUrl,redirectURL=https://graph.api.smartthings.com/api:port/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i>
  
@@ -183,9 +182,9 @@ After pressing 'Done' on the last page, the smartapp will instantiate the MyAuto
 https://graph.api.smartthings.com/device/list<b>    (or whatever your shard is)
 
 
-# 7) View the Automatic device(s) Under the SmartThings app 
+# 7) Under the ST mobile app, view the Automatic device(s) U
 
-On your tablet or smartphone), you should then see the new Automatic Object(s) under the 'myHome/Things' shortcut on the dashboard
+On your tablet or smartphone, you should then see the new Automatic Object(s) under the 'myHome/Things' shortcut on the dashboard
 
 Click on it (or them)  and press refresh several times to populate its fields
 
