@@ -63,7 +63,7 @@ b) Hit the "+New Device Handler" at the top right corner
 
 c) Hit the "From Code" tab on the left corner
 
-d) Copy and paste the code of the device type from the source file
+d) Copy and paste the code of the device type from the source file in the zip
 
 After you purchase the code at my store, it is sent to your paypal verified email address by the sellfy e-commerce solution
 
@@ -81,7 +81,7 @@ b) Hit the "+New SmartApp" at the top right corner
 
 c) Hit the "From Code" tab on the left corner
 
-d) Copy and paste the code from MyAutomaticServiceMgr from the source file
+d) Copy and paste the code from MyAutomaticServiceMgr from the source file in the zip
 
 After you purchase the code at my store, it is sent to your paypal verified email address by the sellfy e-commerce solution
 
