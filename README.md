@@ -98,6 +98,10 @@ g) Go back to the code window, and hit the "publish/for me" button at the top ri
 
 h) Keep the smartapp open in your IDE for the next step
 
+If the instructions above are not clear enough, you can refer to the troubleshooting section below with some pictures:
+
+http://thingsthataresmart.wiki/index.php?title=MyAutomaticServiceMgr#Issue_.231:_I_don.27t_know_how_to_create_a_custom_smartapp
+
 
 # 3) At the automatic portal, create/login to your Automatic Developer account
 
