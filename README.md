@@ -27,7 +27,7 @@ PREREQUISITES
 - (b) Your Automatic connected vehicle fully operational
 - (c) Your Automatic credentials (username/password)
 - (d) Developer access to SmartThings (http://graph.api.smartthings.com/)
-- (e) <b>Location set for your ST account </b> 
+- (e) <b>Location set for your ST account under the ST classic app</b> 
 
 Under the ST classic mobile app, click on the 3-horizontal lines- "hamburger"- menu in the upper left corner, and then the "gear'" icon to review your location and save it.
 
