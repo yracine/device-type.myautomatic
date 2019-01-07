@@ -223,7 +223,7 @@ a) At the Automatic Developer portal, copy the OAuth Redirect URL field entered 
 
 The field's value should be similar to:
 
-<i>https://graph.api.smartthings.com/api:port/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i> 
+<i>https://graph.api.smartthings.com:port/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/swapToken</i> 
  
 b) Paste the redirect URL to the Automatic Developer portal under Webhook URL field
 
@@ -231,7 +231,7 @@ b) Paste the redirect URL to the Automatic Developer portal under Webhook URL fi
 
 The field value should now look like:
 
-<i>https://graph.api.smartthings.com/api:port/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/procEvent</i> 
+<i>https://graph.api.smartthings.com:port/api/token/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/smartapps/installations/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/procEvent</i> 
 
 d) Make sure that the Event Delivery Preference field is set to "WEBHOOK"
 
