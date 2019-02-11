@@ -178,7 +178,7 @@ Note: In the next step, as Automatic does not presently support wildcard URL red
 
 <b>j) After being authenticated and pressing 'done' and 'next', the smartapp will show you the list of device(s) under your Automatic Account</b>
 
-If you get a blank screen after pressing 'Next or you get the following error: " Error - bad state. Unable to complete page configuration", you'd need to enable oAuth as</b> specified in step 2f) above.</b>
+If you get a blank screen after pressing 'Next or you get the following error: " Error - bad state' or 'Java.lang.NullPointerException: Cannot get property 'accessToken' on null object" in the IDE', <b>you'd need to enable oAuth as specified in step 2f) above.</b>
 
 <b>For any other errors, you'd need to double check your base & redirect URLs. Make sure that they don't contain any extra spaces or other extra characters.</b>
 
