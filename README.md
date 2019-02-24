@@ -184,7 +184,7 @@ If you get a blank screen after pressing 'Next or you get the following error: "
 
 <b>k) You may then select the Automatic device(s) to be exposed to SmartThings.</b>
 
-At the end of the authorization flow, you may have to press "Save" several times if you have the following error message: "Error processing your request - please try again" or "Unexcepted error".  This is due to some ST platform timeouts due to rate limiting.
+At the end of the authorization flow, you may have to press "Save" several times if you have the following error message: "Error processing your request - please try again" or "Unexepected error".  This is due to some ST platform timeouts due to rate limiting.
 
 The smartapp will instantiate the MyAutomatic device object under 
 
