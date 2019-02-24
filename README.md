@@ -184,7 +184,9 @@ If you get a blank screen after pressing 'Next or you get the following error: "
 
 <b>k) You may then select the Automatic device(s) to be exposed to SmartThings.</b>
 
-After pressing 'Done' on the last page, the smartapp will instantiate the MyAutomatic device object under 
+At the end of the authorization flow, you may have to press "Save" several times if you have have the following error message: "Error processing your request - please try again" or "Unexcepted error".  This is due to some ST platform timeouts due to rate limiting.
+
+The smartapp will instantiate the MyAutomatic device object under 
 
 https://graph.api.smartthings.com/device/list<b>   (or whatever your shard is and click on My Devices in the IDE's top menu)
 
