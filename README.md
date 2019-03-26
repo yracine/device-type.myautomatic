@@ -185,7 +185,7 @@ If you get a blank screen after pressing 'Next or you get the following error: "
 <b>k) You may then select the Automatic device(s) to be exposed to SmartThings.</b>
 
 *************************************************************************************************************************************
-N.B.
+N.B. If you have any errors:
 
 <b> At the end of the authorization flow,  if you have the following error message: "Unexpected error" even if you press several times, this probably means that you have not "saved & published" one of the Device Handler Type (MyAutomaticDevice) under the right shard.  Refer to the prerequisites & step 1 for more details.
  
