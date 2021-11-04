@@ -1,3 +1,4 @@
+(DEPRECATED)
 # device-type.myautomatic
 
 Author:             Yves Racine
